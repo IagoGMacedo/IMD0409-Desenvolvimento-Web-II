@@ -45,5 +45,38 @@ public class AlunoServiceImpl implements  AlunoService{
         return this.alunos;
     }
 
+    @Override
+    public List<Aluno> getAlunosByCurso(String curso) {
+        List<Aluno> alunosCurso = new ArrayList<>();
+        this.alunos.forEach(
+            aluno -> {if(aluno.getCurso().equals(curso)){
+                alunosCurso.add(aluno);
+            }}
+        );
+        return alunosCurso;
+    }
+
+    @Override
+    public List<Aluno> getAlunosByLinguagem(String linguagem) {
+        List<Aluno> alunosLinguagem = new ArrayList<>();
+        this.alunos.forEach(
+            aluno -> {if(aluno.getLinguagem().equals(linguagem)){
+                alunosLinguagem.add(aluno);
+            }}
+        );
+        return alunosLinguagem;
+    }
+
+    @Override
+    public List<Aluno> getAlunosBySO(String SO) {
+        List<Aluno> alunosSO = new ArrayList<>();
+        this.alunos.forEach(
+            aluno -> {if(aluno.getSistemasOperacionas().contains(SO)){
+                alunosSO.add(aluno);
+            }}
+        );
+        return alunosSO;
+    }
+
     
 }

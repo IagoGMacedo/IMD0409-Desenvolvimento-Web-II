@@ -14,4 +14,10 @@ public interface AlunoService {
     public Aluno getAlunoById(Integer id);
     public List<Aluno> getListaAluno();
 
+    public List<Aluno> getAlunosByCurso(String curso);
+    public List<Aluno> getAlunosByLinguagem(String linguagem);
+    public List<Aluno> getAlunosBySO(String SO);
+
+
+
 }
