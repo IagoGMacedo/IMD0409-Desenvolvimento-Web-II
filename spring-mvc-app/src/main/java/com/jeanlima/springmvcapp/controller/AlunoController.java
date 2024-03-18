@@ -72,6 +72,7 @@ public class AlunoController {
             curso.setListaAlunos(alunoService.getAlunosByCurso(curso.getNome()));
         }
         model.addAttribute("cursos", cursoService.getListaCursos());
+        model.addAttribute("quantidadeAlunos", alunoService.getListaAluno().size());
         return new ModelAndView("aluno/listaPorCurso");
     }
 

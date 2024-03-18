@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <p th:text="'quantidade total de alunos: '+${quantidadeAlunos}"></p>
     <div th:each="curso : ${cursos}">
         <h1 th:text="${curso.nome}"></h1>
         <p th:text="'quantidade: ' + ${curso.listaAlunos.size()}"></p>
