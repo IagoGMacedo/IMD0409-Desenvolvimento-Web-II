@@ -14,6 +14,9 @@ public class AlunoServiceImpl implements  AlunoService{
 
     @Override
     public void salvarAluno(Aluno aluno) {
+        //adicionando um id para o novo aluno
+        aluno.setId(this.alunos.size());
+
         System.out.println(aluno.toString());
         try{
             this.alunos.add(aluno);
@@ -60,7 +63,8 @@ public class AlunoServiceImpl implements  AlunoService{
     public List<Aluno> getAlunosByLinguagem(String linguagem) {
         List<Aluno> alunosLinguagem = new ArrayList<>();
         this.alunos.forEach(
-            aluno -> {if(aluno.getLinguagem().equals(linguagem)){
+            //tem que ver se nao é nulo
+            aluno -> {if(aluno.getLinguagem() != null && aluno.getLinguagem().equals(linguagem)){
                 alunosLinguagem.add(aluno);
             }}
         );
@@ -71,7 +75,7 @@ public class AlunoServiceImpl implements  AlunoService{
     public List<Aluno> getAlunosBySO(String SO) {
         List<Aluno> alunosSO = new ArrayList<>();
         this.alunos.forEach(
-            aluno -> {if(aluno.getSistemasOperacionas().contains(SO)){
+            aluno -> {if(aluno.getSistemasOperacionas() != null && aluno.getSistemasOperacionas().contains(SO)){
                 alunosSO.add(aluno);
             }}
         );

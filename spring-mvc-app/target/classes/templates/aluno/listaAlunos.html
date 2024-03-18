@@ -29,6 +29,9 @@
             <th th:text="Nome"></th>
             <th th:text="Curso"></th>
             <th th:text="Linguagem"></th>
+            <th>#</th>
+            <th>#</th>
+
           </tr>
         </thead>
         <tbody>
@@ -36,11 +39,24 @@
             <td th:text="${aluno.primeiroNome}"></td>
             <td th:text="${aluno.curso}"></td>
             <td th:text="${aluno.linguagem}"></td>
+            <td>
+              <a th:href="@{'/aluno/detailsAluno/'+${aluno.id}}">detalhes</a>
+            </td>
+            <td>
+              <a th:href="@{'/aluno/deleteAluno/'+${aluno.id}}">deletar</a>
+            </td>
+
           </tr>
         </tbody>
       </table>
     <br><br>
-    <a href="showForm">Formulário de alunos</a><br>
+    <a th:href="@{/aluno/showForm}">Formulário de alunos</a><br>
+    <a th:href="@{/aluno/getListaAlunosCurso}">Estudantes por Curso</a><br>
+    <a th:href="@{/aluno/getListaAlunosLinguagem}">Estudantes por Linguagem</a><br>
+    <a th:href="@{/aluno/getListaAlunosSo}">Estudantes por Sistema Operacional</a><br>
+
+
+
 
 </body>
 

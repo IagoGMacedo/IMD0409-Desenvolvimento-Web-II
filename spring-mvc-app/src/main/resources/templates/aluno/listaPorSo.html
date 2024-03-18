@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <title>Alunos por linguagem</title>
+
+</head>
+
+<body>
+
+    <h1>Windows</h1>
+    <p th:text="'quantidade: ' + ${alunosWindows.size()}"></p>
+    <ul>
+        <li th:each="aluno : ${alunosWindows}">
+            <span
+                th:text="${aluno.primeiroNome} +' '+ ${aluno.ultimoNome} + ' - Curso:  ' + ${aluno.curso} " />
+        </li>
+    </ul>
+    <br><br>
+    <h1>Linux</h1>
+    <p th:text="'quantidade: ' + ${alunosLinux.size()}"></p>
+    <ul>
+        <li th:each="aluno : ${alunosLinux}">
+            <span
+                th:text="${aluno.primeiroNome} +' '+ ${aluno.ultimoNome} + ' - Curso:  ' + ${aluno.curso} " />
+        </li>
+    </ul>
+    <br><br>
+    <h1>OSX</h1>
+    <p th:text="'quantidade: ' + ${alunosOsx.size()}"></p>
+    <ul>
+        <li th:each="aluno : ${alunosOsx}">
+            <span
+                th:text="${aluno.primeiroNome} +' '+ ${aluno.ultimoNome} + ' - Curso:  ' + ${aluno.curso} " />
+        </li>
+    </ul>
+    <br><br>
+    <a th:href="@{/aluno/getListaAlunos}">Listagem de alunos</a><br>
+
+
+
+
+</body>
+
+</html>

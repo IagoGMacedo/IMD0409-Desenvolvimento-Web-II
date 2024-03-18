@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <title>Alunos por linguagem</title>
+
+</head>
+
+<body>
+
+
+    <h1>Java</h1>
+    <p th:text="'quantidade: ' + ${alunosJava.size()}"></p>
+    <ul>
+        <li th:each="aluno : ${alunosJava}">
+            <span
+                th:text="${aluno.primeiroNome} +' '+ ${aluno.ultimoNome} + ' - Curso:  ' + ${aluno.curso} " />
+        </li>
+    </ul>
+    <br><br>
+    <h1>Python</h1>
+    <p th:text="'quantidade: ' + ${alunosPython.size()}"></p>
+    <ul>
+        <li th:each="aluno : ${alunosPython}">
+            <span
+                th:text="${aluno.primeiroNome} +' '+ ${aluno.ultimoNome} + ' - Curso:  ' + ${aluno.curso} " />
+        </li>
+    </ul>
+    <br><br>
+    <h1>C</h1>
+    <p th:text="'quantidade: ' + ${alunosC.size()}"></p>
+    <ul>
+        <li th:each="aluno : ${alunosC}">
+            <span
+                th:text="${aluno.primeiroNome} +' '+ ${aluno.ultimoNome} + ' - Curso:  ' + ${aluno.curso} " />
+        </li>
+    </ul>
+    <br><br>
+    <h1>JavaScript</h1>
+    <p th:text="'quantidade: ' + ${alunosJavascript.size()}"></p>
+    <ul>
+        <li th:each="aluno : ${alunosJavascript}">
+            <span
+                th:text="${aluno.primeiroNome} +' '+ ${aluno.ultimoNome} + ' - Curso:  ' + ${aluno.curso} " />
+        </li>
+    </ul>
+    <br><br>
+    <a th:href="@{/aluno/getListaAlunos}">Listagem de alunos</a><br>
+
+
+
+
+</body>
+
+</html>

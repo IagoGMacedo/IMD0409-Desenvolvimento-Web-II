@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <title>Alunos por curso</title>
+
+</head>
+
+<body>
+    <div th:each="curso : ${cursos}">
+        <h1 th:text="${curso.nome}"></h1>
+        <p th:text="'quantidade: ' + ${curso.listaAlunos.size()}"></p>
+        <ul>
+            <li th:each="aluno : ${curso.listaAlunos}">
+                <span
+                    th:text="${aluno.primeiroNome} +' '+ ${aluno.ultimoNome} + ' - Curso:  ' + ${aluno.curso} " />
+            </li>
+        </ul>
+        <br><br>
+    </div>
+    
+
+
+    <a th:href="@{/aluno/getListaAlunos}">Listagem de alunos</a><br>
+
+
+
+
+</body>
+
+</html>

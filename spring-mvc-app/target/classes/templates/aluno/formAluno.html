@@ -16,7 +16,7 @@
         <p>Último Nome: <input type="text" th:field="*{ultimoNome}" placeholder="Insira seu nome" /></p>
         <p>Curso: 
             <select th:field="*{curso}">
-                <option th:each="curso: ${cursos}" th:value="${curso}" th:text="${curso}">
+                <option th:each="curso: ${cursos}" th:value="${curso.nome}" th:text="${curso.nome}">
             </select>
         </p>
         <p> Linguagem de programação:
