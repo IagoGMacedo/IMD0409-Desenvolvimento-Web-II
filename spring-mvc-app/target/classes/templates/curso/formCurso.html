@@ -12,8 +12,12 @@
 <body>
 
     <form action="#" th:action="@{/curso/addCurso}" th:object="${curso}" method="post">
+        <input type="hidden" name="id" th:field="*{id}"/>
         <p>Nome do curso: <input type="text" th:field="*{nome}" placeholder="Insira o nome" /></p>
-        <p><input type="submit" value="Adicionar" /></p>
+
+        <p><input th:if="${curso.id == NULL}" type="submit" value="Adicionar" /></p>
+        <p><input th:unless="${curso.id == NULL}" type="submit" value="Atualizar" /></p>
+
     </form>
     
 </body>

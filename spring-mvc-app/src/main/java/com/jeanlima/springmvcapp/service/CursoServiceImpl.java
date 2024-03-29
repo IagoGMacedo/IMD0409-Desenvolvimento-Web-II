@@ -41,5 +41,18 @@ public class CursoServiceImpl implements CursoService {
     public List<Curso> getListaCursos() {
         return this.cursos;
     }
+
+    @Override
+    public void deletarCurso(Curso curso) {
+        this.cursos.remove(curso);
+        System.out.println("consegui deletar");
+    }
+
+    @Override
+    public void atualizarCurso(Curso curso) {
+        if(curso.getId() != null){
+            this.cursos.set(curso.getId(), curso);
+        }
+    }
     
 }
