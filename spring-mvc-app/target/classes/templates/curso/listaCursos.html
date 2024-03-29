@@ -27,12 +27,21 @@
         <thead>
           <tr>
             <th th:text="Nome"></th>
+            <th>#</th>
+            <th>#</th>
+
           </tr>
         </thead>
         <tbody>
           <tr th:each="curso: ${cursos}">
             <td th:text="${curso.nome}"></td>
+            <td>
+              <a th:href="@{'/curso/editCurso/'+${curso.id}}">editar</a>
+            </td>
 
+            <td>
+              <a th:href="@{'/curso/deleteCurso/'+${curso.id}}">deletar</a>
+            </td>
           </tr>
         </tbody>
       </table>
