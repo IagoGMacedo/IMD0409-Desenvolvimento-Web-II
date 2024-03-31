@@ -22,24 +22,33 @@
     </ul>
     <br><br>
     <p>Tabela com as infos</p>
-    <table>
+    <table border="1">
         <thead>
           <tr>
             <th th:text="Nome"></th>
             <th th:text="Curso"></th>
+            <th>Nome Fantasia</th>
             <th th:text="Disciplina"></th>
+            <th>#</th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="aluno: ${alunos}">
             <td th:text="${aluno.nome}"></td>
             <td th:text="${aluno.curso}"></td>
-            <td th:text="${aluno.disciplinas}"></td>
+            <td th:text="${aluno.avatar}"> </td>
+            <td th:text="${aluno.curso.disciplinas}"></td>
+            <td>
+              <a th:href="@{'/aluno/deleteAluno/'+${aluno.id}}">excluir</a>
+            </td>
           </tr>
         </tbody>
       </table>
     <br><br>
     <a href="showForm">Formulário de alunos</a><br>
+    <a th:href="@{/avatar/getListaAvatares}">Lista de Avatares</a><br>
+    <a th:href="@{/}">Menu inicial</a><br>
+
 
 </body>
 

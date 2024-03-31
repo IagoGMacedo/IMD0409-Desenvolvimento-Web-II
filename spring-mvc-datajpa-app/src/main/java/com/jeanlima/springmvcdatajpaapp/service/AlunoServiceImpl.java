@@ -40,5 +40,10 @@ public class AlunoServiceImpl implements AlunoService{
         return alunoRepository.findAll();
     }
 
+    @Override
+    public Aluno findByIdFetchCurso(Integer id) {
+        return alunoRepository.findByIdFetchCurso(id);
+    }
+
     
 }

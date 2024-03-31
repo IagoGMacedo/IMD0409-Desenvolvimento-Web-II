@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatares</title>
+
+</head>
+
+<body>
+
+
+
+    <p>Lista de avatares cadastrados </p>
+    <ul>
+        <li th:each="avatar : ${avatares}">
+            <span 
+                th:text="${avatar.nomeFantasia} + ' - Aluno:  ' + ${avatar.aluno.nome} " />
+        </li>
+    </ul>
+    <br><br>
+    <p>Tabela com as infos</p>
+    <table>
+        <thead>
+          <tr>
+            <th>Nome Fantasia</th>
+            <th>Nome do Aluno</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="avatar: ${avatares}">
+            <td th:text="${avatar.nomeFantasia}"></td>
+            <td th:text="${avatar.aluno.nome}"></td>
+          </tr>
+        </tbody>
+      </table>
+    <br><br>
+    <a href="showForm">Formulário de avatares</a><br>
+    <a th:href="@{/aluno/getListaAlunos}">Lista de Alunos</a><br>
+    <a th:href="@{/}">Menu inicial</a><br>
+
+
+</body>
+
+</html>

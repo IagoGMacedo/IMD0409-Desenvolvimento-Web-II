@@ -29,9 +29,19 @@ public interface AlunoRepository extends JpaRepository<Aluno,Integer>{
     @Query(value = " select e.* from aluno e where e.curso_id = ?1",nativeQuery = true)
     List<Aluno> findAllByIdCurso(Integer id);
 
+    
+
+    @Query(value="SELECT DISTINCT e FROM Aluno e JOIN FETCH e.curso c where e.id =:id")
+    Aluno findByIdFetchCurso(@Param("id") Integer id);
+
+    /* 
+
     @Query(value="SELECT DISTINCT e FROM Aluno e JOIN FETCH e.disciplinas")
     List<Aluno> findAllFetchDisciplinas();
 
-    @Query(value="SELECT e FROM Aluno e JOIN e.disciplinas d where d.id =:id")
+    
+     @Query(value="SELECT e FROM Aluno e JOIN e.disciplinas d where d.id =:id")
     List<Aluno> findAllByDisciplinaId(@Param("id") Integer id);
+    */
+    
 }

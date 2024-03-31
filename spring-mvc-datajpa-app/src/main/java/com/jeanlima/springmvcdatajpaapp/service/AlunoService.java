@@ -17,5 +17,6 @@ public interface AlunoService {
     public void deletarAluno(Aluno aluno);
     public Aluno getAlunoById(Integer id);
     public List<Aluno> getListaAluno();
+    public Aluno findByIdFetchCurso(Integer id);
 
 }

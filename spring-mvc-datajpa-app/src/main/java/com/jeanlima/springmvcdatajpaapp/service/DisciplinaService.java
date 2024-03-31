@@ -19,15 +19,16 @@ public class DisciplinaService {
         return disciplinaRepository.findAll();
     }
 
+    public void salvarDisciplina(Disciplina disciplina){
+        disciplinaRepository.save(disciplina);
+    }
+
     public Disciplina getDisciplinaById(Integer id){
         return disciplinaRepository.findById(id).map(disciplina -> {
             return disciplina;
         }).orElseThrow(() -> null);
     }
 
-    public List<Disciplina> getAllDisciplinasByAlunoID(Integer id) {
-        return disciplinaRepository.findAllByAlunoId(id);
-    }
 
     public List<Disciplina> getDisciplinasByIds(List<Integer> ids){
         return disciplinaRepository.findAllById(ids);

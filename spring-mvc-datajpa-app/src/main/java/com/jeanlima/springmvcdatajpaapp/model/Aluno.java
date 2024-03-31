@@ -1,8 +1,5 @@
 package com.jeanlima.springmvcdatajpaapp.model;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,9 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,15 +22,14 @@ public class Aluno {
     @Column(length = 100)
     private String nome;
 
+    @OneToOne(mappedBy = "aluno", fetch = FetchType.LAZY)
+    private Avatar avatar;
+
     @ManyToOne
     @JoinColumn(name = "curso_id")
     private Curso curso;
+    
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-    @JoinTable(name="disciplina_aluno",
-    joinColumns=@JoinColumn(name="aluno_id"), 
-    inverseJoinColumns=@JoinColumn(name="disciplina_id"))
-    private List<Disciplina> disciplinas;
     
 
     public Aluno() {
@@ -70,19 +65,19 @@ public class Aluno {
         this.curso = curso;
     }
 
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
         return "Aluno [id=" + id + ", nome=" + nome + ", curso=" + curso + "]";
     }
 
-    public List<Disciplina> getDisciplinas() {
-        return disciplinas;
-    }
-
-
-    public void setDisciplinas(List<Disciplina> disciplinas) {
-        this.disciplinas = disciplinas;
-    }
 
 
     @Override

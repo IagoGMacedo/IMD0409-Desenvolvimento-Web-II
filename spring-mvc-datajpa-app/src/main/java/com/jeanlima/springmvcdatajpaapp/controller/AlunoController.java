@@ -1,6 +1,5 @@
 package com.jeanlima.springmvcdatajpaapp.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +7,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.fasterxml.jackson.databind.ser.std.NumberSerializers.IntegerSerializer;
 import com.jeanlima.springmvcdatajpaapp.model.Aluno;
 import com.jeanlima.springmvcdatajpaapp.model.Curso;
-import com.jeanlima.springmvcdatajpaapp.model.Disciplina;
 import com.jeanlima.springmvcdatajpaapp.service.AlunoService;
 import com.jeanlima.springmvcdatajpaapp.service.CursoService;
 import com.jeanlima.springmvcdatajpaapp.service.DisciplinaService;
@@ -43,9 +39,7 @@ public class AlunoController {
 
         Aluno aluno = new Aluno();
         Curso curso = new Curso();
-        List<Disciplina> disciplinas = new ArrayList<Disciplina>();
         aluno.setCurso(curso);
-        aluno.setDisciplinas(disciplinas);
 
         model.addAttribute("aluno", aluno);
         model.addAttribute("cursos", cursoService.getCursos());
@@ -61,7 +55,7 @@ public class AlunoController {
         alunoService.salvarAluno(aluno);
 
         model.addAttribute("aluno", aluno);
-        return "aluno/paginaAluno";
+        return "redirect:/aluno/getListaAlunos";
     }
 
     @RequestMapping("/getListaAlunos")
@@ -71,6 +65,14 @@ public class AlunoController {
         model.addAttribute("alunos",alunos);
         return "aluno/listaAlunos";
 
+    }
+
+    @RequestMapping("/deleteAluno/{id}")
+    public String deleteAluno(@PathVariable("id") Integer id) {
+        Aluno deleteAluno = alunoService.getAlunoById(id);
+        if(deleteAluno != null)
+            alunoService.deletarAluno(deleteAluno);
+        return "redirect:/aluno/getListaAlunos";
     }
 
     

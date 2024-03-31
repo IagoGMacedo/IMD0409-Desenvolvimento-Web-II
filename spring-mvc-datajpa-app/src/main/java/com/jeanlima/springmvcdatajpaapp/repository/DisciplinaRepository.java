@@ -12,7 +12,5 @@ import com.jeanlima.springmvcdatajpaapp.model.Disciplina;
 
 public interface DisciplinaRepository extends JpaRepository<Disciplina,Integer>{
 
-    @Query(value="SELECT d FROM Disciplina d JOIN d.alunos e where e.id =:id")
-    List<Disciplina> findAllByAlunoId(@Param("id") Integer id);
     
 }
