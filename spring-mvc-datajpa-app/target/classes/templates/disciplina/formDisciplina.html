@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário Disciplina</title>
+
+    
+</head>
+<body>
+
+    <form action="#" th:action="@{/disciplina/addDisciplina}" th:object="${disciplina}" method="post">
+        <p>Nome: <input type="text" th:field="*{nome}" placeholder="Insira o nome da disciplina" /></p>
+        <p>Código: <input type="text" th:field="*{codigo}" placeholder="Insira o código da disciplina" /></p>
+        <p>Ementa: <input type="text" th:field="*{ementa}" placeholder="Insira a ementa da disciplina" /></p>
+        <p>Cursos que possuem essa disciplina: </p>
+        <div th:each="curso : ${cursos}">
+            <input type="checkbox" th:field="*{cursos}" name="selectedCursos" th:value="${curso.id}" th:text="${curso.descricao}">
+        </div>
+
+        
+        
+
+        <p><input type="submit" value="Adicionar" /></p>
+    </form>
+    
+</body>
+</html>

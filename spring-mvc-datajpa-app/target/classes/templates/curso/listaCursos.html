@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos</title>
+
+</head>
+
+<body>
+
+
+
+    <p>Lista de cursos cadastrados </p>
+    <ul>
+        <li th:each="curso : ${cursos}">
+            <span
+                th:text="'Descrição:  ' + ${curso.descricao} " />
+        </li>
+    </ul>
+    <br><br>
+    <p>Tabela com as infos</p>
+    <table>
+        <thead>
+          <tr>
+            <th th:text="Descrição"></th>
+            <th>#</th>
+            <th>#</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="curso: ${cursos}">
+            <td th:text="${curso.descricao}"></td>
+            <td>
+              <a th:href="@{'/curso/editCurso/'+${curso.id}}">editar</a>
+            </td>
+
+            <td>
+              <a th:href="@{'/curso/deleteCurso/'+${curso.id}}">deletar</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <br><br>
+    <a th:href="@{/curso/showForm}">Formulário de cursos</a><br>
+    <a th:href="@{/}">Menu inicial</a><br>
+
+
+
+
+</body>
+
+</html>

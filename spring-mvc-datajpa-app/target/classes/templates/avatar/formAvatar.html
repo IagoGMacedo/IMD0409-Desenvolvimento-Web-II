@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário Avatar</title>
+
+    
+</head>
+<body>
+
+    <form action="#" th:action="@{/avatar/addAvatar}" th:object="${avatar}" method="post">
+        <p>Nome Fantasia: <input type="text" th:field="*{nomeFantasia}" placeholder="Insira seu nome fantansia" /></p>
+        <p>Aluno: 
+            <select th:field="*{aluno}">
+                <option th:each="aluno : ${alunos}" 
+                        th:value="${aluno.id}"
+                        th:text="${aluno.nome}"/>
+            </select>
+        </p>
+
+        <p><input type="submit" value="Adicionar" /></p>
+    </form>
+    
+</body>
+</html>
