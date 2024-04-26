@@ -63,7 +63,12 @@ public class Pedido {
     }
     
     public BigDecimal getTotal() {
-        return total;
+        BigDecimal totalValor = BigDecimal.ZERO;
+        for (ItemPedido itemPedido : itens) {
+            totalValor =  totalValor.add(itemPedido.getProduto().getPreco().multiply(new BigDecimal(itemPedido.getQuantidade())));
+        }
+        setTotal(totalValor);
+        return totalValor;
     }
     public void setTotal(BigDecimal total) {
         this.total = total;

@@ -1,4 +1,5 @@
 package com.jeanlima.springrestapiapp.service.impl;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -42,17 +43,27 @@ public class PedidoServiceImpl implements PedidoService {
                 .orElseThrow(() -> new RegraNegocioException("Código de cliente inválido."));
 
         Pedido pedido = new Pedido();
-        pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
         pedido.setStatus(StatusPedido.REALIZADO);
-
+        
         List<ItemPedido> itemsPedido = converterItems(pedido, dto.getItems());
+        pedido.setTotal(calcularTotal(itemsPedido   ));
         repository.save(pedido);
         itemsPedidoRepository.saveAll(itemsPedido);
         pedido.setItens(itemsPedido);
         return pedido;
     }
+
+    public BigDecimal calcularTotal(List<ItemPedido> itens) {
+        BigDecimal totalValor = BigDecimal.ZERO;
+        for (ItemPedido itemPedido : itens) {
+            totalValor =  totalValor.add(itemPedido.getProduto().getPreco().multiply(new BigDecimal(itemPedido.getQuantidade())));
+        }
+        return totalValor;
+    }
+
+
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items){
         if(items.isEmpty()){
             throw new RegraNegocioException("Não é possível realizar um pedido sem items.");
@@ -68,7 +79,7 @@ public class PedidoServiceImpl implements PedidoService {
                                     () -> new RegraNegocioException(
                                             "Código de produto inválido: "+ idProduto
                                     ));
-
+                    
                     ItemPedido itemPedido = new ItemPedido();
                     itemPedido.setQuantidade(dto.getQuantidade());
                     itemPedido.setPedido(pedido);
