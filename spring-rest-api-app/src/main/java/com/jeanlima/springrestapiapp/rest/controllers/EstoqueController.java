@@ -107,8 +107,16 @@ public class EstoqueController {
     }
 
     @GetMapping
-    public List<Estoque> find(Estoque filtro) {
-        return service.listaTodos(filtro);
+    @ResponseStatus(HttpStatus.OK)
+    public List<Estoque> find() {
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher(
+                        ExampleMatcher.StringMatcher.CONTAINING);
+
+        //Example example = Example.of(filtro, matcher);    
+        return service.listaTodos();
     }
 
     @GetMapping("/busca")

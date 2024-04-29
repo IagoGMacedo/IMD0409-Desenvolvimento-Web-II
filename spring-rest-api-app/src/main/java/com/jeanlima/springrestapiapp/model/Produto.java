@@ -2,6 +2,7 @@ package com.jeanlima.springrestapiapp.model;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +28,6 @@ public class Produto {
     @Column(precision = 10,scale = 2)
     private BigDecimal preco;
 
-    
     @OneToOne(mappedBy = "produto")
     private Estoque estoque;
 

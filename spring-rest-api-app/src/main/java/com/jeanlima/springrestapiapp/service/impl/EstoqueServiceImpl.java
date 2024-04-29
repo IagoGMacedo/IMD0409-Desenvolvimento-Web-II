@@ -47,7 +47,11 @@ public class EstoqueServiceImpl implements EstoqueService {
         estoque.setQuantidade(dto.getQuantidade());
         estoque.setProduto(produto);
 
-        return repository.save(estoque);
+        produto.setEstoque(estoque);
+        Estoque estoqueSalvo = repository.save(estoque);
+        produtoRepository.save(produto);
+
+        return estoqueSalvo;
     }
 
     @Override
@@ -67,21 +71,14 @@ public class EstoqueServiceImpl implements EstoqueService {
     }
 
     @Override
-    public List<Estoque> listaTodos(Estoque filtro) {
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher(
-                        ExampleMatcher.StringMatcher.CONTAINING);
-
-        Example example = Example.of(filtro, matcher);
-        return repository.findAll(example);
-
+    public List<Estoque> listaTodos() {
+        return repository.findAll();
     }
 
     @Override
     public List<Estoque> encontrarPorNome(EstoquePorNomeDTO dto) {
-        return repository.encontrarPorNome(dto.getNomeProduto());
+        //return repository.encontrarPorNome(dto.getNomeProduto());
+        return null;
     }
 
     

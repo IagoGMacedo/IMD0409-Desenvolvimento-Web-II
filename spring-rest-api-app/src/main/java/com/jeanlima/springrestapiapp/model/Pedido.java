@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.jeanlima.springrestapiapp.enums.StatusPedido;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,7 +41,12 @@ public class Pedido {
     private BigDecimal total;
 
 
-    @OneToMany(mappedBy = "pedido")
+    
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    /*
+        se não tiver o CascadeType.ALL) não é possivel apagar
+        um determinado Pedido, por causa da restrição de integridade
+    */
     private List<ItemPedido> itens;
 
     
