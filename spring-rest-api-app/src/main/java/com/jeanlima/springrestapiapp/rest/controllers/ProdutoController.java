@@ -45,6 +45,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoRepository repository;
 
+    @Autowired
     private Patcher patcher;
 
     @PostMapping

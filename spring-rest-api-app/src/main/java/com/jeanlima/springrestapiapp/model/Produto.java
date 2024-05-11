@@ -2,6 +2,8 @@ package com.jeanlima.springrestapiapp.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +31,7 @@ public class Produto {
     private BigDecimal preco;
 
     @OneToOne(mappedBy = "produto")
+    @JsonIgnore
     private Estoque estoque;
 
     public Integer getId() {
@@ -94,6 +97,7 @@ public class Produto {
     public String toString() {
         return "Produto [id=" + id + ", descricao=" + descricao + ", preco=" + preco + "]";
     }
+
     public Estoque getEstoque() {
         return estoque;
     }
