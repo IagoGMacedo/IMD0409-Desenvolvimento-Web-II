@@ -105,12 +105,17 @@ public class CreditCardServiceImpl implements CreditCardService {
                     .orElseThrow(() -> new NotFoundException("user"));
             creditCard.setUser(user);
         }
+        creditCard.setCardHolderName(dto.getCardHolderName());
+        creditCard.setNumber(dto.getNumber());
+        creditCard.setValidity(dto.getValidity());
+        creditCard.setCvv(dto.getCvv());
         return creditCard;
     }
     private CreditCardDTO toDTO(CreditCard creditCard) {
         return CreditCardDTO.builder()
                 .id(creditCard.getId())
                 .idUser(creditCard.getUser().getId())
+                .lastNumbers(creditCard.getNumber().substring(creditCard.getNumber().length() - 4))
                 .build();
     }
     private List<CreditCardDTO> toDTOList(List<CreditCard> creditCards){

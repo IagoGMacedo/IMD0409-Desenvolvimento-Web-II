@@ -19,9 +19,11 @@ public class PurchaseDTO {
     private Integer idUser;
     private List<ProductItemDTO> productItems;
 
+    private PaymentDTO payment;
+
     // DECIDIR SE EU TIRO OU NÃO ESSES CARAS DAQUI
     private BigDecimal totalPrice;
-    private PaymentDTO payment;
+
     private Integer idAddress;
     private LocalDate date;
 

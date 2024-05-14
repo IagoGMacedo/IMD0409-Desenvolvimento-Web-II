@@ -9,20 +9,15 @@ import java.util.stream.Collectors;
 import com.macedo.Ecommerce.Utils.Patcher;
 import com.macedo.Ecommerce.exception.BusinessRuleException;
 import com.macedo.Ecommerce.exception.NotFoundException;
-import com.macedo.Ecommerce.repository.ProductItemRepository;
-import com.macedo.Ecommerce.repository.ProductRepository;
-import com.macedo.Ecommerce.repository.PurchaseRepository;
-import com.macedo.Ecommerce.repository.UserRepository;
+import com.macedo.Ecommerce.model.*;
+import com.macedo.Ecommerce.repository.*;
 
+import com.macedo.Ecommerce.rest.dto.PaymentDTO;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.macedo.Ecommerce.model.Product;
-import com.macedo.Ecommerce.model.ProductItem;
-import com.macedo.Ecommerce.model.Purchase;
-import com.macedo.Ecommerce.model.User;
 import com.macedo.Ecommerce.rest.dto.ProductDTO;
 import com.macedo.Ecommerce.rest.dto.ProductItemDTO;
 import com.macedo.Ecommerce.rest.dto.PurchaseDTO;
@@ -38,9 +33,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private final UserRepository userRepository;
 
+    private final AddressRepository addressRepository;
+
     private final ProductRepository productRepository;
 
     private final ProductItemRepository productItemRepository;
+
+    private final PaymentRepository paymentRepository;
+
+    private final CreditCardRepository creditCardRepository;
 
     private final Patcher patcher;
 
@@ -57,22 +58,34 @@ public class PurchaseServiceImpl implements PurchaseService {
         User user = userRepository
                 .findById(idUser)
                 .orElseThrow(() -> new NotFoundException("user"));
+
+
+        Integer idAddress = purchase.getIdAddress();
+        Address address = addressRepository
+                .findById(idAddress)
+                .orElseThrow(() -> new NotFoundException("address"));
+
+
         Purchase newPurchase = new Purchase();
         newPurchase.setDate(LocalDate.now());
         newPurchase.setUser(user);
+        newPurchase.setAddress(address);
 
         List<ProductItem> productItems = extractProductItems(newPurchase, purchase.getProductItems());
-        newPurchase.setTotalPrice(getTotalPrice(productItems));
+        BigDecimal totalPrice = getTotalPrice(productItems);
+        newPurchase.setTotalPrice(totalPrice);
+        Payment payment = extractPayment(purchase.getPayment(), totalPrice);
+
 
         //fazer a mesma coisa com endereço e address
-
+        newPurchase.setPayment(payment);
         purchaseRepository.save(newPurchase);
         productItemRepository.saveAll(productItems);
         newPurchase.setProductItems(productItems);
+
         return toDTO(newPurchase);
     }
 
-    
 
     @Override
     public void delete(Integer id) {
@@ -127,15 +140,29 @@ public class PurchaseServiceImpl implements PurchaseService {
         .productItems(toDTOProductItems(purchase.getProductItems()))
         .totalPrice(purchase.getTotalPrice())
         .date(purchase.getDate())
-        //.payment(null)
-        //.idAddress(null)
+        .payment(toPaymentDTO(purchase.getPayment()))
+        .idAddress(purchase.getAddress().getId())
         .build();
     }
 
     
 
     private List<PurchaseDTO> toDTOList(List<Purchase> purchases) {
-        return null;
+        if (CollectionUtils.isEmpty(purchases)) {
+            return Collections.emptyList();
+        }
+        return purchases.stream().map(
+                purchase -> PurchaseDTO
+                        .builder()
+                        .id(purchase.getId())
+                        .idUser(purchase.getUser().getId())
+                        .productItems(toDTOProductItems(purchase.getProductItems()))
+                        .totalPrice(purchase.getTotalPrice())
+                        .date(purchase.getDate())
+                        .payment(toPaymentDTO(purchase.getPayment()))
+                        .idAddress(purchase.getAddress().getId())
+                        .build()
+        ).collect(Collectors.toList());
     }
 
     private List<ProductItem> extractProductItems(Purchase newPurchase, List<ProductItemDTO> productItems) {
@@ -182,6 +209,34 @@ public class PurchaseServiceImpl implements PurchaseService {
             totalValue =  totalValue.add(productItem.getProduct().getPrice().multiply(new BigDecimal(productItem.getQuantity())));
         }
         return totalValue;
+    }
+
+    private Payment extractPayment(PaymentDTO dto, BigDecimal totalPrice){
+        Payment payment = new Payment();
+        payment.setPaymentMethod(dto.getPaymentMethod());
+        payment.setPrice(totalPrice);
+        if(payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO){
+            Integer idCreditCard = dto.getIdCreditCard();
+            CreditCard creditCard = creditCardRepository
+                    .findById(idCreditCard)
+                    .orElseThrow(() -> new NotFoundException("credit card"));
+            payment.setCreditCard(creditCard);
+            payment.setInstallments(payment.getInstallments());
+        }
+        paymentRepository.save(payment);
+        return payment;
+    }
+
+    private PaymentDTO toPaymentDTO(Payment payment){
+        return PaymentDTO
+                .builder()
+                .id(payment.getId())
+                .paymentMethod(payment.getPaymentMethod())
+                //.idPurchase(payment.getPurchase().getId())
+                //.idCreditCard(payment.getCreditCard().getId())
+                .installments(payment.getInstallments())
+                .price(payment.getPrice())
+                .build();
     }
 
 }
