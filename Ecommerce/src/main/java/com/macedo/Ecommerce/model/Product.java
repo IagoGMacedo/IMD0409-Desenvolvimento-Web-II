@@ -42,6 +42,6 @@ public class Product {
     private List<Category> categories;
 
     @Column
-    private int  stockQuantity;
+    private Integer stockQuantity;
 
 }

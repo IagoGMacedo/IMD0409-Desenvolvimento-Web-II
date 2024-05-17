@@ -12,5 +12,7 @@ public interface ProductService {
     public ProductDTO update(Integer id, ProductDTO Product);
     public List<ProductDTO> findAll(Product filtro);
     public ProductDTO patch(Integer id, ProductDTO ProductIncompletaDto);
+
+    public List<ProductDTO> findByCategory(Integer categoryId);
 }
 

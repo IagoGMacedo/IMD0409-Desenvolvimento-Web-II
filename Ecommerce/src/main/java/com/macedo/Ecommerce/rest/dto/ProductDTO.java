@@ -19,7 +19,6 @@ public class ProductDTO {
     private String description;
     private BigDecimal price;
     private List<Integer> categories;
-    private String categories_name;
     private Integer stockQuantity;
 
 }

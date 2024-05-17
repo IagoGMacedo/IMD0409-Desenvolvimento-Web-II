@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.macedo.Ecommerce.Utils.Patcher;
-import com.macedo.Ecommerce.model.Address;
-import com.macedo.Ecommerce.rest.dto.AddressDTO;
+import com.macedo.Ecommerce.rest.dto.ResponseCreditCardDTO;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import com.macedo.Ecommerce.model.CreditCard;
 import com.macedo.Ecommerce.model.User;
 import com.macedo.Ecommerce.repository.CreditCardRepository;
 import com.macedo.Ecommerce.repository.UserRepository;
-import com.macedo.Ecommerce.rest.dto.CreditCardDTO;
+import com.macedo.Ecommerce.rest.dto.RegisterCreditCardDTO;
 import com.macedo.Ecommerce.service.CreditCardService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 
 
     @Override
-    public CreditCardDTO findById(Integer id) {
+    public ResponseCreditCardDTO findById(Integer id) {
          CreditCard creditCard = creditCardRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("credit carrd"));
         return toDTO(creditCard);
@@ -41,7 +40,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 
 
     @Override
-    public CreditCardDTO save(CreditCardDTO creditCard) {
+    public ResponseCreditCardDTO save(RegisterCreditCardDTO creditCard) {
         Integer idUser = creditCard.getIdUser();
         User user = userRepository
             .findById(idUser)
@@ -63,7 +62,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCardDTO update(Integer id, CreditCardDTO creditCard) {
+    public ResponseCreditCardDTO update(Integer id, RegisterCreditCardDTO creditCard) {
         CreditCard existingCreditCard = creditCardRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("creditCard"));
@@ -74,7 +73,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public List<CreditCardDTO> findAll(CreditCard filtro) {
+    public List<ResponseCreditCardDTO> findAll(CreditCard filtro) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
@@ -86,7 +85,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCardDTO patch(Integer id, CreditCardDTO CreditCardIncompletaDto) {
+    public ResponseCreditCardDTO patch(Integer id, RegisterCreditCardDTO CreditCardIncompletaDto) {
         CreditCard existingCreditCard = creditCardRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("creditCard"));
 
@@ -96,7 +95,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         return toDTO(creditCardRepository.save(existingCreditCard));
     }
 
-    private CreditCard extractCreditCard(CreditCardDTO dto){
+    private CreditCard extractCreditCard(RegisterCreditCardDTO dto){
         CreditCard creditCard = new CreditCard();
         if (dto.getIdUser() != null) {
             Integer idUser = dto.getIdUser();
@@ -111,24 +110,22 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setCvv(dto.getCvv());
         return creditCard;
     }
-    private CreditCardDTO toDTO(CreditCard creditCard) {
-        return CreditCardDTO.builder()
+    private ResponseCreditCardDTO toDTO(CreditCard creditCard) {
+        return ResponseCreditCardDTO
+                .builder()
                 .id(creditCard.getId())
                 .idUser(creditCard.getUser().getId())
+                .cardHolderName(creditCard.getCardHolderName())
                 .lastNumbers(creditCard.getNumber().substring(creditCard.getNumber().length() - 4))
                 .build();
     }
-    private List<CreditCardDTO> toDTOList(List<CreditCard> creditCards){
+    private List<ResponseCreditCardDTO> toDTOList(List<CreditCard> creditCards){
         if (CollectionUtils.isEmpty(creditCards)) {
             return Collections.emptyList();
         }
-        return creditCards.stream().map(
-                address -> CreditCardDTO
-                        .builder()
-                        .id(address.getId())
-                        .idUser(address.getUser().getId())
-                        .build()
-        ).collect(Collectors.toList());
+        return creditCards.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
     
 }

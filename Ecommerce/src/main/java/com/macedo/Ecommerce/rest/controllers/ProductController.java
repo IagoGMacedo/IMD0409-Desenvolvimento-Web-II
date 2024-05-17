@@ -89,5 +89,10 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDTO>> find(Product filtro) {
         return new ResponseEntity<List<ProductDTO>>((productService.findAll(filtro)), HttpStatus.OK);
-    }   
+    }
+
+    @GetMapping("/category/{id}")
+    public ResponseEntity<List<ProductDTO>> findByCategory(@PathVariable Integer id) {
+        return new ResponseEntity<List<ProductDTO>>((productService.findByCategory(id)), HttpStatus.OK);
+    }
 }

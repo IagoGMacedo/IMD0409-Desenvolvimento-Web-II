@@ -2,6 +2,7 @@ package com.macedo.Ecommerce.rest.controllers;
 
 import java.util.List;
 
+import com.macedo.Ecommerce.rest.dto.PaymentResponses.ResponsePaymentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.macedo.Ecommerce.model.Payment;
-import com.macedo.Ecommerce.rest.dto.PaymentDTO;
+import com.macedo.Ecommerce.rest.dto.RegisterPaymentDTO;
 import com.macedo.Ecommerce.service.PaymentService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,8 +38,8 @@ public class PaymentController {
         @ApiResponse(responseCode = "404", description = "Não existe uma Payment com o ID específicado")
     })
     @GetMapping("{id}")
-    public ResponseEntity<PaymentDTO> getPaymentById(@PathVariable Integer id) {
-        return new ResponseEntity<PaymentDTO>((paymentService.findById(id)), HttpStatus.OK);
+    public ResponseEntity<ResponsePaymentDTO> getPaymentById(@PathVariable Integer id) {
+        return new ResponseEntity<ResponsePaymentDTO>((paymentService.findById(id)), HttpStatus.OK);
     }
 
     @Operation(description = "Adiciona uma nova Payment por DTO")
@@ -47,8 +48,8 @@ public class PaymentController {
         @ApiResponse(responseCode = "404", description = "O usuário atrelado à Payment não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<PaymentDTO> save(@RequestBody PaymentDTO Payment) {
-        return new ResponseEntity<PaymentDTO>((paymentService.save(Payment)), HttpStatus.CREATED);
+    public ResponseEntity<ResponsePaymentDTO> save(@RequestBody RegisterPaymentDTO Payment) {
+        return new ResponseEntity<ResponsePaymentDTO>((paymentService.save(Payment)), HttpStatus.CREATED);
     }
 
     @Operation(description = "Exclui uma Payment pelo ID")
@@ -68,8 +69,8 @@ public class PaymentController {
         @ApiResponse(responseCode = "404", description = "Não existe uma Payment com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<PaymentDTO> update(@PathVariable Integer id, @RequestBody PaymentDTO Payment) {
-        return new ResponseEntity<PaymentDTO>((paymentService.update(id, Payment)), HttpStatus.OK);
+    public ResponseEntity<ResponsePaymentDTO> update(@PathVariable Integer id, @RequestBody RegisterPaymentDTO Payment) {
+        return new ResponseEntity<ResponsePaymentDTO>((paymentService.update(id, Payment)), HttpStatus.OK);
     }
 
     @Operation(description = "Atualiza uma Payment com o método PATCH")
@@ -78,8 +79,8 @@ public class PaymentController {
         @ApiResponse(responseCode = "404", description = "Não existe uma Payment com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<PaymentDTO> patch(@PathVariable Integer id, @RequestBody PaymentDTO PaymentIncompletaDTO) {
-        return new ResponseEntity<PaymentDTO>((paymentService.patch(id, PaymentIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<ResponsePaymentDTO> patch(@PathVariable Integer id, @RequestBody RegisterPaymentDTO PaymentIncompletaDTO) {
+        return new ResponseEntity<ResponsePaymentDTO>((paymentService.patch(id, PaymentIncompletaDTO)), HttpStatus.OK);
     }
 
     @Operation(description = "Lista as Payments existentes a partir de filtro, se passado")
@@ -87,7 +88,7 @@ public class PaymentController {
         @ApiResponse(responseCode = "200", description = "Retorna a lista de Payments conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<PaymentDTO>> find(Payment filtro) {
-        return new ResponseEntity<List<PaymentDTO>>((paymentService.findAll(filtro)), HttpStatus.OK);
+    public ResponseEntity<List<ResponsePaymentDTO>> find(Payment filtro) {
+        return new ResponseEntity<List<ResponsePaymentDTO>>((paymentService.findAll(filtro)), HttpStatus.OK);
     }
 }

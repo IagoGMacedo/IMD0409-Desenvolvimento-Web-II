@@ -5,16 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
-public class ProductItemDTO {
-    private Integer idProduct;
-    private Integer quantity;
-    private BigDecimal subTotal;
+public class ResponseCreditCardDTO {
+    private Integer id;
+    private Integer idUser;
+    private String cardHolderName;
+    private String lastNumbers;
 
 }

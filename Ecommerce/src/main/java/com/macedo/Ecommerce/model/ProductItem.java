@@ -31,6 +31,9 @@ public class ProductItem {
     @Column
     private int quantity;
 
+    @Column
+    private BigDecimal subTotal;
+
     @ManyToOne
     @JoinColumn(name = "shoppingCart_id") //produto está no carrinho
     private ShoppingCart shoppingCart;

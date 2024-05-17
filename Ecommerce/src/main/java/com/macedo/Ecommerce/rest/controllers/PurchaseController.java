@@ -2,6 +2,7 @@ package com.macedo.Ecommerce.rest.controllers;
 
 import java.util.List;
 
+import com.macedo.Ecommerce.rest.dto.ResponsePurchaseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.macedo.Ecommerce.model.Purchase;
-import com.macedo.Ecommerce.rest.dto.PurchaseDTO;
+import com.macedo.Ecommerce.rest.dto.RegisterPurchaseDTO;
 import com.macedo.Ecommerce.service.PurchaseService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,8 +38,8 @@ public class PurchaseController {
         @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
     })
     @GetMapping("{id}")
-    public ResponseEntity<PurchaseDTO> getPurchaseById(@PathVariable Integer id) {
-        return new ResponseEntity<PurchaseDTO>((purchaseService.findById(id)), HttpStatus.OK);
+    public ResponseEntity<ResponsePurchaseDTO> getPurchaseById(@PathVariable Integer id) {
+        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.findById(id)), HttpStatus.OK);
     }
 
     @Operation(description = "Adiciona uma nova Purchase por DTO")
@@ -47,8 +48,8 @@ public class PurchaseController {
         @ApiResponse(responseCode = "404", description = "O usuário atrelado à Purchase não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<PurchaseDTO> save(@RequestBody PurchaseDTO Purchase) {
-        return new ResponseEntity<PurchaseDTO>((purchaseService.save(Purchase)), HttpStatus.CREATED);
+    public ResponseEntity<ResponsePurchaseDTO> save(@RequestBody RegisterPurchaseDTO Purchase) {
+        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.save(Purchase)), HttpStatus.CREATED);
     }
 
     @Operation(description = "Exclui uma Purchase pelo ID")
@@ -68,8 +69,8 @@ public class PurchaseController {
         @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<PurchaseDTO> update(@PathVariable Integer id, @RequestBody PurchaseDTO Purchase) {
-        return new ResponseEntity<PurchaseDTO>((purchaseService.update(id, Purchase)), HttpStatus.OK);
+    public ResponseEntity<ResponsePurchaseDTO> update(@PathVariable Integer id, @RequestBody RegisterPurchaseDTO Purchase) {
+        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.update(id, Purchase)), HttpStatus.OK);
     }
 
     @Operation(description = "Atualiza uma Purchase com o método PATCH")
@@ -78,8 +79,8 @@ public class PurchaseController {
         @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<PurchaseDTO> patch(@PathVariable Integer id, @RequestBody PurchaseDTO PurchaseIncompletaDTO) {
-        return new ResponseEntity<PurchaseDTO>((purchaseService.patch(id, PurchaseIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<ResponsePurchaseDTO> patch(@PathVariable Integer id, @RequestBody RegisterPurchaseDTO PurchaseIncompletaDTO) {
+        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.patch(id, PurchaseIncompletaDTO)), HttpStatus.OK);
     }
 
     @Operation(description = "Lista as Purchases existentes a partir de filtro, se passado")
@@ -87,7 +88,11 @@ public class PurchaseController {
         @ApiResponse(responseCode = "200", description = "Retorna a lista de Purchases conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<PurchaseDTO>> find(Purchase filtro) {
-        return new ResponseEntity<List<PurchaseDTO>>((purchaseService.findAll(filtro)), HttpStatus.OK);
+    public ResponseEntity<List<ResponsePurchaseDTO>> find(Purchase filtro) {
+        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.findAll(filtro)), HttpStatus.OK);
+    }
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ResponsePurchaseDTO>> findByUser(@PathVariable Integer id) {
+        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.findByUser(id)), HttpStatus.OK);
     }
 }

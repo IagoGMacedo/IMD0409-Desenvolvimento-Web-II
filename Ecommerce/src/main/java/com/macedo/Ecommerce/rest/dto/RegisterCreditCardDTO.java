@@ -1,6 +1,5 @@
 package com.macedo.Ecommerce.rest.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreditCardDTO {
-    private Integer id;
+public class RegisterCreditCardDTO {
     private Integer idUser;
     private String cardHolderName;
     private String validity;

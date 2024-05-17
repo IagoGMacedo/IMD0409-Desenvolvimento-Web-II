@@ -1,5 +1,6 @@
-package com.macedo.Ecommerce.rest.dto;
+package com.macedo.Ecommerce.rest.dto.PaymentResponses;
 
+import com.macedo.Ecommerce.model.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
-public class ProductItemDTO {
-    private Integer idProduct;
-    private Integer quantity;
-    private BigDecimal subTotal;
+public class ResponsePaymentDebitCardDTO {
+    private Integer idCreditCard;
 
 }

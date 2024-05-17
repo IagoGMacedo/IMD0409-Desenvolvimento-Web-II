@@ -1,5 +1,6 @@
 package com.macedo.Ecommerce.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Collections;
@@ -87,6 +88,11 @@ public class ProductServiceImpl implements ProductService {
         return toDTO(productRepository.save(existingProduct));
     }
 
+    @Override
+    public List<ProductDTO> findByCategory(Integer categoryId) {
+        return toDTOList(productRepository.findProductsByCategoriesId(categoryId));
+    }
+
     private Product extractProduct(ProductDTO dto){
         Product product = new Product();
         product.setName(dto.getName());
@@ -117,32 +123,24 @@ public class ProductServiceImpl implements ProductService {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stockQuantity(product.getStockQuantity())
-                .categories_name(extractCategories(product.getCategories()))
+                .categories(extractCategories(product.getCategories()))
                 .build();
     }
-    private List<ProductDTO> toDTOList(List<Product> products){ 
+    private List<ProductDTO> toDTOList(List<Product> products){
         if (CollectionUtils.isEmpty(products)) {
             return Collections.emptyList();
         }
-        return products.stream().map(
-                product -> ProductDTO
-                        .builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .description(product.getDescription())
-                        .price(product.getPrice())
-                        .stockQuantity(product.getStockQuantity())
-                        .categories_name(extractCategories(product.getCategories()))
-                        .build()
-        ).collect(Collectors.toList());
+        return products.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
-    private String extractCategories(List<Category> categories){
-        String strCategories = "";
+    private List<Integer> extractCategories(List<Category> categories){
+        List<Integer> integers = new ArrayList<Integer>();
         for (Category category : categories){
-            strCategories+= category.getName()+",";
+            integers.add(category.getId());
         }
-        return strCategories.substring(0, strCategories.length() - 1);
+        return integers;
     }
-    
+
 }

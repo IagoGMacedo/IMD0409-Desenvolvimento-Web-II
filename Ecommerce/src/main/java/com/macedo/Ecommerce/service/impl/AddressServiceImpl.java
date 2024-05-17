@@ -134,20 +134,9 @@ public class AddressServiceImpl implements AddressService {
         if (CollectionUtils.isEmpty(addresses)) {
             return Collections.emptyList();
         }
-        return addresses.stream().map(
-                address -> AddressDTO
-                        .builder()
-                        .id(address.getId())
-                        .idUser(address.getUser().getId())
-                        .cep(address.getCep())
-                        .completeAddress(address.getCompleteAddress())
-                        .number(address.getNumber())
-                        .complement(address.getComplement())
-                        .district(address.getDistrict())
-                        .city(address.getCity())
-                        .state(address.getState())
-                        .build()
-        ).collect(Collectors.toList());
+        return addresses.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
     
 }

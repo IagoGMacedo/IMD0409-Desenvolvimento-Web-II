@@ -1,6 +1,6 @@
 package com.macedo.Ecommerce.rest.dto;
 
-import com.macedo.Ecommerce.model.Payment;
+import com.macedo.Ecommerce.rest.dto.PaymentResponses.ResponsePaymentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,17 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PurchaseDTO {
-    private Integer id;
+public class RegisterPurchaseDTO {
     private Integer idUser;
     private List<ProductItemDTO> productItems;
-
-    private PaymentDTO payment;
-
-    // DECIDIR SE EU TIRO OU NÃO ESSES CARAS DAQUI
-    private BigDecimal totalPrice;
-
+    private RegisterPaymentDTO payment;
     private Integer idAddress;
-    private LocalDate date;
-
 }

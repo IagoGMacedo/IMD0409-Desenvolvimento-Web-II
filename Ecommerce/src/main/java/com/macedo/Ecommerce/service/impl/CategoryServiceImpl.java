@@ -98,13 +98,9 @@ public class CategoryServiceImpl implements CategoryService {
         if (CollectionUtils.isEmpty(categories)) {
             return Collections.emptyList();
         }
-        return categories.stream().map(
-                category -> CategoryDTO
-                        .builder()
-                        .id(category.getId())
-                        .name(category.getName())
-                        .build()
-        ).collect(Collectors.toList());
+        return categories.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
     
 }
