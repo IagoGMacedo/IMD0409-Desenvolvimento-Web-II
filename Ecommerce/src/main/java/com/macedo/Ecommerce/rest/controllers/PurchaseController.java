@@ -32,67 +32,72 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
+    @Operation(description = "Lista as Purchases existentes a partir de filtro, se passado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna a lista de Purchases conforme filtro"),
+    })
+    @GetMapping
+    public ResponseEntity<List<ResponsePurchaseDTO>> getPurchases(Purchase filtro) {
+        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.getPurchases(filtro)), HttpStatus.OK);
+    }
+
     @Operation(description = "Busca Purchase pelo ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a Purchase com o ID específicado"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Purchase com o ID específicado"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
     })
     @GetMapping("{id}")
     public ResponseEntity<ResponsePurchaseDTO> getPurchaseById(@PathVariable Integer id) {
-        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.findById(id)), HttpStatus.OK);
+        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.getPurchaseById(id)), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ResponsePurchaseDTO>> getPurchasesByUserId(@PathVariable Integer id) {
+        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.getPurchasesByUserId(id)), HttpStatus.OK);
     }
 
     @Operation(description = "Adiciona uma nova Purchase por DTO")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Retorna a Purchase criada"),
-        @ApiResponse(responseCode = "404", description = "O usuário atrelado à Purchase não foi encontrado")
+            @ApiResponse(responseCode = "201", description = "Retorna a Purchase criada"),
+            @ApiResponse(responseCode = "404", description = "O usuário atrelado à Purchase não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<ResponsePurchaseDTO> save(@RequestBody RegisterPurchaseDTO Purchase) {
-        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.save(Purchase)), HttpStatus.CREATED);
-    }
-
-    @Operation(description = "Exclui uma Purchase pelo ID")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "A Purchase foi deletada"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
-    })
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        purchaseService.delete(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ResponsePurchaseDTO> createPurchase(@RequestBody RegisterPurchaseDTO Purchase) {
+        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.createPurchase(Purchase)), HttpStatus.CREATED);
     }
 
     @Operation(description = "Atualiza uma Purchase com o método PUT")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a Purchase atualizada"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Purchase atualizada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<ResponsePurchaseDTO> update(@PathVariable Integer id, @RequestBody RegisterPurchaseDTO Purchase) {
-        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.update(id, Purchase)), HttpStatus.OK);
+    public ResponseEntity<ResponsePurchaseDTO> updatePurchase(@PathVariable Integer id,
+            @RequestBody RegisterPurchaseDTO Purchase) {
+        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.updatePurchase(id, Purchase)), HttpStatus.OK);
     }
 
     @Operation(description = "Atualiza uma Purchase com o método PATCH")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a Purchase atualizada"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Purchase atualizada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<ResponsePurchaseDTO> patch(@PathVariable Integer id, @RequestBody RegisterPurchaseDTO PurchaseIncompletaDTO) {
-        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.patch(id, PurchaseIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<ResponsePurchaseDTO> patchPurchase(@PathVariable Integer id,
+            @RequestBody RegisterPurchaseDTO PurchaseIncompletaDTO) {
+        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.patchPurchase(id, PurchaseIncompletaDTO)),
+                HttpStatus.OK);
     }
 
-    @Operation(description = "Lista as Purchases existentes a partir de filtro, se passado")
+    @Operation(description = "Exclui uma Purchase pelo ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a lista de Purchases conforme filtro"),
+            @ApiResponse(responseCode = "200", description = "A Purchase foi deletada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
     })
-    @GetMapping
-    public ResponseEntity<List<ResponsePurchaseDTO>> find(Purchase filtro) {
-        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.findAll(filtro)), HttpStatus.OK);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deletePurchase(@PathVariable Integer id) {
+        purchaseService.deletePurchase(id);
+        return ResponseEntity.ok().build();
     }
-    @GetMapping("/user/{id}")
-    public ResponseEntity<List<ResponsePurchaseDTO>> findByUser(@PathVariable Integer id) {
-        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.findByUser(id)), HttpStatus.OK);
-    }
+
 }

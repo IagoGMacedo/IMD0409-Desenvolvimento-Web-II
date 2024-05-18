@@ -31,68 +31,69 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Operation(description = "Lista as Products existentes a partir de filtro, se passado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna a lista de Products conforme filtro"),
+    })
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> getProducts(Product filtro) {
+        return new ResponseEntity<List<ProductDTO>>((productService.getProducts(filtro)), HttpStatus.OK);
+    }
+
     @Operation(description = "Busca Product pelo ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a Product com o ID específicado"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Product com o ID específicado"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
     })
     @GetMapping("{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Integer id) {
-        return new ResponseEntity<ProductDTO>((productService.findById(id)), HttpStatus.OK);
+        return new ResponseEntity<ProductDTO>((productService.getProductById(id)), HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{id}")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategoryId(@PathVariable Integer id) {
+        return new ResponseEntity<List<ProductDTO>>((productService.getProductsByCategoryId(id)), HttpStatus.OK);
     }
 
     @Operation(description = "Adiciona uma nova Product por DTO")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Retorna a Product criada"),
-        @ApiResponse(responseCode = "404", description = "O usuário atrelado à Product não foi encontrado")
+            @ApiResponse(responseCode = "201", description = "Retorna a Product criada"),
+            @ApiResponse(responseCode = "404", description = "O usuário atrelado à Product não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO Product) {
-        return new ResponseEntity<ProductDTO>((productService.save(Product)), HttpStatus.CREATED);
-    }
-
-    @Operation(description = "Exclui uma Product pelo ID")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "A Product foi deletada"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
-    })
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        productService.delete(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO Product) {
+        return new ResponseEntity<ProductDTO>((productService.createProduct(Product)), HttpStatus.CREATED);
     }
 
     @Operation(description = "Atualiza uma Product com o método PUT")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a Product atualizada"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Product atualizada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Integer id, @RequestBody ProductDTO Product) {
-        return new ResponseEntity<ProductDTO>((productService.update(id, Product)), HttpStatus.OK);
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductDTO Product) {
+        return new ResponseEntity<ProductDTO>((productService.updateProduct(id, Product)), HttpStatus.OK);
     }
 
     @Operation(description = "Atualiza uma Product com o método PATCH")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a Product atualizada"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Product atualizada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<ProductDTO> patch(@PathVariable Integer id, @RequestBody ProductDTO ProductIncompletaDTO) {
-        return new ResponseEntity<ProductDTO>((productService.patch(id, ProductIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<ProductDTO> patchProduct(@PathVariable Integer id, @RequestBody ProductDTO ProductIncompletaDTO) {
+        return new ResponseEntity<ProductDTO>((productService.patchProduct(id, ProductIncompletaDTO)), HttpStatus.OK);
     }
 
-    @Operation(description = "Lista as Products existentes a partir de filtro, se passado")
+    @Operation(description = "Exclui uma Product pelo ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a lista de Products conforme filtro"),
+            @ApiResponse(responseCode = "200", description = "A Product foi deletada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
     })
-    @GetMapping
-    public ResponseEntity<List<ProductDTO>> find(Product filtro) {
-        return new ResponseEntity<List<ProductDTO>>((productService.findAll(filtro)), HttpStatus.OK);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/category/{id}")
-    public ResponseEntity<List<ProductDTO>> findByCategory(@PathVariable Integer id) {
-        return new ResponseEntity<List<ProductDTO>>((productService.findByCategory(id)), HttpStatus.OK);
-    }
 }

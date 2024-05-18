@@ -29,50 +29,8 @@ public class CreditCardServiceImpl implements CreditCardService {
     private final UserRepository userRepository;
     private final Patcher patcher;
 
-
     @Override
-    public ResponseCreditCardDTO findById(Integer id) {
-        CreditCard creditCard = creditCardRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("credit carrd"));
-        return toDTO(creditCard);
-    }
-
-
-    @Override
-    public ResponseCreditCardDTO save(RegisterCreditCardDTO creditCard) {
-        Integer idUser = creditCard.getIdUser();
-        User user = userRepository
-                .findById(idUser)
-                .orElseThrow(() -> new NotFoundException("user"));
-
-        CreditCard newCreditCard = new CreditCard();
-        newCreditCard = extractCreditCard(creditCard);
-        newCreditCard.setUser(user);
-        return toDTO(creditCardRepository.save(newCreditCard));
-    }
-
-
-    @Override
-    public void delete(Integer id) {
-        CreditCard creditCard = creditCardRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("creditCard"));
-        creditCardRepository.delete(creditCard);
-    }
-
-    @Override
-    public ResponseCreditCardDTO update(Integer id, RegisterCreditCardDTO creditCard) {
-        CreditCard existingCreditCard = creditCardRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("creditCard"));
-
-        CreditCard newCreditCard = extractCreditCard(creditCard);
-        newCreditCard.setId(existingCreditCard.getId());
-        return toDTO(creditCardRepository.save(newCreditCard));
-    }
-
-    @Override
-    public List<ResponseCreditCardDTO> findAll(CreditCard filtro) {
+    public List<ResponseCreditCardDTO> getCreditCards(CreditCard filtro) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
@@ -84,7 +42,38 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public ResponseCreditCardDTO patch(Integer id, RegisterCreditCardDTO CreditCardIncompletaDto) {
+    public ResponseCreditCardDTO getCreditCardById(Integer id) {
+        CreditCard creditCard = creditCardRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("credit carrd"));
+        return toDTO(creditCard);
+    }
+
+    @Override
+    public ResponseCreditCardDTO createCreditCard(RegisterCreditCardDTO creditCard) {
+        Integer idUser = creditCard.getIdUser();
+        User user = userRepository
+                .findById(idUser)
+                .orElseThrow(() -> new NotFoundException("user"));
+
+        CreditCard newCreditCard = new CreditCard();
+        newCreditCard = extractCreditCard(creditCard);
+        newCreditCard.setUser(user);
+        return toDTO(creditCardRepository.save(newCreditCard));
+    }
+
+    @Override
+    public ResponseCreditCardDTO updateCreditCard(Integer id, RegisterCreditCardDTO creditCard) {
+        CreditCard existingCreditCard = creditCardRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("creditCard"));
+
+        CreditCard newCreditCard = extractCreditCard(creditCard);
+        newCreditCard.setId(existingCreditCard.getId());
+        return toDTO(creditCardRepository.save(newCreditCard));
+    }
+
+    @Override
+    public ResponseCreditCardDTO patchCreditCard(Integer id, RegisterCreditCardDTO CreditCardIncompletaDto) {
         CreditCard existingCreditCard = creditCardRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("creditCard"));
 
@@ -92,6 +81,14 @@ public class CreditCardServiceImpl implements CreditCardService {
 
         patcher.copiarPropriedadesNaoNulas(incompleteCreditCard, existingCreditCard);
         return toDTO(creditCardRepository.save(existingCreditCard));
+    }
+
+    @Override
+    public void deleteCreditCard(Integer id) {
+        CreditCard creditCard = creditCardRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("creditCard"));
+        creditCardRepository.delete(creditCard);
     }
 
     private CreditCard extractCreditCard(RegisterCreditCardDTO dto) {

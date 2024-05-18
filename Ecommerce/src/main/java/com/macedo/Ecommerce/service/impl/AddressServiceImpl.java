@@ -30,14 +30,24 @@ public class AddressServiceImpl implements AddressService {
 
     private final Patcher patcher;
 
+    @Override
+    public List<AddressDTO> getAddresses(Address filtro) {
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher(
+                        ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example example = Example.of(filtro, matcher);
+        return toDTOList(addressRepository.findAll(example));
+    }
 
     @Override
-    public AddressDTO findById(Integer id) {
+    public AddressDTO getAddressById(Integer id) {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("address"));
         return toDTO(address);
     }
-
 
     @Override
     public AddressDTO createAddress(AddressDTO address) {
@@ -52,15 +62,6 @@ public class AddressServiceImpl implements AddressService {
         return toDTO(addressRepository.save(newAddress));
     }
 
-
-    @Override
-    public void deleteAddress(Integer id) {
-        Address address = addressRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("address"));
-        addressRepository.delete(address);
-    }
-
     @Override
     public AddressDTO updateAddress(Integer id, AddressDTO Address) {
         Address existingAddress = addressRepository
@@ -70,18 +71,6 @@ public class AddressServiceImpl implements AddressService {
         Address newAddress = extractAddress(Address);
         newAddress.setId(existingAddress.getId());
         return toDTO(addressRepository.save(newAddress));
-    }
-
-    @Override
-    public List<AddressDTO> getAddresses(Address filtro) {
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher(
-                        ExampleMatcher.StringMatcher.CONTAINING);
-
-        Example example = Example.of(filtro, matcher);
-        return toDTOList(addressRepository.findAll(example));
     }
 
     @Override
@@ -95,6 +84,13 @@ public class AddressServiceImpl implements AddressService {
         return toDTO(addressRepository.save(existingAddress));
     }
 
+    @Override
+    public void deleteAddress(Integer id) {
+        Address address = addressRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("address"));
+        addressRepository.delete(address);
+    }
 
     private Address extractAddress(AddressDTO dto) {
         Address address = new Address();

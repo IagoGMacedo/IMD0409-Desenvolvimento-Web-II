@@ -30,14 +30,26 @@ public class UserServiceImpl implements UserService {
     private final Patcher patcher;
 
     @Override
-    public UserDTO findById(Integer id) {
+    public List<UserDTO> getUsers(User filtro) {
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher(
+                        ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example example = Example.of(filtro, matcher);
+        return toDTOList(userRepository.findAll(example));
+    }
+
+    @Override
+    public UserDTO getUserById(Integer id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("user"));
         return toDTO(user);
     }
 
     @Override
-    public UserDTO save(UserDTO User) {
+    public UserDTO createUser(UserDTO User) {
         User newUser = new User();
         newUser = extractUser(User);
 
@@ -50,17 +62,8 @@ public class UserServiceImpl implements UserService {
         return toDTO(newUser);
     }
 
-
     @Override
-    public void delete(Integer id) {
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("user"));
-        userRepository.delete(user);
-    }
-
-    @Override
-    public UserDTO update(Integer id, UserDTO User) {
+    public UserDTO updateUser(Integer id, UserDTO User) {
         User existingUser = userRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("user"));
@@ -71,19 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findAll(User filtro) {
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher(
-                        ExampleMatcher.StringMatcher.CONTAINING);
-
-        Example example = Example.of(filtro, matcher);
-        return toDTOList(userRepository.findAll(example));
-    }
-
-    @Override
-    public UserDTO patch(Integer id, UserDTO UserIncompletaDto) {
+    public UserDTO patchUser(Integer id, UserDTO UserIncompletaDto) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("user"));
 
@@ -91,6 +82,14 @@ public class UserServiceImpl implements UserService {
 
         patcher.copiarPropriedadesNaoNulas(incompleteUser, existingUser);
         return toDTO(userRepository.save(existingUser));
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
+        User user = userRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("user"));
+        userRepository.delete(user);
     }
 
     private User extractUser(UserDTO dto) {
@@ -115,13 +114,13 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
         return users.stream().map(
-                        user -> UserDTO
-                                .builder()
-                                .id(user.getId())
-                                .name(user.getName())
-                                .email(user.getEmail())
-                                .role(user.getRole())
-                                .build())
+                user -> UserDTO
+                        .builder()
+                        .id(user.getId())
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .role(user.getRole())
+                        .build())
                 .collect(Collectors.toList());
     }
 

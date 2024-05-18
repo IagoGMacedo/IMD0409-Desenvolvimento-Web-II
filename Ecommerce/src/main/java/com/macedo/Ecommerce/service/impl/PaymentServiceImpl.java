@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.macedo.Ecommerce.Utils.Patcher;
 import com.macedo.Ecommerce.exception.NotFoundException;
 import com.macedo.Ecommerce.model.CreditCard;
 import com.macedo.Ecommerce.model.PaymentMethod;
@@ -36,46 +35,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PurchaseRepository purchaseRepository;
 
-    private final Patcher patcher;
-
 
     @Override
-    public ResponsePaymentDTO findById(Integer id) {
-        Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("payment"));
-        return toDTO(payment);
-    }
-
-    @Override
-    public ResponsePaymentDTO save(RegisterPaymentDTO Payment) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
-
-        //cadastrar pagamento
-        //alterar informações de purchase, salvar
-    }
-
-    @Override
-    public void delete(Integer id) {
-        Payment payment = paymentRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("payment"));
-        paymentRepository.delete(payment);
-    }
-
-    @Override
-    public ResponsePaymentDTO update(Integer id, RegisterPaymentDTO Payment) {
-        Payment existingPayment = paymentRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("payment"));
-
-        Payment newPayment = extractPayment(Payment);
-        newPayment.setId(existingPayment.getId());
-        return toDTO(paymentRepository.save(newPayment));
-    }
-
-    @Override
-    public List<ResponsePaymentDTO> findAll(Payment filtro) {
+    public List<ResponsePaymentDTO> getPayments(Payment filtro) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
@@ -87,14 +49,18 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public ResponsePaymentDTO patch(Integer id, RegisterPaymentDTO PaymentIncompletaDto) {
-        Payment existingPayment = paymentRepository.findById(id)
+    public ResponsePaymentDTO getPaymentById(Integer id) {
+        Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("payment"));
+        return toDTO(payment);
+    }
 
-        Payment incompletePayment = extractPayment(PaymentIncompletaDto);
+    @Override
+    public List<ResponsePaymentDTO> getPaymentsByUserId(Integer userId) {
+        List<Payment> list = paymentRepository.findPaymentsByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("user"));
 
-        patcher.copiarPropriedadesNaoNulas(incompletePayment, existingPayment);
-        return toDTO(paymentRepository.save(existingPayment));
+        return toDTOList(list);
     }
 
     private Payment extractPayment(RegisterPaymentDTO dto) {
@@ -158,5 +124,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .idCreditCard(payment.getCreditCard().getId())
                 .build();
     }
+
+   
 
 }

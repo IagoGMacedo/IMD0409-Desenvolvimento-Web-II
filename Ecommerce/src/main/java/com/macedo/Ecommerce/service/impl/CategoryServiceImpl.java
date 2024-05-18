@@ -26,40 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final Patcher patcher;
 
     @Override
-    public CategoryDTO findById(Integer id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("category"));
-        return toDTO(category);
-    }
-
-    @Override
-    public CategoryDTO save(CategoryDTO category) {
-        Category newCategory = new Category();
-        newCategory = extractCategory(category);
-        return toDTO(categoryRepository.save(newCategory));
-    }
-
-    @Override
-    public void delete(Integer id) {
-        Category category = categoryRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("category"));
-        categoryRepository.delete(category);
-    }
-
-    @Override
-    public CategoryDTO update(Integer id, CategoryDTO category) {
-        Category existingCategory = categoryRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("category"));
-
-        Category newCategory = extractCategory(category);
-        newCategory.setId(existingCategory.getId());
-        return toDTO(categoryRepository.save(newCategory));
-    }
-
-    @Override
-    public List<CategoryDTO> findAll(Category filtro) {
+    public List<CategoryDTO> getCategories(Category filtro) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
@@ -71,7 +38,32 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO patch(Integer id, CategoryDTO categoryIncompletaDto) {
+    public CategoryDTO getCategoryById(Integer id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("category"));
+        return toDTO(category);
+    }
+
+    @Override
+    public CategoryDTO createCategory(CategoryDTO category) {
+        Category newCategory = new Category();
+        newCategory = extractCategory(category);
+        return toDTO(categoryRepository.save(newCategory));
+    }
+
+    @Override
+    public CategoryDTO updateCategory(Integer id, CategoryDTO category) {
+        Category existingCategory = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("category"));
+
+        Category newCategory = extractCategory(category);
+        newCategory.setId(existingCategory.getId());
+        return toDTO(categoryRepository.save(newCategory));
+    }
+
+    @Override
+    public CategoryDTO patchCategory(Integer id, CategoryDTO categoryIncompletaDto) {
         Category existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("category"));
 
@@ -79,6 +71,14 @@ public class CategoryServiceImpl implements CategoryService {
 
         patcher.copiarPropriedadesNaoNulas(incompleteCategory, existingCategory);
         return toDTO(categoryRepository.save(existingCategory));
+    }
+
+    @Override
+    public void deleteCategory(Integer id) {
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("category"));
+        categoryRepository.delete(category);
     }
 
     private Category extractCategory(CategoryDTO dto) {

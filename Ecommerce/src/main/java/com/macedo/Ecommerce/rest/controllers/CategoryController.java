@@ -31,64 +31,64 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Operation(description = "Lista as Categorys existentes a partir de filtro, se passado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna a lista de Categorys conforme filtro"),
+    })
+    @GetMapping
+    public ResponseEntity<List<CategoryDTO>> getCategories(Category filtro) {
+        return new ResponseEntity<List<CategoryDTO>>((categoryService.getCategories(filtro)), HttpStatus.OK);
+    }
+
     @Operation(description = "Busca Category pelo ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a Category com o ID específicado"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Category com o ID específicado"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
     })
     @GetMapping("{id}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Integer id) {
-        return new ResponseEntity<CategoryDTO>((categoryService.findById(id)), HttpStatus.OK);
+        return new ResponseEntity<CategoryDTO>((categoryService.getCategoryById(id)), HttpStatus.OK);
     }
 
     @Operation(description = "Adiciona uma nova Category por DTO")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Retorna a Category criada"),
-        @ApiResponse(responseCode = "404", description = "O usuário atrelado à Category não foi encontrado")
+            @ApiResponse(responseCode = "201", description = "Retorna a Category criada"),
+            @ApiResponse(responseCode = "404", description = "O usuário atrelado à Category não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<CategoryDTO> save(@RequestBody CategoryDTO Category) {
-        return new ResponseEntity<CategoryDTO>((categoryService.save(Category)), HttpStatus.CREATED);
-    }
-
-    @Operation(description = "Exclui uma Category pelo ID")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "A Category foi deletada"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
-    })
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        categoryService.delete(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO Category) {
+        return new ResponseEntity<CategoryDTO>((categoryService.createCategory(Category)), HttpStatus.CREATED);
     }
 
     @Operation(description = "Atualiza uma Category com o método PUT")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a Category atualizada"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Category atualizada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<CategoryDTO> update(@PathVariable Integer id, @RequestBody CategoryDTO Category) {
-        return new ResponseEntity<CategoryDTO>((categoryService.update(id, Category)), HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer id, @RequestBody CategoryDTO Category) {
+        return new ResponseEntity<CategoryDTO>((categoryService.updateCategory(id, Category)), HttpStatus.OK);
     }
 
     @Operation(description = "Atualiza uma Category com o método PATCH")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a Category atualizada"),
-        @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Category atualizada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<CategoryDTO> patch(@PathVariable Integer id, @RequestBody CategoryDTO CategoryIncompletaDTO) {
-        return new ResponseEntity<CategoryDTO>((categoryService.patch(id, CategoryIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> patchCategory(@PathVariable Integer id, @RequestBody CategoryDTO CategoryIncompletaDTO) {
+        return new ResponseEntity<CategoryDTO>((categoryService.patchCategory(id, CategoryIncompletaDTO)), HttpStatus.OK);
     }
 
-    @Operation(description = "Lista as Categorys existentes a partir de filtro, se passado")
+    @Operation(description = "Exclui uma Category pelo ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Retorna a lista de Categorys conforme filtro"),
+            @ApiResponse(responseCode = "200", description = "A Category foi deletada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
     })
-    @GetMapping
-    public ResponseEntity<List<CategoryDTO>> find(Category filtro) {
-        return new ResponseEntity<List<CategoryDTO>>((categoryService.findAll(filtro)), HttpStatus.OK);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Integer id) {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.ok().build();
     }
-    
+
 }

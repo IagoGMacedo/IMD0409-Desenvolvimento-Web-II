@@ -32,7 +32,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final Patcher patcher;
 
     @Override
-    public ShoppingCartDTO findById(Integer id) {
+    public List<ShoppingCartDTO> getShoppingCarts(ShoppingCart filtro) {
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher(
+                        ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example example = Example.of(filtro, matcher);
+        return toDTOList(shoppingCartRepository.findAll(example));
+    }
+
+    @Override
+    public ShoppingCartDTO getShoppingCartById(Integer id) {
         ShoppingCart shoppingCart = shoppingCartRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Shopping Cart"));
         return toDTO(shoppingCart);
@@ -43,18 +55,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = shoppingCartRepository.findShoppingCartByUserId(userId)
                 .orElseThrow(() -> new NotFoundException("Shopping Cart"));
         return toDTO(shoppingCart);
-    }
-
-    @Override
-    public List<ShoppingCartDTO> findAll(ShoppingCart filtro) {
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher(
-                        ExampleMatcher.StringMatcher.CONTAINING);
-
-        Example example = Example.of(filtro, matcher);
-        return toDTOList(shoppingCartRepository.findAll(example));
     }
 
     @Override
@@ -112,6 +112,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return null;
     }
 
+    private ProductItem extractProductItem(ShoppingCart shoppingCart, ProductItemDTO dto) {
+        Integer idProduct = dto.getIdProduct();
+        Product product = productRepository
+                .findById(idProduct)
+                .orElseThrow(() -> new NotFoundException("product"));
+
+        ProductItem productItem = new ProductItem();
+        productItem.setQuantity(dto.getQuantity());
+        productItem.setShoppingCart(shoppingCart);
+        productItem.setProduct(product);
+        productItem.setSubTotal(product.getPrice().multiply(new BigDecimal(dto.getQuantity())));
+        return productItem;
+    }
+
     private ShoppingCartDTO toDTO(ShoppingCart shoppingCart) {
         return ShoppingCartDTO.builder()
                 .id(shoppingCart.getId())
@@ -130,29 +144,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .collect(Collectors.toList());
     }
 
-    private ProductItem extractProductItem(ShoppingCart shoppingCart, ProductItemDTO dto) {
-        Integer idProduct = dto.getIdProduct();
-        Product product = productRepository
-                .findById(idProduct)
-                .orElseThrow(() -> new NotFoundException("product"));
-
-        ProductItem productItem = new ProductItem();
-        productItem.setQuantity(dto.getQuantity());
-        productItem.setShoppingCart(shoppingCart);
-        productItem.setProduct(product);
-        productItem.setSubTotal(product.getPrice().multiply(new BigDecimal(dto.getQuantity())));
-        return productItem;
-    }
-
-    private BigDecimal getTotalPrice(List<ProductItem> productItems) {
-        BigDecimal totalValue = BigDecimal.ZERO;
-        for (ProductItem productItem : productItems) {
-            totalValue = totalValue
-                    .add(productItem.getProduct().getPrice().multiply(new BigDecimal(productItem.getQuantity())));
-        }
-        return totalValue;
-    }
-
     private List<ProductItemDTO> toDTOProductItems(List<ProductItem> productItems) {
         if (CollectionUtils.isEmpty(productItems)) {
             return Collections.emptyList();
@@ -165,5 +156,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                         .subTotal(item.getSubTotal())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    private BigDecimal getTotalPrice(List<ProductItem> productItems) {
+        BigDecimal totalValue = BigDecimal.ZERO;
+        for (ProductItem productItem : productItems) {
+            totalValue = totalValue
+                    .add(productItem.getProduct().getPrice().multiply(new BigDecimal(productItem.getQuantity())));
+        }
+        return totalValue;
     }
 }

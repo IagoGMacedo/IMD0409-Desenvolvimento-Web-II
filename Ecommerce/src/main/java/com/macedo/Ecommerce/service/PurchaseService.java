@@ -7,18 +7,18 @@ import com.macedo.Ecommerce.rest.dto.RegisterPurchaseDTO;
 import com.macedo.Ecommerce.rest.dto.ResponsePurchaseDTO;
 
 public interface PurchaseService {
-    public ResponsePurchaseDTO findById(Integer id);
+    public List<ResponsePurchaseDTO> getPurchases(Purchase filtro);
 
-    public ResponsePurchaseDTO save(RegisterPurchaseDTO Purchase);
+    public ResponsePurchaseDTO getPurchaseById(Integer id);
 
-    public void delete(Integer id);
+    public List<ResponsePurchaseDTO> getPurchasesByUserId(Integer userId);
 
-    public ResponsePurchaseDTO update(Integer id, RegisterPurchaseDTO Purchase);
+    public ResponsePurchaseDTO createPurchase(RegisterPurchaseDTO Purchase);
 
-    public List<ResponsePurchaseDTO> findAll(Purchase filtro);
+    public ResponsePurchaseDTO updatePurchase(Integer id, RegisterPurchaseDTO Purchase);
 
-    public ResponsePurchaseDTO patch(Integer id, RegisterPurchaseDTO PurchaseIncompletaDto);
+    public ResponsePurchaseDTO patchPurchase(Integer id, RegisterPurchaseDTO PurchaseIncompletaDto);
 
-    public List<ResponsePurchaseDTO> findByUser(Integer userId);
+    public void deletePurchase(Integer id);
+
 }
-

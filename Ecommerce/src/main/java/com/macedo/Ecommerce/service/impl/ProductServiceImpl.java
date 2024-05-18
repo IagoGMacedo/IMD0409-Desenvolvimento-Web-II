@@ -33,41 +33,7 @@ public class ProductServiceImpl implements ProductService {
     private final Patcher patcher;
 
     @Override
-    public ProductDTO findById(Integer id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("product"));
-        return toDTO(product);
-    }
-
-    @Override
-    public ProductDTO save(ProductDTO Product) {
-        Product newProduct = new Product();
-        newProduct = extractProduct(Product);
-        return toDTO(productRepository.save(newProduct));
-    }
-
-
-    @Override
-    public void delete(Integer id) {
-        Product product = productRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("product"));
-        productRepository.delete(product);
-    }
-
-    @Override
-    public ProductDTO update(Integer id, ProductDTO Product) {
-        Product existingProduct = productRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("product"));
-
-        Product newProduct = extractProduct(Product);
-        newProduct.setId(existingProduct.getId());
-        return toDTO(productRepository.save(newProduct));
-    }
-
-    @Override
-    public List<ProductDTO> findAll(Product filtro) {
+    public List<ProductDTO> getProducts(Product filtro) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
@@ -79,7 +45,40 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO patch(Integer id, ProductDTO ProductIncompletaDto) {
+    public ProductDTO getProductById(Integer id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("product"));
+        return toDTO(product);
+    }
+
+    @Override
+    public List<ProductDTO> getProductsByCategoryId(Integer categoryId) {
+        List<Product> list = productRepository.findProductsByCategoriesId(categoryId)
+                .orElseThrow(() -> new NotFoundException("category"));
+
+        return toDTOList(list);
+    }
+
+    @Override
+    public ProductDTO createProduct(ProductDTO Product) {
+        Product newProduct = new Product();
+        newProduct = extractProduct(Product);
+        return toDTO(productRepository.save(newProduct));
+    }
+
+    @Override
+    public ProductDTO updateProduct(Integer id, ProductDTO Product) {
+        Product existingProduct = productRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("product"));
+
+        Product newProduct = extractProduct(Product);
+        newProduct.setId(existingProduct.getId());
+        return toDTO(productRepository.save(newProduct));
+    }
+
+    @Override
+    public ProductDTO patchProduct(Integer id, ProductDTO ProductIncompletaDto) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("product"));
 
@@ -90,11 +89,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> findByCategory(Integer categoryId) {
-        List<Product> list = productRepository.findProductsByCategoriesId(categoryId)
-                .orElseThrow(() -> new NotFoundException("category"));
-
-        return toDTOList(list);
+    public void deleteProduct(Integer id) {
+        Product product = productRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("product"));
+        productRepository.delete(product);
     }
 
     private Product extractProduct(ProductDTO dto) {
@@ -117,7 +116,16 @@ public class ProductServiceImpl implements ProductService {
                                     .findById(integer)
                                     .orElseThrow(() -> new NotFoundException("category"));
                             return category;
-                        }).collect(Collectors.toList());
+                        })
+                .collect(Collectors.toList());
+    }
+
+    private List<Integer> extractCategoriesIntegers(List<Category> categories) {
+        List<Integer> integers = new ArrayList<Integer>();
+        for (Category category : categories) {
+            integers.add(category.getId());
+        }
+        return integers;
     }
 
     private ProductDTO toDTO(Product product) {
@@ -127,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stockQuantity(product.getStockQuantity())
-                .categories(extractCategories(product.getCategories()))
+                .categories(extractCategoriesIntegers(product.getCategories()))
                 .build();
     }
 
@@ -138,14 +146,6 @@ public class ProductServiceImpl implements ProductService {
         return products.stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
-    }
-
-    private List<Integer> extractCategories(List<Category> categories) {
-        List<Integer> integers = new ArrayList<Integer>();
-        for (Category category : categories) {
-            integers.add(category.getId());
-        }
-        return integers;
     }
 
 }
