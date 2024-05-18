@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.macedo.Ecommerce.exception.NotFoundException;
 import com.macedo.Ecommerce.model.CreditCard;
-import com.macedo.Ecommerce.model.User;
+import com.macedo.Ecommerce.model.Customer;
 import com.macedo.Ecommerce.repository.CreditCardRepository;
-import com.macedo.Ecommerce.repository.UserRepository;
+import com.macedo.Ecommerce.repository.CustomerRepository;
 import com.macedo.Ecommerce.rest.dto.RegisterCreditCardDTO;
 import com.macedo.Ecommerce.service.CreditCardService;
 
@@ -26,7 +26,7 @@ import org.springframework.util.CollectionUtils;
 public class CreditCardServiceImpl implements CreditCardService {
 
     private final CreditCardRepository creditCardRepository;
-    private final UserRepository userRepository;
+    private final CustomerRepository userRepository;
     private final Patcher patcher;
 
     @Override
@@ -51,13 +51,13 @@ public class CreditCardServiceImpl implements CreditCardService {
     @Override
     public ResponseCreditCardDTO createCreditCard(RegisterCreditCardDTO creditCard) {
         Integer idUser = creditCard.getIdUser();
-        User user = userRepository
+        Customer user = userRepository
                 .findById(idUser)
                 .orElseThrow(() -> new NotFoundException("user"));
 
         CreditCard newCreditCard = new CreditCard();
         newCreditCard = extractCreditCard(creditCard);
-        newCreditCard.setUser(user);
+        newCreditCard.setCustomer(user);
         return toDTO(creditCardRepository.save(newCreditCard));
     }
 
@@ -95,10 +95,10 @@ public class CreditCardServiceImpl implements CreditCardService {
         CreditCard creditCard = new CreditCard();
         if (dto.getIdUser() != null) {
             Integer idUser = dto.getIdUser();
-            User user = userRepository
+            Customer user = userRepository
                     .findById(idUser)
                     .orElseThrow(() -> new NotFoundException("user"));
-            creditCard.setUser(user);
+            creditCard.setCustomer(user);
         }
         creditCard.setCardHolderName(dto.getCardHolderName());
         creditCard.setNumber(dto.getNumber());
@@ -111,7 +111,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         return ResponseCreditCardDTO
                 .builder()
                 .id(creditCard.getId())
-                .idUser(creditCard.getUser().getId())
+                .idUser(creditCard.getCustomer().getId())
                 .cardHolderName(creditCard.getCardHolderName())
                 .lastNumbers(creditCard.getNumber().substring(creditCard.getNumber().length() - 4))
                 .build();

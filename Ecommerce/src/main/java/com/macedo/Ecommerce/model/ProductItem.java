@@ -35,26 +35,21 @@ public class ProductItem {
     private BigDecimal subTotal;
 
     @ManyToOne
-    @JoinColumn(name = "shoppingCart_id") //produto está no carrinho
+    @JoinColumn(name = "shoppingCart_id") // produto está no carrinho
     private ShoppingCart shoppingCart;
 
     @ManyToOne
-    @JoinColumn(name = "purchase_id") //produto foi comprado
+    @JoinColumn(name = "purchase_id") // produto foi comprado
     private Purchase purchase;
 
-    /* 
-    @ManyToOne
-    @JoinColumn(name = "shoppingCart_id")
-    private ShoppingCart shoppingCart; //produto está no carrinho
-    */
+    /*
+     * @ManyToOne
+     * 
+     * @JoinColumn(name = "shoppingCart_id")
+     * private ShoppingCart shoppingCart; //produto está no carrinho
+     */
 
-
-
-    
-
-    
-
-    public BigDecimal getTotalItemPrice(){
+    public BigDecimal getTotalItemPrice() {
         return product.getPrice().multiply(new BigDecimal(quantity));
     }
 }

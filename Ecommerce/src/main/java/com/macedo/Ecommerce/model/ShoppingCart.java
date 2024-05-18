@@ -28,14 +28,14 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @OneToMany(mappedBy = "shoppingCart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductItem> productItems;
 
-    @Column(precision = 10,scale = 2)
+    @Column(precision = 10, scale = 2)
     private BigDecimal totalPrice;
 
     @OneToOne(mappedBy = "shoppingCart", fetch = FetchType.LAZY)
-    private User user;
-    
+    private Customer customer;
+
 }

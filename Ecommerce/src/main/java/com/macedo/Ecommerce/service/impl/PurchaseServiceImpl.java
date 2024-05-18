@@ -35,7 +35,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private final PurchaseRepository purchaseRepository;
 
-    private final UserRepository userRepository;
+    private final CustomerRepository userRepository;
 
     private final AddressRepository addressRepository;
 
@@ -70,7 +70,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public List<ResponsePurchaseDTO> getPurchasesByUserId(Integer userId) {
-        List<Purchase> list = purchaseRepository.findPurchasesByUserId(userId)
+        List<Purchase> list = purchaseRepository.findPurchasesByCustomerId(userId)
                 .orElseThrow(() -> new NotFoundException("user"));
 
         return toDTOList(list);
@@ -80,7 +80,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Transactional
     public ResponsePurchaseDTO createPurchase(RegisterPurchaseDTO purchase) {
         Integer idUser = purchase.getIdUser();
-        User user = userRepository
+        Customer user = userRepository
                 .findById(idUser)
                 .orElseThrow(() -> new NotFoundException("user"));
 
@@ -91,7 +91,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         Purchase newPurchase = new Purchase();
         newPurchase.setDate(LocalDate.now());
-        newPurchase.setUser(user);
+        newPurchase.setCustomer(user);
         newPurchase.setAddress(address);
 
         List<ProductItem> productItems = extractProductItems(newPurchase, purchase.getProductItems());
@@ -191,7 +191,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     private ResponsePurchaseDTO toDTO(Purchase purchase) {
         return ResponsePurchaseDTO.builder()
                 .id(purchase.getId())
-                .idUser(purchase.getUser().getId())
+                .idUser(purchase.getCustomer().getId())
                 .productItems(toDTOProductItems(purchase.getProductItems()))
                 .totalPrice(purchase.getTotalPrice())
                 .date(purchase.getDate())

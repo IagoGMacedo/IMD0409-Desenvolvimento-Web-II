@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,18 +31,18 @@ public class Purchase {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
     private List<ProductItem> productItems;
 
-    @Column(precision = 10,scale = 2)
+    @Column(precision = 10, scale = 2)
     private BigDecimal totalPrice;
 
     @OneToOne(mappedBy = "purchase")
     private Payment payment;
-    
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;

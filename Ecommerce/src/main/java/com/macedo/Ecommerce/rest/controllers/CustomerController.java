@@ -15,29 +15,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.macedo.Ecommerce.model.User;
-import com.macedo.Ecommerce.rest.dto.UserDTO;
-import com.macedo.Ecommerce.service.UserService;
+import com.macedo.Ecommerce.model.Customer;
+import com.macedo.Ecommerce.rest.dto.CustomerDTO;
+import com.macedo.Ecommerce.service.CustomerService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api/users")
+@RequestMapping("/api/customers")
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class CustomerController {
     @Autowired
-    private UserService userService;
+    private CustomerService userService;
 
     @Operation(description = "Lista as Users existentes a partir de filtro, se passado")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna a lista de Users conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getUsers(User filtro) {
-        return new ResponseEntity<List<UserDTO>>((userService.getUsers(filtro)), HttpStatus.OK);
+    public ResponseEntity<List<CustomerDTO>> getUsers(Customer filtro) {
+        return new ResponseEntity<List<CustomerDTO>>((userService.getUsers(filtro)), HttpStatus.OK);
     }
 
     @Operation(description = "Busca User pelo ID")
@@ -46,8 +46,8 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Não existe uma User com o ID específicado")
     })
     @GetMapping("{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {
-        return new ResponseEntity<UserDTO>((userService.getUserById(id)), HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> getUserById(@PathVariable Integer id) {
+        return new ResponseEntity<CustomerDTO>((userService.getUserById(id)), HttpStatus.OK);
     }
 
     @Operation(description = "Adiciona uma nova User por DTO")
@@ -56,8 +56,8 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "O usuário atrelado à User não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO User) {
-        return new ResponseEntity<UserDTO>((userService.createUser(User)), HttpStatus.CREATED);
+    public ResponseEntity<CustomerDTO> createUser(@RequestBody CustomerDTO User) {
+        return new ResponseEntity<CustomerDTO>((userService.createUser(User)), HttpStatus.CREATED);
     }
 
     @Operation(description = "Atualiza uma User com o método PUT")
@@ -66,8 +66,8 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Não existe uma User com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Integer id, @RequestBody UserDTO User) {
-        return new ResponseEntity<UserDTO>((userService.updateUser(id, User)), HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> updateUser(@PathVariable Integer id, @RequestBody CustomerDTO User) {
+        return new ResponseEntity<CustomerDTO>((userService.updateUser(id, User)), HttpStatus.OK);
     }
 
     @Operation(description = "Atualiza uma User com o método PATCH")
@@ -76,8 +76,8 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Não existe uma User com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<UserDTO> patchUser(@PathVariable Integer id, @RequestBody UserDTO UserIncompletaDTO) {
-        return new ResponseEntity<UserDTO>((userService.patchUser(id, UserIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> patchUser(@PathVariable Integer id, @RequestBody CustomerDTO UserIncompletaDTO) {
+        return new ResponseEntity<CustomerDTO>((userService.patchUser(id, UserIncompletaDTO)), HttpStatus.OK);
     }
 
     @Operation(description = "Exclui uma User pelo ID")

@@ -7,5 +7,5 @@ import com.macedo.Ecommerce.model.ShoppingCart;
 import java.util.Optional;
 
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart,Integer>{
-    Optional<ShoppingCart> findShoppingCartByUserId(Integer userId);
+    Optional<ShoppingCart> findShoppingCartByCustomerId(Integer userId);
 }

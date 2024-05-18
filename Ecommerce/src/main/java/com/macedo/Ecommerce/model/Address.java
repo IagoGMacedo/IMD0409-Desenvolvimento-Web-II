@@ -26,25 +26,25 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @Column
     private String cep;
     @Column
-    private String completeAddress; //endereco
+    private String completeAddress; // endereco
     @Column
     private String number;
     @Column
     private String complement;
     @Column
-    private String district; //bairro
+    private String district; // bairro
     @Column
     private String city;
     @Column
-    private String state; 
+    private String state;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @JsonIgnore
     @OneToMany(mappedBy = "address")

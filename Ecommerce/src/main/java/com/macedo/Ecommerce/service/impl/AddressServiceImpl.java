@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.macedo.Ecommerce.Utils.Patcher;
-import com.macedo.Ecommerce.model.User;
-import com.macedo.Ecommerce.repository.UserRepository;
+import com.macedo.Ecommerce.model.Customer;
+import com.macedo.Ecommerce.repository.CustomerRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ import org.springframework.util.CollectionUtils;
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
-    private final UserRepository userRepository;
+    private final CustomerRepository userRepository;
 
     private final Patcher patcher;
 
@@ -52,13 +52,13 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDTO createAddress(AddressDTO address) {
         Integer idUser = address.getIdUser();
-        User user = userRepository
+        Customer user = userRepository
                 .findById(idUser)
                 .orElseThrow(() -> new NotFoundException("user"));
 
         Address newAddress = new Address();
         newAddress = extractAddress(address);
-        newAddress.setUser(user);
+        newAddress.setCustomer(user);
         return toDTO(addressRepository.save(newAddress));
     }
 
@@ -96,10 +96,10 @@ public class AddressServiceImpl implements AddressService {
         Address address = new Address();
         if (dto.getIdUser() != null) {
             Integer idUser = dto.getIdUser();
-            User user = userRepository
+            Customer user = userRepository
                     .findById(idUser)
                     .orElseThrow(() -> new NotFoundException("user"));
-            address.setUser(user);
+            address.setCustomer(user);
         }
         address.setCompleteAddress(dto.getCompleteAddress());
         address.setCep(dto.getCep());
@@ -114,7 +114,7 @@ public class AddressServiceImpl implements AddressService {
     private AddressDTO toDTO(Address address) {
         return AddressDTO.builder()
                 .id(address.getId())
-                .idUser(address.getUser().getId())
+                .idUser(address.getCustomer().getId())
                 .cep(address.getCep())
                 .completeAddress(address.getCompleteAddress())
                 .number(address.getNumber())

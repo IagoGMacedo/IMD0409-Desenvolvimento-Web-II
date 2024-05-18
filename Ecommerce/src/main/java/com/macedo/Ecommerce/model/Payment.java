@@ -26,13 +26,13 @@ public class Payment {
     private Purchase purchase;
 
     @ManyToOne
-    @JoinColumn(name = "creditCard_id") 
-    private CreditCard creditCard; //armazena se o pagamento tiver sido como cartão de credito;
+    @JoinColumn(name = "creditCard_id")
+    private CreditCard creditCard; // armazena se o pagamento tiver sido como cartão de credito;
 
     @Column
-    private Integer installments; //quantidade de parcelas de um pagamento
+    private Integer installments; // quantidade de parcelas de um pagamento
 
-    @Column(precision = 10,scale = 2)
+    @Column(precision = 10, scale = 2)
     private BigDecimal price;
 
 }

@@ -8,29 +8,29 @@ import com.macedo.Ecommerce.Utils.Patcher;
 import com.macedo.Ecommerce.exception.NotFoundException;
 import com.macedo.Ecommerce.model.ShoppingCart;
 import com.macedo.Ecommerce.repository.ShoppingCartRepository;
-import com.macedo.Ecommerce.repository.UserRepository;
+import com.macedo.Ecommerce.repository.CustomerRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import com.macedo.Ecommerce.model.User;
-import com.macedo.Ecommerce.rest.dto.UserDTO;
-import com.macedo.Ecommerce.service.UserService;
+import com.macedo.Ecommerce.model.Customer;
+import com.macedo.Ecommerce.rest.dto.CustomerDTO;
+import com.macedo.Ecommerce.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.CollectionUtils;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class CustomerServiceImpl implements CustomerService {
 
-    private final UserRepository userRepository;
+    private final CustomerRepository userRepository;
 
     private final ShoppingCartRepository shoppingCartRepository;
     private final Patcher patcher;
 
     @Override
-    public List<UserDTO> getUsers(User filtro) {
+    public List<CustomerDTO> getUsers(Customer filtro) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
@@ -42,19 +42,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserById(Integer id) {
-        User user = userRepository.findById(id)
+    public CustomerDTO getUserById(Integer id) {
+        Customer user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("user"));
         return toDTO(user);
     }
 
     @Override
-    public UserDTO createUser(UserDTO User) {
-        User newUser = new User();
+    public CustomerDTO createUser(CustomerDTO User) {
+        Customer newUser = new Customer();
         newUser = extractUser(User);
 
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(newUser);
+        shoppingCart.setCustomer(newUser);
 
         newUser.setShoppingCart(shoppingCart);
         userRepository.save(newUser);
@@ -63,22 +63,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(Integer id, UserDTO User) {
-        User existingUser = userRepository
+    public CustomerDTO updateUser(Integer id, CustomerDTO User) {
+        Customer existingUser = userRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("user"));
 
-        User newUser = extractUser(User);
+        Customer newUser = extractUser(User);
         newUser.setId(existingUser.getId());
         return toDTO(userRepository.save(newUser));
     }
 
     @Override
-    public UserDTO patchUser(Integer id, UserDTO UserIncompletaDto) {
-        User existingUser = userRepository.findById(id)
+    public CustomerDTO patchUser(Integer id, CustomerDTO UserIncompletaDto) {
+        Customer existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("user"));
 
-        User incompleteUser = extractUser(UserIncompletaDto);
+        Customer incompleteUser = extractUser(UserIncompletaDto);
 
         patcher.copiarPropriedadesNaoNulas(incompleteUser, existingUser);
         return toDTO(userRepository.save(existingUser));
@@ -86,22 +86,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Integer id) {
-        User user = userRepository
+        Customer user = userRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("user"));
         userRepository.delete(user);
     }
 
-    private User extractUser(UserDTO dto) {
-        User user = new User();
+    private Customer extractUser(CustomerDTO dto) {
+        Customer user = new Customer();
         user.setName(dto.getName());
         user.setRole(dto.getRole());
         user.setEmail(dto.getEmail());
         return user;
     }
 
-    private UserDTO toDTO(User user) {
-        return UserDTO.builder()
+    private CustomerDTO toDTO(Customer user) {
+        return CustomerDTO.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
@@ -109,12 +109,12 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    private List<UserDTO> toDTOList(List<User> users) {
+    private List<CustomerDTO> toDTOList(List<Customer> users) {
         if (CollectionUtils.isEmpty(users)) {
             return Collections.emptyList();
         }
         return users.stream().map(
-                user -> UserDTO
+                user -> CustomerDTO
                         .builder()
                         .id(user.getId())
                         .name(user.getName())

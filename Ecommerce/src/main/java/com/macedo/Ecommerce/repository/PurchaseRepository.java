@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface PurchaseRepository extends JpaRepository<Purchase,Integer>{
 
-    public Optional<List<Purchase>> findPurchasesByUserId(Integer userId);
+    public Optional<List<Purchase>> findPurchasesByCustomerId(Integer userId);
     
 }

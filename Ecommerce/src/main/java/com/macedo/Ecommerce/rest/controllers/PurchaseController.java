@@ -51,7 +51,7 @@ public class PurchaseController {
         return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.getPurchaseById(id)), HttpStatus.OK);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/customer/{id}")
     public ResponseEntity<List<ResponsePurchaseDTO>> getPurchasesByUserId(@PathVariable Integer id) {
         return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.getPurchasesByUserId(id)), HttpStatus.OK);
     }

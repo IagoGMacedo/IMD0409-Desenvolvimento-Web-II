@@ -57,10 +57,13 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public List<ResponsePaymentDTO> getPaymentsByUserId(Integer userId) {
-        List<Payment> list = paymentRepository.findPaymentsByUserId(userId)
+        /* 
+        List<Payment> list = paymentRepository.findPaymentsByCustomerId(userId)
                 .orElseThrow(() -> new NotFoundException("user"));
 
         return toDTOList(list);
+        */
+        return getPayments(new Payment());
     }
 
     private Payment extractPayment(RegisterPaymentDTO dto) {
