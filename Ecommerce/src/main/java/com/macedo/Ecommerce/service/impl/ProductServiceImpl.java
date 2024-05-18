@@ -8,6 +8,7 @@ import java.util.Collections;
 import com.macedo.Ecommerce.Utils.Patcher;
 import com.macedo.Ecommerce.exception.NotFoundException;
 import com.macedo.Ecommerce.model.Category;
+import com.macedo.Ecommerce.model.ShoppingCart;
 import com.macedo.Ecommerce.repository.CategoryRepository;
 import com.macedo.Ecommerce.repository.ProductRepository;
 import org.springframework.data.domain.Example;
@@ -90,30 +91,33 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDTO> findByCategory(Integer categoryId) {
-        return toDTOList(productRepository.findProductsByCategoriesId(categoryId));
+        List<Product> list = productRepository.findProductsByCategoriesId(categoryId)
+                .orElseThrow(() -> new NotFoundException("category"));
+
+        return toDTOList(list);
     }
 
-    private Product extractProduct(ProductDTO dto){
+    private Product extractProduct(ProductDTO dto) {
         Product product = new Product();
         product.setName(dto.getName());
         product.setPrice(dto.getPrice());
         product.setDescription(dto.getDescription());
         product.setStockQuantity(dto.getStockQuantity());
-        if(dto.getCategories() != null){
+        if (dto.getCategories() != null) {
             product.setCategories(extractCategories(dto));
         }
         return product;
     }
 
-    private List<Category> extractCategories(ProductDTO dto){
+    private List<Category> extractCategories(ProductDTO dto) {
         return dto.getCategories().stream()
-        .map(
-            integer -> {
-                Category category = categoryRepository
-                    .findById(integer)
-                    .orElseThrow(() -> new NotFoundException("category"));
-                return category;
-            }).collect(Collectors.toList());
+                .map(
+                        integer -> {
+                            Category category = categoryRepository
+                                    .findById(integer)
+                                    .orElseThrow(() -> new NotFoundException("category"));
+                            return category;
+                        }).collect(Collectors.toList());
     }
 
     private ProductDTO toDTO(Product product) {
@@ -126,7 +130,8 @@ public class ProductServiceImpl implements ProductService {
                 .categories(extractCategories(product.getCategories()))
                 .build();
     }
-    private List<ProductDTO> toDTOList(List<Product> products){
+
+    private List<ProductDTO> toDTOList(List<Product> products) {
         if (CollectionUtils.isEmpty(products)) {
             return Collections.emptyList();
         }
@@ -135,9 +140,9 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
-    private List<Integer> extractCategories(List<Category> categories){
+    private List<Integer> extractCategories(List<Category> categories) {
         List<Integer> integers = new ArrayList<Integer>();
-        for (Category category : categories){
+        for (Category category : categories) {
             integers.add(category.getId());
         }
         return integers;

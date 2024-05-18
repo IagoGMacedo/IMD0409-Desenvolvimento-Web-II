@@ -37,12 +37,5 @@ public class ShoppingCart {
 
     @OneToOne(mappedBy = "shoppingCart", fetch = FetchType.LAZY)
     private User user;
-
-    public BigDecimal getTotalPrice(){
-        BigDecimal totalValue = BigDecimal.ZERO;
-        for (ProductItem products : productItems) {
-            totalValue.add(products.getTotalItemPrice());
-        }
-        return totalValue;
-    }
+    
 }

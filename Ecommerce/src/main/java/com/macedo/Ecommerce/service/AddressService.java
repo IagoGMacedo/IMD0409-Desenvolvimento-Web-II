@@ -6,10 +6,10 @@ import com.macedo.Ecommerce.rest.dto.AddressDTO;
 
 public interface AddressService {
     public AddressDTO findById(Integer id);
-    public AddressDTO save(AddressDTO Address);
-    public void delete(Integer id);
-    public AddressDTO update(Integer id, AddressDTO Address);
-    public List<AddressDTO> findAll(Address filtro);
-    public AddressDTO patch(Integer id, AddressDTO AddressIncompletaDto);
+    public AddressDTO createAddress(AddressDTO Address);
+    public void deleteAddress(Integer id);
+    public AddressDTO updateAddress(Integer id, AddressDTO Address);
+    public List<AddressDTO> getAddresses(Address filtro);
+    public AddressDTO patchAddress(Integer id, AddressDTO AddressIncompletaDto);
 }
 

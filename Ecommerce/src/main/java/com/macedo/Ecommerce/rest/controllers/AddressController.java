@@ -47,8 +47,8 @@ public class AddressController {
         @ApiResponse(responseCode = "404", description = "O usuário atrelado à Address não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<AddressDTO> save(@RequestBody AddressDTO Address) {
-        return new ResponseEntity<AddressDTO>((addressService.save(Address)), HttpStatus.CREATED);
+    public ResponseEntity<AddressDTO> createAddress(@RequestBody AddressDTO Address) {
+        return new ResponseEntity<AddressDTO>((addressService.createAddress(Address)), HttpStatus.CREATED);
     }
 
     @Operation(description = "Exclui uma Address pelo ID")
@@ -57,8 +57,8 @@ public class AddressController {
         @ApiResponse(responseCode = "404", description = "Não existe uma Address com o ID específicado")
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        addressService.delete(id);
+    public ResponseEntity<Void> deleteAddress(@PathVariable Integer id) {
+        addressService.deleteAddress(id);
         return ResponseEntity.ok().build();
     }
 
@@ -68,8 +68,8 @@ public class AddressController {
         @ApiResponse(responseCode = "404", description = "Não existe uma Address com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<AddressDTO> update(@PathVariable Integer id, @RequestBody AddressDTO Address) {
-        return new ResponseEntity<AddressDTO>((addressService.update(id, Address)), HttpStatus.OK);
+    public ResponseEntity<AddressDTO> updateAddress(@PathVariable Integer id, @RequestBody AddressDTO Address) {
+        return new ResponseEntity<AddressDTO>((addressService.updateAddress(id, Address)), HttpStatus.OK);
     }
 
     @Operation(description = "Atualiza uma Address com o método PATCH")
@@ -78,8 +78,8 @@ public class AddressController {
         @ApiResponse(responseCode = "404", description = "Não existe uma Address com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<AddressDTO> patch(@PathVariable Integer id, @RequestBody AddressDTO AddressIncompletaDTO) {
-        return new ResponseEntity<AddressDTO>((addressService.patch(id, AddressIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<AddressDTO> patchAddress(@PathVariable Integer id, @RequestBody AddressDTO AddressIncompletaDTO) {
+        return new ResponseEntity<AddressDTO>((addressService.patchAddress(id, AddressIncompletaDTO)), HttpStatus.OK);
     }
 
     @Operation(description = "Lista as Addresss existentes a partir de filtro, se passado")
@@ -87,8 +87,8 @@ public class AddressController {
         @ApiResponse(responseCode = "200", description = "Retorna a lista de Addresss conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<AddressDTO>> find(Address filtro) {
-        return new ResponseEntity<List<AddressDTO>>((addressService.findAll(filtro)), HttpStatus.OK);
+    public ResponseEntity<List<AddressDTO>> getAddresses(Address filtro) {
+        return new ResponseEntity<List<AddressDTO>>((addressService.getAddresses(filtro)), HttpStatus.OK);
     }
     
 }

@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import com.macedo.Ecommerce.Utils.Patcher;
 import com.macedo.Ecommerce.exception.NotFoundException;
+import com.macedo.Ecommerce.model.ShoppingCart;
+import com.macedo.Ecommerce.repository.ShoppingCartRepository;
 import com.macedo.Ecommerce.repository.UserRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -23,6 +25,8 @@ import org.springframework.util.CollectionUtils;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final ShoppingCartRepository shoppingCartRepository;
     private final Patcher patcher;
 
     @Override
@@ -36,7 +40,14 @@ public class UserServiceImpl implements UserService {
     public UserDTO save(UserDTO User) {
         User newUser = new User();
         newUser = extractUser(User);
-        return toDTO(userRepository.save(newUser));
+
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(newUser);
+
+        newUser.setShoppingCart(shoppingCart);
+        userRepository.save(newUser);
+        shoppingCartRepository.save(shoppingCart);
+        return toDTO(newUser);
     }
 
 
@@ -82,13 +93,14 @@ public class UserServiceImpl implements UserService {
         return toDTO(userRepository.save(existingUser));
     }
 
-    private User extractUser(UserDTO dto){
+    private User extractUser(UserDTO dto) {
         User user = new User();
         user.setName(dto.getName());
         user.setRole(dto.getRole());
         user.setEmail(dto.getEmail());
         return user;
     }
+
     private UserDTO toDTO(User user) {
         return UserDTO.builder()
                 .id(user.getId())
@@ -97,7 +109,8 @@ public class UserServiceImpl implements UserService {
                 .role(user.getRole())
                 .build();
     }
-    private List<UserDTO> toDTOList(List<User> users){
+
+    private List<UserDTO> toDTOList(List<User> users) {
         if (CollectionUtils.isEmpty(users)) {
             return Collections.emptyList();
         }
@@ -111,5 +124,5 @@ public class UserServiceImpl implements UserService {
                                 .build())
                 .collect(Collectors.toList());
     }
-    
+
 }

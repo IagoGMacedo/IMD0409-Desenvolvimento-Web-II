@@ -97,9 +97,9 @@ public class PaymentServiceImpl implements PaymentService {
         return toDTO(paymentRepository.save(existingPayment));
     }
 
-    private Payment extractPayment(RegisterPaymentDTO dto){
+    private Payment extractPayment(RegisterPaymentDTO dto) {
         Payment payment = new Payment();
-        if(dto.getIdCreditCard() != null){
+        if (dto.getIdCreditCard() != null) {
             Integer idCreditCard = dto.getIdCreditCard();
             CreditCard creditCard = creditCardRepository
                     .findById(idCreditCard)
@@ -107,7 +107,7 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setCreditCard(creditCard);
         }
 
-        if(dto.getIdPurchase() != null){
+        if (dto.getIdPurchase() != null) {
             Integer idPurchase = dto.getIdPurchase();
             Purchase purchase = purchaseRepository
                     .findById(idPurchase)
@@ -117,7 +117,8 @@ public class PaymentServiceImpl implements PaymentService {
 
         return payment;
     }
-    private ResponsePaymentDTO toDTO(Payment payment){
+
+    private ResponsePaymentDTO toDTO(Payment payment) {
         ResponsePaymentDTO response = ResponsePaymentDTO
                 .builder()
                 .id(payment.getId())
@@ -125,14 +126,15 @@ public class PaymentServiceImpl implements PaymentService {
                 .price(payment.getPrice())
                 .build();
 
-        if(payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO)
+        if (payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO)
             response.setCreditCard(toCreditCardDTO(payment));
 
-        if(payment.getPaymentMethod() == PaymentMethod.CARTAO_DEBITO)
+        if (payment.getPaymentMethod() == PaymentMethod.CARTAO_DEBITO)
             response.setDebitCard(toDebitCardDTO(payment));
 
         return response;
     }
+
     private List<ResponsePaymentDTO> toDTOList(List<Payment> payments) {
         if (CollectionUtils.isEmpty(payments)) {
             return Collections.emptyList();
@@ -156,5 +158,5 @@ public class PaymentServiceImpl implements PaymentService {
                 .idCreditCard(payment.getCreditCard().getId())
                 .build();
     }
-    
+
 }

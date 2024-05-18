@@ -78,7 +78,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         List<ProductItem> productItems = extractProductItems(newPurchase, purchase.getProductItems());
         BigDecimal totalPrice = getTotalPrice(productItems);
-        Payment payment = extractPayment(newPurchase ,purchase.getPayment(), totalPrice);
+        Payment payment = extractPayment(newPurchase, purchase.getPayment(), totalPrice);
 
 
         newPurchase.setTotalPrice(totalPrice);
@@ -137,7 +137,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public List<ResponsePurchaseDTO> findByUser(Integer userId) {
-        return toDTOList(purchaseRepository.findPurchasesByUserId(userId));
+        List<Purchase> list = purchaseRepository.findPurchasesByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("user"));
+
+        return toDTOList(list);
     }
 
     private Purchase extractPurchase(RegisterPurchaseDTO dto) {
@@ -146,14 +149,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private ResponsePurchaseDTO toDTO(Purchase purchase) {
         return ResponsePurchaseDTO.builder()
-        .id(purchase.getId())
-        .idUser(purchase.getUser().getId())
-        .productItems(toDTOProductItems(purchase.getProductItems()))
-        .totalPrice(purchase.getTotalPrice())
-        .date(purchase.getDate())
-        .payment(toPaymentDTO(purchase.getPayment()))
-        .idAddress(purchase.getAddress().getId())
-        .build();
+                .id(purchase.getId())
+                .idUser(purchase.getUser().getId())
+                .productItems(toDTOProductItems(purchase.getProductItems()))
+                .totalPrice(purchase.getTotalPrice())
+                .date(purchase.getDate())
+                .payment(toPaymentDTO(purchase.getPayment()))
+                .idAddress(purchase.getAddress().getId())
+                .build();
     }
 
     private List<ResponsePurchaseDTO> toDTOList(List<Purchase> purchases) {
@@ -192,46 +195,46 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     private List<ProductItemDTO> toDTOProductItems(List<ProductItem> productItems) {
-        if(CollectionUtils.isEmpty(productItems)){
+        if (CollectionUtils.isEmpty(productItems)) {
             return Collections.emptyList();
         }
         return productItems.stream().map(
                 item -> ProductItemDTO
-                            .builder()
-                            .idProduct(item.getId())
-                            .quantity(item.getQuantity())
-                            .subTotal(item.getSubTotal())
-                            .build()
+                        .builder()
+                        .idProduct(item.getId())
+                        .quantity(item.getQuantity())
+                        .subTotal(item.getSubTotal())
+                        .build()
         ).collect(Collectors.toList());
     }
 
     private BigDecimal getTotalPrice(List<ProductItem> productItems) {
         BigDecimal totalValue = BigDecimal.ZERO;
         for (ProductItem productItem : productItems) {
-            totalValue =  totalValue.add(productItem.getProduct().getPrice().multiply(new BigDecimal(productItem.getQuantity())));
+            totalValue = totalValue.add(productItem.getProduct().getPrice().multiply(new BigDecimal(productItem.getQuantity())));
         }
         return totalValue;
     }
 
-    private Payment extractPayment(Purchase purchase, RegisterPaymentDTO dto, BigDecimal totalPrice){
+    private Payment extractPayment(Purchase purchase, RegisterPaymentDTO dto, BigDecimal totalPrice) {
         Payment payment = new Payment();
         payment.setPaymentMethod(dto.getPaymentMethod());
         payment.setPrice(totalPrice);
         payment.setPurchase(purchase);
-        if(payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO || payment.getPaymentMethod() == PaymentMethod.CARTAO_DEBITO){
+        if (payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO || payment.getPaymentMethod() == PaymentMethod.CARTAO_DEBITO) {
             Integer idCreditCard = dto.getIdCreditCard();
             CreditCard creditCard = creditCardRepository
                     .findById(idCreditCard)
                     .orElseThrow(() -> new NotFoundException("credit card"));
             payment.setCreditCard(creditCard);
 
-            if(payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO)
+            if (payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO)
                 payment.setInstallments(dto.getInstallments());
         }
         return payment;
     }
 
-    private ResponsePaymentDTO toPaymentDTO(Payment payment){
+    private ResponsePaymentDTO toPaymentDTO(Payment payment) {
         ResponsePaymentDTO response = ResponsePaymentDTO
                 .builder()
                 .id(payment.getId())
@@ -239,10 +242,10 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .price(payment.getPrice())
                 .build();
 
-        if(payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO)
+        if (payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO)
             response.setCreditCard(toCreditCardDTO(payment));
 
-        if(payment.getPaymentMethod() == PaymentMethod.CARTAO_DEBITO)
+        if (payment.getPaymentMethod() == PaymentMethod.CARTAO_DEBITO)
             response.setDebitCard(toDebitCardDTO(payment));
 
         return response;

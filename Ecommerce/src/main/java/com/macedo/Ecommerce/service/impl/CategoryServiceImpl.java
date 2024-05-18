@@ -81,7 +81,7 @@ public class CategoryServiceImpl implements CategoryService {
         return toDTO(categoryRepository.save(existingCategory));
     }
 
-    private Category extractCategory(CategoryDTO dto){
+    private Category extractCategory(CategoryDTO dto) {
         Category category = new Category();
         category.setName(dto.getName());
         return category;
@@ -94,7 +94,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .build();
     }
 
-    private List<CategoryDTO> toDTOList(List<Category> categories){
+    private List<CategoryDTO> toDTOList(List<Category> categories) {
         if (CollectionUtils.isEmpty(categories)) {
             return Collections.emptyList();
         }
@@ -102,5 +102,5 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
-    
+
 }

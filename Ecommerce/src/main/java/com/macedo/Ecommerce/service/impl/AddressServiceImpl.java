@@ -40,7 +40,7 @@ public class AddressServiceImpl implements AddressService {
 
 
     @Override
-    public AddressDTO save(AddressDTO address) {
+    public AddressDTO createAddress(AddressDTO address) {
         Integer idUser = address.getIdUser();
         User user = userRepository
                 .findById(idUser)
@@ -54,7 +54,7 @@ public class AddressServiceImpl implements AddressService {
 
 
     @Override
-    public void delete(Integer id) {
+    public void deleteAddress(Integer id) {
         Address address = addressRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("address"));
@@ -62,7 +62,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDTO update(Integer id, AddressDTO Address) {
+    public AddressDTO updateAddress(Integer id, AddressDTO Address) {
         Address existingAddress = addressRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("address"));
@@ -73,7 +73,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<AddressDTO> findAll(Address filtro) {
+    public List<AddressDTO> getAddresses(Address filtro) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
@@ -85,7 +85,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDTO patch(Integer id, AddressDTO AddressIncompletaDto) {
+    public AddressDTO patchAddress(Integer id, AddressDTO AddressIncompletaDto) {
         Address existingAddress = addressRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("address"));
 
@@ -96,8 +96,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
 
-
-    private Address extractAddress(AddressDTO dto){
+    private Address extractAddress(AddressDTO dto) {
         Address address = new Address();
         if (dto.getIdUser() != null) {
             Integer idUser = dto.getIdUser();
@@ -130,7 +129,7 @@ public class AddressServiceImpl implements AddressService {
                 .build();
     }
 
-    private List<AddressDTO> toDTOList(List<Address> addresses){
+    private List<AddressDTO> toDTOList(List<Address> addresses) {
         if (CollectionUtils.isEmpty(addresses)) {
             return Collections.emptyList();
         }
@@ -138,5 +137,5 @@ public class AddressServiceImpl implements AddressService {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
-    
+
 }

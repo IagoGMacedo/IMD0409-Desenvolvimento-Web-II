@@ -5,9 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.macedo.Ecommerce.model.Purchase;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PurchaseRepository extends JpaRepository<Purchase,Integer>{
 
-    public List<Purchase> findPurchasesByUserId(Integer userId);
+    public Optional<List<Purchase>> findPurchasesByUserId(Integer userId);
     
 }

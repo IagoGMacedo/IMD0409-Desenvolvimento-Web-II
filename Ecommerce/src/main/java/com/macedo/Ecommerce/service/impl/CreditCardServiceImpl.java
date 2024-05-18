@@ -30,10 +30,9 @@ public class CreditCardServiceImpl implements CreditCardService {
     private final Patcher patcher;
 
 
-
     @Override
     public ResponseCreditCardDTO findById(Integer id) {
-         CreditCard creditCard = creditCardRepository.findById(id)
+        CreditCard creditCard = creditCardRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("credit carrd"));
         return toDTO(creditCard);
     }
@@ -43,8 +42,8 @@ public class CreditCardServiceImpl implements CreditCardService {
     public ResponseCreditCardDTO save(RegisterCreditCardDTO creditCard) {
         Integer idUser = creditCard.getIdUser();
         User user = userRepository
-            .findById(idUser)
-            .orElseThrow(() -> new NotFoundException("user"));
+                .findById(idUser)
+                .orElseThrow(() -> new NotFoundException("user"));
 
         CreditCard newCreditCard = new CreditCard();
         newCreditCard = extractCreditCard(creditCard);
@@ -95,7 +94,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         return toDTO(creditCardRepository.save(existingCreditCard));
     }
 
-    private CreditCard extractCreditCard(RegisterCreditCardDTO dto){
+    private CreditCard extractCreditCard(RegisterCreditCardDTO dto) {
         CreditCard creditCard = new CreditCard();
         if (dto.getIdUser() != null) {
             Integer idUser = dto.getIdUser();
@@ -110,6 +109,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         creditCard.setCvv(dto.getCvv());
         return creditCard;
     }
+
     private ResponseCreditCardDTO toDTO(CreditCard creditCard) {
         return ResponseCreditCardDTO
                 .builder()
@@ -119,7 +119,8 @@ public class CreditCardServiceImpl implements CreditCardService {
                 .lastNumbers(creditCard.getNumber().substring(creditCard.getNumber().length() - 4))
                 .build();
     }
-    private List<ResponseCreditCardDTO> toDTOList(List<CreditCard> creditCards){
+
+    private List<ResponseCreditCardDTO> toDTOList(List<CreditCard> creditCards) {
         if (CollectionUtils.isEmpty(creditCards)) {
             return Collections.emptyList();
         }
@@ -127,5 +128,5 @@ public class CreditCardServiceImpl implements CreditCardService {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
-    
+
 }
