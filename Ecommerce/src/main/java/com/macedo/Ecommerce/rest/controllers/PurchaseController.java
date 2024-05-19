@@ -23,6 +23,7 @@ import com.macedo.Ecommerce.service.PurchaseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/purchases")
@@ -62,7 +63,7 @@ public class PurchaseController {
             @ApiResponse(responseCode = "404", description = "O usuário atrelado à Purchase não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<ResponsePurchaseDTO> createPurchase(@RequestBody RegisterPurchaseDTO Purchase) {
+    public ResponseEntity<ResponsePurchaseDTO> createPurchase(@RequestBody @Valid RegisterPurchaseDTO Purchase) {
         return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.createPurchase(Purchase)), HttpStatus.CREATED);
     }
 
@@ -73,7 +74,7 @@ public class PurchaseController {
     })
     @PutMapping("{id}")
     public ResponseEntity<ResponsePurchaseDTO> updatePurchase(@PathVariable Integer id,
-            @RequestBody RegisterPurchaseDTO Purchase) {
+            @RequestBody @Valid RegisterPurchaseDTO Purchase) {
         return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.updatePurchase(id, Purchase)), HttpStatus.OK);
     }
 

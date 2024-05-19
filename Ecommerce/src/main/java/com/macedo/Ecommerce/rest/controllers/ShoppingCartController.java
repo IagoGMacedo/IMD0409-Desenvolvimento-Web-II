@@ -14,6 +14,7 @@ import com.macedo.Ecommerce.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/shoppingCarts")
@@ -59,7 +60,7 @@ public class ShoppingCartController {
 
     })
     @PostMapping()
-    public ResponseEntity<ShoppingCartDTO> addItemToCart(@RequestBody AddItemShoppingCartDTO addProductItem) {
+    public ResponseEntity<ShoppingCartDTO> addItemToCart(@RequestBody @Valid AddItemShoppingCartDTO addProductItem) {
         return new ResponseEntity<ShoppingCartDTO>((shoppingCartService.addItemToCart(addProductItem)),
                 HttpStatus.CREATED);
     }
@@ -70,7 +71,7 @@ public class ShoppingCartController {
             @ApiResponse(responseCode = "404", description = "Não existe um carrinho de compras com o ID especificado")
     })
     @PatchMapping()
-    public ResponseEntity<ShoppingCartDTO> updateItemQuantity(@RequestBody RegisterItemShoppingCartDTO dto) {
+    public ResponseEntity<ShoppingCartDTO> updateItemQuantity(@RequestBody @Valid RegisterItemShoppingCartDTO dto) {
         return new ResponseEntity<ShoppingCartDTO>((shoppingCartService.updateItemQuantity(dto)), HttpStatus.OK);
     }
 
@@ -81,7 +82,7 @@ public class ShoppingCartController {
             @ApiResponse(responseCode = "404", description = "Não existe um item o ID especificado")
     })
     @DeleteMapping()
-    public ResponseEntity<Void> deleteItemFromCart(@RequestBody RegisterItemShoppingCartDTO deleteProductItem) {
+    public ResponseEntity<Void> deleteItemFromCart(@RequestBody @Valid RegisterItemShoppingCartDTO deleteProductItem) {
         shoppingCartService.deleteItemFromCart(deleteProductItem);
         return ResponseEntity.ok().build();
     }

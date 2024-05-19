@@ -95,7 +95,6 @@ public class CustomerServiceImpl implements CustomerService {
     private Customer extractUser(CustomerDTO dto) {
         Customer user = new Customer();
         user.setName(dto.getName());
-        user.setRole(dto.getRole());
         user.setEmail(dto.getEmail());
         return user;
     }
@@ -105,7 +104,6 @@ public class CustomerServiceImpl implements CustomerService {
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
-                .role(user.getRole())
                 .build();
     }
 
@@ -119,7 +117,6 @@ public class CustomerServiceImpl implements CustomerService {
                         .id(user.getId())
                         .name(user.getName())
                         .email(user.getEmail())
-                        .role(user.getRole())
                         .build())
                 .collect(Collectors.toList());
     }

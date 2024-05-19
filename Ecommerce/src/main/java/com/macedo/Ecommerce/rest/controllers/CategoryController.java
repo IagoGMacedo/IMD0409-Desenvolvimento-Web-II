@@ -22,6 +22,7 @@ import com.macedo.Ecommerce.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/categories")
@@ -56,7 +57,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "O usuário atrelado à Category não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO Category) {
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody @Valid CategoryDTO Category) {
         return new ResponseEntity<CategoryDTO>((categoryService.createCategory(Category)), HttpStatus.CREATED);
     }
 
@@ -66,7 +67,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer id, @RequestBody CategoryDTO Category) {
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer id, @RequestBody @Valid CategoryDTO Category) {
         return new ResponseEntity<CategoryDTO>((categoryService.updateCategory(id, Category)), HttpStatus.OK);
     }
 

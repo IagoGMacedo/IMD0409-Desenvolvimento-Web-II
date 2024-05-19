@@ -23,6 +23,7 @@ import com.macedo.Ecommerce.service.CreditCardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/creditCards")
@@ -58,7 +59,7 @@ public class CreditCardController {
             @ApiResponse(responseCode = "404", description = "O usuário atrelado à CreditCard não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<ResponseCreditCardDTO> createCreditCard(@RequestBody RegisterCreditCardDTO CreditCard) {
+    public ResponseEntity<ResponseCreditCardDTO> createCreditCard(@RequestBody @Valid RegisterCreditCardDTO CreditCard) {
         return new ResponseEntity<ResponseCreditCardDTO>((creditCardService.createCreditCard(CreditCard)),
                 HttpStatus.CREATED);
     }
@@ -70,7 +71,7 @@ public class CreditCardController {
     })
     @PutMapping("{id}")
     public ResponseEntity<ResponseCreditCardDTO> updateCreditCard(@PathVariable Integer id,
-            @RequestBody RegisterCreditCardDTO CreditCard) {
+            @RequestBody @Valid RegisterCreditCardDTO CreditCard) {
         return new ResponseEntity<ResponseCreditCardDTO>((creditCardService.updateCreditCard(id, CreditCard)),
                 HttpStatus.OK);
     }

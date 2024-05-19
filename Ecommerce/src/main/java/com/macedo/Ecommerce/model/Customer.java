@@ -42,8 +42,7 @@ public class Customer {
     @Column(length = 100)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+   
 
     @JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

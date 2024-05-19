@@ -22,6 +22,7 @@ import com.macedo.Ecommerce.service.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/addresses")
@@ -56,7 +57,7 @@ public class AddressController {
             @ApiResponse(responseCode = "404", description = "Não existe um usuário com o ID específicado")
     })
     @PostMapping
-    public ResponseEntity<AddressDTO> createAddress(@RequestBody AddressDTO Address) {
+    public ResponseEntity<AddressDTO> createAddress(@RequestBody @Valid AddressDTO Address) {
         return new ResponseEntity<AddressDTO>((addressService.createAddress(Address)), HttpStatus.CREATED);
     }
 
@@ -66,7 +67,7 @@ public class AddressController {
             @ApiResponse(responseCode = "404", description = "Não existe um endereço com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<AddressDTO> updateAddress(@PathVariable Integer id, @RequestBody AddressDTO Address) {
+    public ResponseEntity<AddressDTO> updateAddress(@PathVariable Integer id, @RequestBody @Valid AddressDTO Address) {
         return new ResponseEntity<AddressDTO>((addressService.updateAddress(id, Address)), HttpStatus.OK);
     }
 

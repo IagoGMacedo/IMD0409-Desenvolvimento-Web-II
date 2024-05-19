@@ -22,6 +22,7 @@ import com.macedo.Ecommerce.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/customers")
@@ -56,7 +57,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "404", description = "O usuário atrelado à User não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<CustomerDTO> createUser(@RequestBody CustomerDTO User) {
+    public ResponseEntity<CustomerDTO> createUser(@RequestBody @Valid CustomerDTO User) {
         return new ResponseEntity<CustomerDTO>((userService.createUser(User)), HttpStatus.CREATED);
     }
 
@@ -66,7 +67,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "404", description = "Não existe uma User com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<CustomerDTO> updateUser(@PathVariable Integer id, @RequestBody CustomerDTO User) {
+    public ResponseEntity<CustomerDTO> updateUser(@PathVariable Integer id, @RequestBody @Valid CustomerDTO User) {
         return new ResponseEntity<CustomerDTO>((userService.updateUser(id, User)), HttpStatus.OK);
     }
 

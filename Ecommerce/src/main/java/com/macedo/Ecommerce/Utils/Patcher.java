@@ -1,6 +1,6 @@
 package com.macedo.Ecommerce.Utils;
 
-import com.macedo.Ecommerce.exception.BadRequestException;
+import com.macedo.Ecommerce.exception.PatchErrorException;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -30,7 +30,7 @@ public class Patcher {
                 }
             }
         } catch (Exception e) {
-            throw new BadRequestException("patch error");
+            throw new PatchErrorException("patch error");
         }
     }
 }

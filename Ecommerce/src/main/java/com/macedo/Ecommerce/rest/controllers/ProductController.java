@@ -22,6 +22,7 @@ import com.macedo.Ecommerce.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/products")
@@ -61,7 +62,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "O usuário atrelado à Product não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO Product) {
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO Product) {
         return new ResponseEntity<ProductDTO>((productService.createProduct(Product)), HttpStatus.CREATED);
     }
 
@@ -71,7 +72,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductDTO Product) {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody @Valid ProductDTO Product) {
         return new ResponseEntity<ProductDTO>((productService.updateProduct(id, Product)), HttpStatus.OK);
     }
 
