@@ -1,5 +1,5 @@
 package com.macedo.Ecommerce.model;
 
 public enum Role {
-    ADMIN, USER, LOJISTA, 
+    ADMIN, USER, LOJISTA, SUPORTE
 }

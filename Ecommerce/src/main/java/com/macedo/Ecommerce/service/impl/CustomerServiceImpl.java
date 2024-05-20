@@ -80,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer incompleteUser = extractUser(UserIncompletaDto);
 
-        patcher.copiarPropriedadesNaoNulas(incompleteUser, existingUser);
+        patcher.patchPropertiesNotNull(incompleteUser, existingUser);
         return toDTO(userRepository.save(existingUser));
     }
 

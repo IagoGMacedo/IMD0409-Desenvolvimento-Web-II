@@ -79,7 +79,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 
         CreditCard incompleteCreditCard = extractCreditCard(CreditCardIncompletaDto);
 
-        patcher.copiarPropriedadesNaoNulas(incompleteCreditCard, existingCreditCard);
+        patcher.patchPropertiesNotNull(incompleteCreditCard, existingCreditCard);
         return toDTO(creditCardRepository.save(existingCreditCard));
     }
 

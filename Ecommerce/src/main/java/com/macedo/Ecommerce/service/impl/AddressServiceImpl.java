@@ -80,7 +80,7 @@ public class AddressServiceImpl implements AddressService {
 
         Address incompleteAddress = extractAddress(AddressIncompletaDto);
 
-        patcher.copiarPropriedadesNaoNulas(incompleteAddress, existingAddress);
+        patcher.patchPropertiesNotNull(incompleteAddress, existingAddress);
         return toDTO(addressRepository.save(existingAddress));
     }
 

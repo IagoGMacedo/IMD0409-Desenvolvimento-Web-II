@@ -3,6 +3,7 @@ package com.macedo.Ecommerce.rest.dto;
 import com.macedo.Ecommerce.rest.dto.PaymentResponses.ResponsePaymentDTO;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,10 +18,11 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class RegisterPurchaseDTO {
-    @NotBlank(message = "{campo.idUser.obrigatorio}")
+    @NotNull(message = "{campo.idUser.obrigatorio}")
     private Integer idUser;
     private List<ProductItemDTO> productItems;
     private RegisterPaymentDTO payment;
-    @NotBlank(message = "{campo.idAddress.obrigatorio}")
+    @NotNull(message = "{campo.idAddress.obrigatorio}")
     private Integer idAddress;
+    private Integer idDiscount;
 }

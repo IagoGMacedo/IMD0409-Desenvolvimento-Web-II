@@ -47,6 +47,10 @@ public class Purchase {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @ManyToOne
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
+
     @Column
     private LocalDate date;
 }

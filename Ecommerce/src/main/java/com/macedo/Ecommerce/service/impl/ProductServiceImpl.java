@@ -84,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product incompleteProduct = extractProduct(ProductIncompletaDto);
 
-        patcher.copiarPropriedadesNaoNulas(incompleteProduct, existingProduct);
+        patcher.patchPropertiesNotNull(incompleteProduct, existingProduct);
         return toDTO(productRepository.save(existingProduct));
     }
 

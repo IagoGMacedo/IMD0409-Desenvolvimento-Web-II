@@ -69,7 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category incompleteCategory = extractCategory(categoryIncompletaDto);
 
-        patcher.copiarPropriedadesNaoNulas(incompleteCategory, existingCategory);
+        patcher.patchPropertiesNotNull(incompleteCategory, existingCategory);
         return toDTO(categoryRepository.save(existingCategory));
     }
 

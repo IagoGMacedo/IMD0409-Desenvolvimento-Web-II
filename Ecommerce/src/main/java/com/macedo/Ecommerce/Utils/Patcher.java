@@ -8,7 +8,7 @@ import java.lang.reflect.Modifier;
 
 @Component
 public class Patcher {
-    public void copiarPropriedadesNaoNulas(Object objetoA, Object objetoB) {
+    public void patchPropertiesNotNull(Object objetoA, Object objetoB) {
         Class<?> classeA = objetoA.getClass();
         Class<?> classeB = objetoB.getClass();
 

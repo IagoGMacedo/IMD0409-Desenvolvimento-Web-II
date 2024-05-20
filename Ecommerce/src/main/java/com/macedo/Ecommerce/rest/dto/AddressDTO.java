@@ -1,6 +1,7 @@
 package com.macedo.Ecommerce.rest.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AddressDTO {
     private Integer id;
-    @NotEmpty(message = "{campo.idUser.obrigatorio}")
+    @NotNull(message = "{campo.idUser.obrigatorio}")
     private Integer idUser;
     @NotEmpty(message = "{campo.cep.obrigatorio}")
     private String cep;

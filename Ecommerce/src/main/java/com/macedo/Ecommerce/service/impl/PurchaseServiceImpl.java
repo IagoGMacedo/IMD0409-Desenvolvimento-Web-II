@@ -1,6 +1,7 @@
 package com.macedo.Ecommerce.service.impl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +48,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private final CreditCardRepository creditCardRepository;
 
+    private final DiscountRepository discountRepository;
+
     private final Patcher patcher;
 
     @Override
@@ -89,13 +92,26 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .findById(idAddress)
                 .orElseThrow(() -> new NotFoundException("address"));
 
+        Integer idDiscount = purchase.getIdDiscount();
+        Discount discount = null;
+        if(idDiscount != null){
+            discount = discountRepository
+            .findById(idDiscount)
+            .orElseThrow(() -> new NotFoundException("discount"));
+        }
+
         Purchase newPurchase = new Purchase();
         newPurchase.setDate(LocalDate.now());
         newPurchase.setCustomer(user);
         newPurchase.setAddress(address);
+        newPurchase.setDiscount(discount);
 
         List<ProductItem> productItems = extractProductItems(newPurchase, purchase.getProductItems());
         BigDecimal totalPrice = getTotalPrice(productItems);
+        if(discount != null)
+            totalPrice = calculateDescount(totalPrice, discount);
+        
+        
         Payment payment = extractPayment(newPurchase, purchase.getPayment(), totalPrice);
 
         newPurchase.setTotalPrice(totalPrice);
@@ -108,6 +124,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         return toDTO(newPurchase);
     }
+
+    
 
     @Override
     public ResponsePurchaseDTO updatePurchase(Integer id, RegisterPurchaseDTO Purchase) {
@@ -127,7 +145,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         Purchase incompletePurchase = extractPurchase(PurchaseIncompletaDto);
 
-        patcher.copiarPropriedadesNaoNulas(incompletePurchase, existingPurchase);
+        patcher.patchPropertiesNotNull(incompletePurchase, existingPurchase);
         return toDTO(purchaseRepository.save(existingPurchase));
     }
 
@@ -189,6 +207,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     private ResponsePurchaseDTO toDTO(Purchase purchase) {
+        Integer idDescount = null;
+        if(purchase.getDiscount() != null)
+            idDescount = purchase.getDiscount().getId();
         return ResponsePurchaseDTO.builder()
                 .id(purchase.getId())
                 .idUser(purchase.getCustomer().getId())
@@ -197,6 +218,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .date(purchase.getDate())
                 .payment(toPaymentDTO(purchase.getPayment()))
                 .idAddress(purchase.getAddress().getId())
+                .idDiscount(idDescount)
                 .build();
     }
 
@@ -262,6 +284,12 @@ public class PurchaseServiceImpl implements PurchaseService {
                     .add(productItem.getProduct().getPrice().multiply(new BigDecimal(productItem.getQuantity())));
         }
         return totalValue;
+    }
+
+    private BigDecimal calculateDescount(BigDecimal totalPrice, Discount discount) {
+        BigDecimal descount = totalPrice.multiply(new BigDecimal(discount.getRate())).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+        BigDecimal newTotalPrice = totalPrice.subtract(descount);
+        return newTotalPrice;
     }
 
 }

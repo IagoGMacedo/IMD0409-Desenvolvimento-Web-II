@@ -3,6 +3,7 @@ package com.macedo.Ecommerce.rest.dto;
 import com.macedo.Ecommerce.model.PaymentMethod;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class RegisterPaymentDTO {
-    @NotBlank(message = "{campo.paymentMethod.obrigatorio}")
+    @NotNull(message = "{campo.paymentMethod.obrigatorio}")
     private PaymentMethod paymentMethod;
     private Integer idCreditCard; //armazena se o pagamento tiver sido como cartão de credito;
     private Integer installments; //quantidade de parcelas de um pagamento

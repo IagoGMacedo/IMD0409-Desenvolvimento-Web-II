@@ -22,4 +22,5 @@ public class ResponsePurchaseDTO {
     private BigDecimal totalPrice;
     private Integer idAddress;
     private LocalDate date;
+    private Integer idDiscount;
 }

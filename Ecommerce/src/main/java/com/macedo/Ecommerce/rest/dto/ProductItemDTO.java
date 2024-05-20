@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -15,9 +16,9 @@ import jakarta.validation.constraints.NotBlank;
 @Builder
 
 public class ProductItemDTO {
-    @NotBlank(message = "{campo.idProduct.obrigatorio}")
+    @NotNull(message = "{campo.idProduct.obrigatorio}")
     private Integer idProduct;
-    @NotBlank(message = "{campo.quantity.obrigatorio}")
+    @NotNull(message = "{campo.quantity.obrigatorio}")
     private Integer quantity;
     private BigDecimal subTotal;
 

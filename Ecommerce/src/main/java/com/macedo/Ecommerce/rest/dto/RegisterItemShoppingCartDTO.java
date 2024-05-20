@@ -1,6 +1,7 @@
 package com.macedo.Ecommerce.rest.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RegisterItemShoppingCartDTO {
-    @NotBlank(message = "{campo.idShoppingCart.obrigatorio}")
+    @NotNull(message = "{campo.idShoppingCart.obrigatorio}")
     private Integer idShoppingCart;
-    @NotBlank(message = "{campo.idProductItem.obrigatorio}")
+    @NotNull(message = "{campo.idProductItem.obrigatorio}")
     private Integer idProductItem;
     private Integer quantity;
 

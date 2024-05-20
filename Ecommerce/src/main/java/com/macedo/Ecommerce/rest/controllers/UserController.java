@@ -15,6 +15,7 @@ import com.macedo.Ecommerce.exception.InvalidPasswordException;
 import com.macedo.Ecommerce.model.User;
 import com.macedo.Ecommerce.rest.dto.CredentialsDTO;
 import com.macedo.Ecommerce.rest.dto.TokenDTO;
+import com.macedo.Ecommerce.rest.dto.UserDTO;
 import com.macedo.Ecommerce.security.JwtService;
 import com.macedo.Ecommerce.service.impl.UserServiceImpl;
 
@@ -31,23 +32,12 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User salvar(@RequestBody @Valid User usuario) {
-        String senhaCriptografada = passwordEncoder.encode(usuario.getPassword());
-        usuario.setPassword(senhaCriptografada);
+    public UserDTO salvar(@RequestBody @Valid UserDTO usuario) {
         return usuarioService.salvar(usuario);
     }
 
     @PostMapping("/auth")
-    public TokenDTO autenticar(@RequestBody CredentialsDTO credenciais) {
-        try {
-            User usuario = User.builder()
-                    .login(credenciais.getLogin())
-                    .password(credenciais.getPassword()).build();
-            UserDetails usuarioAutenticado = usuarioService.autenticar(usuario);
-            String token = jwtService.gerarToken(usuario);
-            return new TokenDTO(usuario.getLogin(), token);
-        } catch (UsernameNotFoundException | InvalidPasswordException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+    public TokenDTO autenticar(@RequestBody @Valid CredentialsDTO credenciais) {
+        return usuarioService.autenticar(credenciais);
     }
 }

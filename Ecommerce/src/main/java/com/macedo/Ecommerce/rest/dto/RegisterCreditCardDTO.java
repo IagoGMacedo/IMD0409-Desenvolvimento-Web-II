@@ -1,6 +1,7 @@
 package com.macedo.Ecommerce.rest.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RegisterCreditCardDTO {
-    @NotBlank(message = "{campo.idUser.obrigatorio}")
+    @NotNull(message = "{campo.idUser.obrigatorio}")
     private Integer idUser;
     @NotBlank(message = "{campo.cardHolderName.obrigatorio}")
     private String cardHolderName;

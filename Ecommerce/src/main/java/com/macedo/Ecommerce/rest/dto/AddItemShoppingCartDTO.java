@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class AddItemShoppingCartDTO {
-    @NotBlank(message = "{campo.idShoppingCart.obrigatorio}")
+    @NotNull(message = "{campo.idShoppingCart.obrigatorio}")
     private Integer idShoppingCart;
-    @NotBlank(message = "{campo.idUser.obrigatorio}")
     private Integer idUser;
     private ProductItemDTO productItem;
 }

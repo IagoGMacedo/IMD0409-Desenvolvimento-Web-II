@@ -82,7 +82,8 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<ProductDTO> patchProduct(@PathVariable Integer id, @RequestBody ProductDTO ProductIncompletaDTO) {
+    public ResponseEntity<ProductDTO> patchProduct(@PathVariable Integer id,
+            @RequestBody ProductDTO ProductIncompletaDTO) {
         return new ResponseEntity<ProductDTO>((productService.patchProduct(id, ProductIncompletaDTO)), HttpStatus.OK);
     }
 

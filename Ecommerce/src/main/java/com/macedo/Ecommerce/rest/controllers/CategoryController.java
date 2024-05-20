@@ -67,7 +67,8 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer id, @RequestBody @Valid CategoryDTO Category) {
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer id,
+            @RequestBody @Valid CategoryDTO Category) {
         return new ResponseEntity<CategoryDTO>((categoryService.updateCategory(id, Category)), HttpStatus.OK);
     }
 
@@ -77,8 +78,10 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Não existe uma Category com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<CategoryDTO> patchCategory(@PathVariable Integer id, @RequestBody CategoryDTO CategoryIncompletaDTO) {
-        return new ResponseEntity<CategoryDTO>((categoryService.patchCategory(id, CategoryIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> patchCategory(@PathVariable Integer id,
+            @RequestBody CategoryDTO CategoryIncompletaDTO) {
+        return new ResponseEntity<CategoryDTO>((categoryService.patchCategory(id, CategoryIncompletaDTO)),
+                HttpStatus.OK);
     }
 
     @Operation(description = "Exclui uma Category pelo ID")

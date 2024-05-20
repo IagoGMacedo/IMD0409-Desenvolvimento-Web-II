@@ -2,7 +2,9 @@ package com.macedo.Ecommerce.rest.dto;
 
 import com.macedo.Ecommerce.model.Category;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,11 +23,13 @@ public class ProductDTO {
     private String name;
     @NotBlank(message = "{campo.description.obrigatorio}")
     private String description;
-    @NotBlank(message = "{campo.price.obrigatorio}")
+    @NotNull(message = "{campo.price.obrigatorio}")
+    @Min(value = 1, message = "{campo.price.valormin}")
     private BigDecimal price;
-    @NotBlank(message = "{campo.categories.obrigatorio}")
+    @NotNull(message = "{campo.categories.obrigatorio}")
     private List<Integer> categories;
-    @NotBlank(message = "{campo.stockQuantity.obrigatorio}")
+    @NotNull(message = "{campo.stockQuantity.obrigatorio}")
+    @Min(value = 0, message = "{campo.stockQuantity.valormin}")
     private Integer stockQuantity;
 
 }
