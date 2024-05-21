@@ -72,7 +72,7 @@ public class ApplicationControllerAdvice {
         String message = ex.getMostSpecificCause().getMessage();
         String formattedMessage = formatMessage(message);
 
-        return new ResponseEntity<>(new ApiErrors(formattedMessage), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ApiErrors(formattedMessage), HttpStatus.CONFLICT);
     }
 
     private String formatMessage(String message) {

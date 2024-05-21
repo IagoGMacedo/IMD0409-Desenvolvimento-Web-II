@@ -32,9 +32,9 @@ public class ShippingTaxController {
         @Autowired
         private ShippingTaxService shippingTaxService;
 
-        @Operation(description = "Lista as ShippingTaxs existentes a partir de filtro, se passado")
+        @Operation(description = "Lista os Fretes existentes a partir de filtro, se passado")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a lista de ShippingTaxs conforme filtro"),
+                        @ApiResponse(responseCode = "200", description = "Retorna a lista de Fretes conforme filtro"),
         })
         @GetMapping
         public ResponseEntity<List<ShippingTaxDTO>> getShippingTaxs(ShippingTaxDTO filtro) {
@@ -42,10 +42,10 @@ public class ShippingTaxController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Busca ShippingTax pelo ID")
+        @Operation(description = "Busca Frete pelo ID")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a ShippingTax com o ID específicado"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma ShippingTax com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "Retorna o Frete com o ID específicado"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Frete com o ID específicado")
         })
         @GetMapping("{id}")
         public ResponseEntity<ShippingTaxDTO> getShippingTaxById(@PathVariable Integer id) {
@@ -53,10 +53,10 @@ public class ShippingTaxController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Adiciona uma nova ShippingTax por DTO")
+        @Operation(description = "Adiciona um novo Frete")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "201", description = "Retorna a ShippingTax criada"),
-                        @ApiResponse(responseCode = "404", description = "O usuário atrelado à ShippingTax não foi encontrado")
+                        @ApiResponse(responseCode = "201", description = "O novo Frete foi criado com sucesso"),
+                        @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido")
         })
         @PostMapping
         public ResponseEntity<ShippingTaxDTO> createShippingTax(
@@ -65,10 +65,11 @@ public class ShippingTaxController {
                                 HttpStatus.CREATED);
         }
 
-        @Operation(description = "Atualiza uma ShippingTax com o método PUT")
+        @Operation(description = "Atualiza um Frete com o método PUT")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a ShippingTax atualizada"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma ShippingTax com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "Retorna o Frete atualizada"),
+                        @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Frete com o ID específicado")
         })
         @PutMapping("{id}")
         public ResponseEntity<ShippingTaxDTO> updateShippingTax(@PathVariable Integer id,
@@ -77,10 +78,10 @@ public class ShippingTaxController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Atualiza uma ShippingTax com o método PATCH")
+        @Operation(description = "Atualiza um Frete com o método PATCH")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a ShippingTax atualizada"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma ShippingTax com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "Retorna o Frete atualizada"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Frete com o ID específicado")
         })
         @PatchMapping("{id}")
         public ResponseEntity<ShippingTaxDTO> patchShippingTax(@PathVariable Integer id,
@@ -90,10 +91,10 @@ public class ShippingTaxController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Exclui uma ShippingTax pelo ID")
+        @Operation(description = "Exclui um Frete pelo ID")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "A ShippingTax foi deletada"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma ShippingTax com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "O Frete foi deletado"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Frete com o ID específicado")
         })
         @DeleteMapping("{id}")
         public ResponseEntity<Void> deleteShippingTax(@PathVariable Integer id) {

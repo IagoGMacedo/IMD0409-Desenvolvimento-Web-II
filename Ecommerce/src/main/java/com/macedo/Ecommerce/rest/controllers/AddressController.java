@@ -52,7 +52,7 @@ public class AddressController {
         return new ResponseEntity<AddressDTO>((addressService.getAddressById(id)), HttpStatus.OK);
     }
 
-    @Operation(description = "Retorna os endereços usuário solicitado")
+    @Operation(description = "Retorna os endereços do usuário solicitado")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna os endereços do usuário solicitado"),
             @ApiResponse(responseCode = "404", description = "Não existe um usuário com o ID especificado")
@@ -76,7 +76,7 @@ public class AddressController {
 
     @Operation(description = "Atualiza um endereço com o método PUT")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "O endereço foi atualizado"),
+            @ApiResponse(responseCode = "200", description = "O endereço foi atualizado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Não existe um endereço com o ID específicado")
     })
     @PutMapping("{id}")
@@ -86,7 +86,7 @@ public class AddressController {
 
     @Operation(description = "Atualiza um endereço com o método PATCH")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "O endereço foi atualizado"),
+            @ApiResponse(responseCode = "200", description = "O endereço foi atualizado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Não existe um endereço com o ID específicado")
     })
     @PatchMapping("{id}")

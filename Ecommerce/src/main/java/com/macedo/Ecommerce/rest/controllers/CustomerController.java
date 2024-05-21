@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.macedo.Ecommerce.model.Customer;
 import com.macedo.Ecommerce.rest.dto.CustomerDTO;
 import com.macedo.Ecommerce.service.CustomerService;
 
@@ -32,59 +31,63 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @Operation(description = "Lista as Customers existentes a partir de filtro, se passado")
+    @Operation(description = "Lista os Clientes existentes a partir de filtro, se passado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a lista de Customers conforme filtro"),
+            @ApiResponse(responseCode = "200", description = "Retorna a lista de Clientes conforme filtro"),
     })
     @GetMapping
     public ResponseEntity<List<CustomerDTO>> getCustomers(CustomerDTO filtro) {
         return new ResponseEntity<List<CustomerDTO>>((customerService.getCustomers(filtro)), HttpStatus.OK);
     }
 
-    @Operation(description = "Busca Customer pelo ID")
+    @Operation(description = "Busca Cliente pelo ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a Customer com o ID específicado"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Customer com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna o Cliente com o ID específicado"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Cliente com o ID específicado")
     })
     @GetMapping("{id}")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Integer id) {
         return new ResponseEntity<CustomerDTO>((customerService.getCustomerById(id)), HttpStatus.OK);
     }
 
-    @Operation(description = "Adiciona uma nova Customer por DTO")
+    @Operation(description = "Adiciona um novo Cliente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Retorna a Customer criada"),
-            @ApiResponse(responseCode = "404", description = "O usuário atrelado à Customer não foi encontrado")
+            @ApiResponse(responseCode = "201", description = "O novo Cliente foi criado"),
+            @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido"),
     })
     @PostMapping
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO Customer) {
         return new ResponseEntity<CustomerDTO>((customerService.createCustomer(Customer)), HttpStatus.CREATED);
     }
 
-    @Operation(description = "Atualiza uma Customer com o método PUT")
+    @Operation(description = "Atualiza um Cliente com o método PUT")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a Customer atualizada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Customer com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "O Cliente foi atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Cliente com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer id, @RequestBody @Valid CustomerDTO Customer) {
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer id,
+            @RequestBody @Valid CustomerDTO Customer) {
         return new ResponseEntity<CustomerDTO>((customerService.updateCustomer(id, Customer)), HttpStatus.OK);
     }
 
-    @Operation(description = "Atualiza uma Customer com o método PATCH")
+    @Operation(description = "Atualiza um Cliente com o método PATCH")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a Customer atualizada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Customer com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "O Cliente foi atualizado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Cliente com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable Integer id, @RequestBody CustomerDTO CustomerIncompletaDTO) {
-        return new ResponseEntity<CustomerDTO>((customerService.patchCustomer(id, CustomerIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable Integer id,
+            @RequestBody CustomerDTO CustomerIncompletaDTO) {
+        return new ResponseEntity<CustomerDTO>((customerService.patchCustomer(id, CustomerIncompletaDTO)),
+                HttpStatus.OK);
     }
 
-    @Operation(description = "Exclui uma Customer pelo ID")
+    @Operation(description = "Exclui um Cliente pelo ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "A Customer foi deletada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Customer com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "O Cliente foi deletado"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Cliente com o ID específicado")
     })
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Integer id) {

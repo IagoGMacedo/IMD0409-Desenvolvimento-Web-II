@@ -27,29 +27,29 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @Operation(description = "Lista as Payments existentes a partir de filtro, se passado")
+    @Operation(description = "Lista os Pagamentos a partir de filtro, se passado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a lista de Payments conforme filtro"),
+            @ApiResponse(responseCode = "200", description = "Retorna a lista de Pagamentos conforme filtro"),
     })
     @GetMapping
     public ResponseEntity<List<ResponsePaymentDTO>> getPayments(RegisterPaymentDTO filtro) {
         return new ResponseEntity<List<ResponsePaymentDTO>>((paymentService.getPayments(filtro)), HttpStatus.OK);
     }
 
-    @Operation(description = "Busca Payment pelo ID")
+    @Operation(description = "Busca Pagamento pelo ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a Payment com o ID específicado"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Payment com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna o Pagamento com o ID específicado"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Pagamento com o ID específicado")
     })
     @GetMapping("{id}")
     public ResponseEntity<ResponsePaymentDTO> getPaymentById(@PathVariable Integer id) {
         return new ResponseEntity<ResponsePaymentDTO>((paymentService.getPaymentById(id)), HttpStatus.OK);
     }
 
-    @Operation(description = "Retorna a lista de pagamentos do usuário solicitado")
+    @Operation(description = "Retorna a lista de Pagamentos do Cliente solicitado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna o carrinho de compras do usuário solicitado"),
-            @ApiResponse(responseCode = "404", description = "Não existe um usuário com o ID especificado")
+            @ApiResponse(responseCode = "200", description = "Retorna a lista de Pagamentos do Cliente solicitado"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Cliente com o ID especificado")
     })
     @GetMapping("/customer/{id}")
     public ResponseEntity<List<ResponsePaymentDTO>> getPaymentsByCustomerId(@PathVariable Integer id) {

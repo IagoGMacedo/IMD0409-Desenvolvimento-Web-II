@@ -32,9 +32,9 @@ public class DiscountController {
         @Autowired
         private DiscountService discountService;
 
-        @Operation(description = "Lista as Discounts existentes a partir de filtro, se passado")
+        @Operation(description = "Lista os Descontos existentes a partir de filtro, se passado")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a lista de Discounts conforme filtro"),
+                        @ApiResponse(responseCode = "200", description = "Retorna a lista de Descontos conforme filtro"),
         })
         @GetMapping
         public ResponseEntity<List<DiscountDTO>> getDiscounts(DiscountDTO filtro) {
@@ -42,20 +42,20 @@ public class DiscountController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Busca Discount pelo ID")
+        @Operation(description = "Busca Desconto pelo ID")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a Discount com o ID específicado"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma Discount com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "Retorna o Desconto com o ID específicado"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Desconto com o ID específicado")
         })
         @GetMapping("{id}")
         public ResponseEntity<DiscountDTO> getDiscountById(@PathVariable Integer id) {
                 return new ResponseEntity<DiscountDTO>((discountService.getDiscountById(id)), HttpStatus.OK);
         }
 
-        @Operation(description = "Adiciona uma nova Discount por DTO")
+        @Operation(description = "Adiciona um novo Desconto")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "201", description = "Retorna a Discount criada"),
-                        @ApiResponse(responseCode = "404", description = "O usuário atrelado à Discount não foi encontrado")
+                        @ApiResponse(responseCode = "201", description = "O novo Desconto foi criado"),
+                        @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido"),
         })
         @PostMapping
         public ResponseEntity<DiscountDTO> createDiscount(@RequestBody @Valid DiscountDTO Discount) {
@@ -63,10 +63,11 @@ public class DiscountController {
                                 HttpStatus.CREATED);
         }
 
-        @Operation(description = "Atualiza uma Discount com o método PUT")
+        @Operation(description = "Atualiza um Desconto com o método PUT")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a Discount atualizada"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma Discount com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "O Desconto foi atualizado com sucesso"),
+                        @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Desconto com o ID específicado")
         })
         @PutMapping("{id}")
         public ResponseEntity<DiscountDTO> updateDiscount(@PathVariable Integer id,
@@ -75,10 +76,10 @@ public class DiscountController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Atualiza uma Discount com o método PATCH")
+        @Operation(description = "Atualiza um Desconto com o método PATCH")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a Discount atualizada"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma Discount com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "O Desconto foi atualizado com sucesso"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Desconto com o ID específicado")
         })
         @PatchMapping("{id}")
         public ResponseEntity<DiscountDTO> patchDiscount(@PathVariable Integer id,
@@ -88,10 +89,10 @@ public class DiscountController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Exclui uma Discount pelo ID")
+        @Operation(description = "Exclui um Desconto pelo ID")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "A Discount foi deletada"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma Discount com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "O Desconto foi deletado"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Desconto com o ID específicado")
         })
         @DeleteMapping("{id}")
         public ResponseEntity<Void> deleteDiscount(@PathVariable Integer id) {

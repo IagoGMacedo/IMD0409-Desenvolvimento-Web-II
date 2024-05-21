@@ -35,9 +35,9 @@ public class CreditCardController {
         @Autowired
         private CreditCardService creditCardService;
 
-        @Operation(description = "Lista as CreditCards existentes a partir de filtro, se passado")
+        @Operation(description = "Lista os Cartões existentes a partir de filtro, se passado")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a lista de CreditCards conforme filtro"),
+                        @ApiResponse(responseCode = "200", description = "Retorna a lista de Cartões conforme filtro"),
         })
         @GetMapping
         public ResponseEntity<List<ResponseCreditCardDTO>> getCreditCards(RegisterCreditCardDTO filtro) {
@@ -45,10 +45,10 @@ public class CreditCardController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Busca CreditCard pelo ID")
+        @Operation(description = "Busca Cartão pelo ID")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a CreditCard com o ID específicado"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma CreditCard com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "Retorna o Cartão com o ID específicado"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Cartão com o ID específicado")
         })
         @GetMapping("{id}")
         public ResponseEntity<ResponseCreditCardDTO> getCreditCardById(@PathVariable Integer id) {
@@ -56,6 +56,11 @@ public class CreditCardController {
                                 HttpStatus.OK);
         }
 
+        @Operation(description = "Busca os Cartões do cliente solicitado")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Retorna os Cartões do Cliente solicitado"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Cliente com o ID específicado")
+        })
         @GetMapping("/customer/{id}")
         public ResponseEntity<List<ResponseCreditCardDTO>> getCreditCardsByCustomerId(@PathVariable Integer id) {
                 return new ResponseEntity<List<ResponseCreditCardDTO>>(
@@ -65,8 +70,9 @@ public class CreditCardController {
 
         @Operation(description = "Adiciona uma nova CreditCard por DTO")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "201", description = "Retorna a CreditCard criada"),
-                        @ApiResponse(responseCode = "404", description = "O usuário atrelado à CreditCard não foi encontrado")
+                        @ApiResponse(responseCode = "201", description = "O novo Cartão foi criado"),
+                        @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um cliente com o ID especificado")
         })
         @PostMapping
         public ResponseEntity<ResponseCreditCardDTO> createCreditCard(
@@ -75,10 +81,11 @@ public class CreditCardController {
                                 HttpStatus.CREATED);
         }
 
-        @Operation(description = "Atualiza uma CreditCard com o método PUT")
+        @Operation(description = "Atualiza um Cartão com o método PUT")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a CreditCard atualizada"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma CreditCard com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "O Cartão foi atualizado com sucesso"),
+                        @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Cartão com o ID específicado")
         })
         @PutMapping("{id}")
         public ResponseEntity<ResponseCreditCardDTO> updateCreditCard(@PathVariable Integer id,
@@ -87,10 +94,10 @@ public class CreditCardController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Atualiza uma CreditCard com o método PATCH")
+        @Operation(description = "Atualiza um Cartão com o método PATCH")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna a CreditCard atualizada"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma CreditCard com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "O Cartão foi atualizado com sucesso"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Cartão com o ID específicado")
         })
         @PatchMapping("{id}")
         public ResponseEntity<ResponseCreditCardDTO> patchCreditCard(@PathVariable Integer id,
@@ -100,10 +107,10 @@ public class CreditCardController {
                                 HttpStatus.OK);
         }
 
-        @Operation(description = "Exclui uma CreditCard pelo ID")
+        @Operation(description = "Exclui um Cartão pelo ID")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "A CreditCard foi deletada"),
-                        @ApiResponse(responseCode = "404", description = "Não existe uma CreditCard com o ID específicado")
+                        @ApiResponse(responseCode = "200", description = "O Cartão foi deletado"),
+                        @ApiResponse(responseCode = "404", description = "Não existe um Cartão com o ID específicado")
         })
         @DeleteMapping("{id}")
         public ResponseEntity<Void> deleteCreditCard(@PathVariable Integer id) {

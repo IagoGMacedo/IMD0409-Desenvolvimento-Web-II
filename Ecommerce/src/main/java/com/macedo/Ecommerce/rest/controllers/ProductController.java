@@ -32,19 +32,19 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Operation(description = "Lista as Products existentes a partir de filtro, se passado")
+    @Operation(description = "Lista os Produtos existentes a partir de filtro, se passado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a lista de Products conforme filtro"),
+            @ApiResponse(responseCode = "200", description = "Retorna a lista de Produtos conforme filtro"),
     })
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getProducts(ProductDTO filtro) {
         return new ResponseEntity<List<ProductDTO>>((productService.getProducts(filtro)), HttpStatus.OK);
     }
 
-    @Operation(description = "Busca Product pelo ID")
+    @Operation(description = "Busca Produto pelo ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a Product com o ID específicado"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna o Produto com o ID específicado"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Produto com o ID específicado")
     })
     @GetMapping("{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Integer id) {
@@ -56,30 +56,32 @@ public class ProductController {
         return new ResponseEntity<List<ProductDTO>>((productService.getProductsByCategoryId(id)), HttpStatus.OK);
     }
 
-    @Operation(description = "Adiciona uma nova Product por DTO")
+    @Operation(description = "Adiciona uma nova Produto")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Retorna a Product criada"),
-            @ApiResponse(responseCode = "404", description = "O usuário atrelado à Product não foi encontrado")
+            @ApiResponse(responseCode = "201", description = "O novo Produto foi criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Cateogira com o ID específicado")
     })
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO Product) {
         return new ResponseEntity<ProductDTO>((productService.createProduct(Product)), HttpStatus.CREATED);
     }
 
-    @Operation(description = "Atualiza uma Product com o método PUT")
+    @Operation(description = "Atualiza um Produto com o método PUT")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a Product atualizada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "O Produto foi atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Algum dos campos obrigatórios não foi preenchido"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Produto com o ID específicado")
     })
     @PutMapping("{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody @Valid ProductDTO Product) {
         return new ResponseEntity<ProductDTO>((productService.updateProduct(id, Product)), HttpStatus.OK);
     }
 
-    @Operation(description = "Atualiza uma Product com o método PATCH")
+    @Operation(description = "Atualiza um Produto com o método PATCH")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a Product atualizada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "O Produto foi atualizado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Produto com o ID específicado")
     })
     @PatchMapping("{id}")
     public ResponseEntity<ProductDTO> patchProduct(@PathVariable Integer id,
@@ -87,10 +89,10 @@ public class ProductController {
         return new ResponseEntity<ProductDTO>((productService.patchProduct(id, ProductIncompletaDTO)), HttpStatus.OK);
     }
 
-    @Operation(description = "Exclui uma Product pelo ID")
+    @Operation(description = "Exclui um Produto pelo ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "A Product foi deletada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Product com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "O Produto foi deletado"),
+            @ApiResponse(responseCode = "404", description = "Não existe um Produto com o ID específicado")
     })
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {

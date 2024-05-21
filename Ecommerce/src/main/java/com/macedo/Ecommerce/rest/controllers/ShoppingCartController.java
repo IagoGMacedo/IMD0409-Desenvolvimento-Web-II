@@ -43,10 +43,10 @@ public class ShoppingCartController {
         return new ResponseEntity<ShoppingCartDTO>((shoppingCartService.getShoppingCartById(id)), HttpStatus.OK);
     }
 
-    @Operation(description = "Retorna o carrinho de compras do usuário solicitado")
+    @Operation(description = "Retorna o carrinho de compras do cliente solicitado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna o carrinho de compras do usuário solicitado"),
-            @ApiResponse(responseCode = "404", description = "Não existe um usuário com o ID especificado")
+            @ApiResponse(responseCode = "200", description = "Retorna o carrinho de compras do cliente solicitado"),
+            @ApiResponse(responseCode = "404", description = "Não existe um cliente com o ID especificado")
     })
     @GetMapping("/customer/{id}")
     public ResponseEntity<ShoppingCartDTO> getShoppingCartByCustomerId(@PathVariable Integer id) {
