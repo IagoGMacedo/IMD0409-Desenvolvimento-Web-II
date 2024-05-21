@@ -19,8 +19,9 @@ public class ResponsePurchaseDTO {
     private Integer idUser;
     private List<ProductItemDTO> productItems;
     private ResponsePaymentDTO payment;
-    private BigDecimal totalPrice;
     private Integer idAddress;
     private LocalDate date;
     private Integer idDiscount;
+    private BigDecimal shippingTax;
+    private BigDecimal totalPrice;
 }

@@ -37,6 +37,9 @@ public class Purchase {
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
     private List<ProductItem> productItems;
 
+    @Column
+    private BigDecimal shippingTax;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal totalPrice;
 

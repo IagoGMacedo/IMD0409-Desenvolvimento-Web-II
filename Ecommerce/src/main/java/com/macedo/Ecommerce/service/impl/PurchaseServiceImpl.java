@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.macedo.Ecommerce.Utils.Patcher;
@@ -50,6 +51,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private final DiscountRepository discountRepository;
 
+    private final ShippingTaxRepository shippingTaxRepository;
+
     private final Patcher patcher;
 
     @Override
@@ -92,12 +95,19 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .findById(idAddress)
                 .orElseThrow(() -> new NotFoundException("address"));
 
+        BigDecimal shippingTax = BigDecimal.ZERO;
+
+        Optional<ShippingTax> optShippingTax = shippingTaxRepository.findByState(address.getState());
+        if (optShippingTax.isPresent()) {
+            shippingTax = optShippingTax.get().getValue();
+        }
+
         Integer idDiscount = purchase.getIdDiscount();
         Discount discount = null;
-        if(idDiscount != null){
+        if (idDiscount != null) {
             discount = discountRepository
-            .findById(idDiscount)
-            .orElseThrow(() -> new NotFoundException("discount"));
+                    .findById(idDiscount)
+                    .orElseThrow(() -> new NotFoundException("discount"));
         }
 
         Purchase newPurchase = new Purchase();
@@ -105,13 +115,13 @@ public class PurchaseServiceImpl implements PurchaseService {
         newPurchase.setCustomer(user);
         newPurchase.setAddress(address);
         newPurchase.setDiscount(discount);
+        newPurchase.setShippingTax(shippingTax);
 
         List<ProductItem> productItems = extractProductItems(newPurchase, purchase.getProductItems());
-        BigDecimal totalPrice = getTotalPrice(productItems);
-        if(discount != null)
+        BigDecimal totalPrice = getTotalPrice(productItems).add(shippingTax);
+        if (discount != null)
             totalPrice = calculateDescount(totalPrice, discount);
-        
-        
+
         Payment payment = extractPayment(newPurchase, purchase.getPayment(), totalPrice);
 
         newPurchase.setTotalPrice(totalPrice);
@@ -124,8 +134,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         return toDTO(newPurchase);
     }
-
-    
 
     @Override
     public ResponsePurchaseDTO updatePurchase(Integer id, RegisterPurchaseDTO Purchase) {
@@ -208,7 +216,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private ResponsePurchaseDTO toDTO(Purchase purchase) {
         Integer idDescount = null;
-        if(purchase.getDiscount() != null)
+        if (purchase.getDiscount() != null)
             idDescount = purchase.getDiscount().getId();
         return ResponsePurchaseDTO.builder()
                 .id(purchase.getId())
@@ -218,6 +226,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .date(purchase.getDate())
                 .payment(toPaymentDTO(purchase.getPayment()))
                 .idAddress(purchase.getAddress().getId())
+                .shippingTax(purchase.getShippingTax())
                 .idDiscount(idDescount)
                 .build();
     }
@@ -287,7 +296,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     private BigDecimal calculateDescount(BigDecimal totalPrice, Discount discount) {
-        BigDecimal descount = totalPrice.multiply(new BigDecimal(discount.getRate())).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+        BigDecimal descount = totalPrice.multiply(new BigDecimal(discount.getRate())).divide(BigDecimal.valueOf(100), 2,
+                RoundingMode.HALF_UP);
         BigDecimal newTotalPrice = totalPrice.subtract(descount);
         return newTotalPrice;
     }

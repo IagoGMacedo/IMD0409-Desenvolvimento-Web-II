@@ -44,7 +44,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     @Override
     public ResponseCreditCardDTO getCreditCardById(Integer id) {
         CreditCard creditCard = creditCardRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("credit carrd"));
+                .orElseThrow(() -> new NotFoundException("credit card"));
         return toDTO(creditCard);
     }
 

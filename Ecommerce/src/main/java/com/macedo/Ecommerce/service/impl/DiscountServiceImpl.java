@@ -43,7 +43,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public DiscountDTO getDiscountById(Integer id) {
         Discount discount = discountRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("credit carrd"));
+                .orElseThrow(() -> new NotFoundException("discount"));
         return toDTO(discount);
     }
 

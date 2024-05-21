@@ -69,21 +69,23 @@ public class SecurityConfig {
                                                 .hasAnyRole("ADMIN", "SUPORTE", "USER")
                                                 .requestMatchers("/api/creditCards/**")
                                                 .hasAnyRole("USER", "ADMIN", "SUPORTE")
-                                                /*
-                                                 * .requestMatchers(HttpMethod.GET, "/api/categories")
-                                                 * .hasAnyRole("ADMIN", "LOJISTA", "USER")
-                                                 */
+
                                                 .requestMatchers(HttpMethod.GET, "/api/categories/**")
                                                 .hasAnyRole("ADMIN", "LOJISTA", "USER")
                                                 .requestMatchers("/api/categories/**")
-                                                .hasAnyRole("ADMIN", "LOJISTA" )
+                                                .hasAnyRole("ADMIN", "LOJISTA")
 
                                                 .requestMatchers(HttpMethod.GET, "/api/products/**")
                                                 .hasAnyRole("ADMIN", "LOJISTA", "USER")
                                                 .requestMatchers("/api/products/**")
                                                 .hasAnyRole("ADMIN", "LOJISTA")
 
+                                                .requestMatchers(HttpMethod.GET, "/api/discounts/**")
+                                                .hasAnyRole("ADMIN", "LOJISTA", "USER")
                                                 .requestMatchers("/api/discounts/**")
+                                                .hasRole("ADMIN")
+
+                                                .requestMatchers("/api/shippingTaxes/**")
                                                 .hasRole("ADMIN")
 
                                                 .requestMatchers(HttpMethod.GET, "/api/purchases")
@@ -103,9 +105,7 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.GET, "/api/shoppingCarts")
                                                 .hasAnyRole("ADMIN", "SUPORTE")
                                                 .requestMatchers("/api/shoppingCarts/**")
-                                                .hasAnyRole("ADMIN","SUPORTE", "USER")
-
-                                                
+                                                .hasAnyRole("ADMIN", "SUPORTE", "USER")
 
                                                 .anyRequest().authenticated()
 
