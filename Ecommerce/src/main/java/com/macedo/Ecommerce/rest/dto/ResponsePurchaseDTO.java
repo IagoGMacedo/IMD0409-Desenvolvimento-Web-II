@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class ResponsePurchaseDTO {
     private Integer id;
-    private Integer idUser;
+    private Integer idCustomer;
     private List<ProductItemDTO> productItems;
     private ResponsePaymentDTO payment;
     private Integer idAddress;

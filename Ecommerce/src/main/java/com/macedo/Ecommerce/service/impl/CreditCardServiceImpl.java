@@ -26,7 +26,7 @@ import org.springframework.util.CollectionUtils;
 public class CreditCardServiceImpl implements CreditCardService {
 
     private final CreditCardRepository creditCardRepository;
-    private final CustomerRepository userRepository;
+    private final CustomerRepository customerRepository;
     private final Patcher patcher;
 
     @Override
@@ -50,14 +50,14 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     public ResponseCreditCardDTO createCreditCard(RegisterCreditCardDTO creditCard) {
-        Integer idUser = creditCard.getIdUser();
-        Customer user = userRepository
-                .findById(idUser)
+        Integer idCustomer = creditCard.getIdCustomer();
+        Customer customer = customerRepository
+                .findById(idCustomer)
                 .orElseThrow(() -> new NotFoundException("user"));
 
         CreditCard newCreditCard = new CreditCard();
         newCreditCard = extractCreditCard(creditCard);
-        newCreditCard.setCustomer(user);
+        newCreditCard.setCustomer(customer);
         return toDTO(creditCardRepository.save(newCreditCard));
     }
 
@@ -93,12 +93,12 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     private CreditCard extractCreditCard(RegisterCreditCardDTO dto) {
         CreditCard creditCard = new CreditCard();
-        if (dto.getIdUser() != null) {
-            Integer idUser = dto.getIdUser();
-            Customer user = userRepository
-                    .findById(idUser)
+        if (dto.getIdCustomer() != null) {
+            Integer idCustomer = dto.getIdCustomer();
+            Customer customer = customerRepository
+                    .findById(idCustomer)
                     .orElseThrow(() -> new NotFoundException("user"));
-            creditCard.setCustomer(user);
+            creditCard.setCustomer(customer);
         }
         creditCard.setCardHolderName(dto.getCardHolderName());
         creditCard.setNumber(dto.getNumber());
@@ -111,7 +111,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         return ResponseCreditCardDTO
                 .builder()
                 .id(creditCard.getId())
-                .idUser(creditCard.getCustomer().getId())
+                .idCustomer(creditCard.getCustomer().getId())
                 .cardHolderName(creditCard.getCardHolderName())
                 .lastNumbers(creditCard.getNumber().substring(creditCard.getNumber().length() - 4))
                 .build();

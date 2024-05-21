@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AddressDTO {
     private Integer id;
-    @NotNull(message = "{campo.idUser.obrigatorio}")
-    private Integer idUser;
+    @NotNull(message = "{campo.idCustomer.obrigatorio}")
+    private Integer idCustomer;
     @NotEmpty(message = "{campo.cep.obrigatorio}")
     private String cep;
     @NotEmpty(message = "{campo.completeAddress.obrigatorio}")

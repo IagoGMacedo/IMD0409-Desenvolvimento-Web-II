@@ -18,8 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class RegisterPurchaseDTO {
-    @NotNull(message = "{campo.idUser.obrigatorio}")
-    private Integer idUser;
+    @NotNull(message = "{campo.idCustomer.obrigatorio}")
+    private Integer idCustomer;
     private List<ProductItemDTO> productItems;
     private RegisterPaymentDTO payment;
     @NotNull(message = "{campo.idAddress.obrigatorio}")

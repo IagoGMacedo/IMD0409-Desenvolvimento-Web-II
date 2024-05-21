@@ -85,9 +85,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     @Transactional
     public ResponsePurchaseDTO createPurchase(RegisterPurchaseDTO purchase) {
-        Integer idUser = purchase.getIdUser();
-        Customer user = userRepository
-                .findById(idUser)
+        Integer idCustomer = purchase.getIdCustomer();
+        Customer customer = userRepository
+                .findById(idCustomer)
                 .orElseThrow(() -> new NotFoundException("user"));
 
         Integer idAddress = purchase.getIdAddress();
@@ -112,7 +112,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         Purchase newPurchase = new Purchase();
         newPurchase.setDate(LocalDate.now());
-        newPurchase.setCustomer(user);
+        newPurchase.setCustomer(customer);
         newPurchase.setAddress(address);
         newPurchase.setDiscount(discount);
         newPurchase.setShippingTax(shippingTax);
@@ -220,7 +220,7 @@ public class PurchaseServiceImpl implements PurchaseService {
             idDescount = purchase.getDiscount().getId();
         return ResponsePurchaseDTO.builder()
                 .id(purchase.getId())
-                .idUser(purchase.getCustomer().getId())
+                .idCustomer(purchase.getCustomer().getId())
                 .productItems(toDTOProductItems(purchase.getProductItems()))
                 .totalPrice(purchase.getTotalPrice())
                 .date(purchase.getDate())

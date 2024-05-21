@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RegisterCreditCardDTO {
-    @NotNull(message = "{campo.idUser.obrigatorio}")
-    private Integer idUser;
+    @NotNull(message = "{campo.idCustomer.obrigatorio}")
+    private Integer idCustomer;
     @NotBlank(message = "{campo.cardHolderName.obrigatorio}")
     private String cardHolderName;
     @NotBlank(message = "{campo.validity.obrigatorio}")

@@ -129,7 +129,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartDTO toDTO(ShoppingCart shoppingCart) {
         return ShoppingCartDTO.builder()
                 .id(shoppingCart.getId())
-                .idUser(shoppingCart.getCustomer().getId())
+                .idCustomer(shoppingCart.getCustomer().getId())
                 .totalPrice(getTotalPrice(shoppingCart.getProductItems()))
                 .productItems(toDTOProductItems(shoppingCart.getProductItems()))
                 .build();

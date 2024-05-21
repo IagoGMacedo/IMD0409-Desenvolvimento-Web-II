@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 public class ShoppingCartDTO {
     private Integer id;
-    private Integer idUser;
+    private Integer idCustomer;
     private List<ProductItemDTO> productItems;
     private BigDecimal totalPrice;
 }

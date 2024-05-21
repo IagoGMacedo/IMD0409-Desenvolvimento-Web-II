@@ -51,9 +51,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDTO createAddress(AddressDTO address) {
-        Integer idUser = address.getIdUser();
+        Integer idCustomer = address.getIdCustomer();
         Customer user = userRepository
-                .findById(idUser)
+                .findById(idCustomer)
                 .orElseThrow(() -> new NotFoundException("user"));
 
         Address newAddress = new Address();
@@ -94,10 +94,10 @@ public class AddressServiceImpl implements AddressService {
 
     private Address extractAddress(AddressDTO dto) {
         Address address = new Address();
-        if (dto.getIdUser() != null) {
-            Integer idUser = dto.getIdUser();
+        if (dto.getIdCustomer() != null) {
+            Integer idCustomer = dto.getIdCustomer();
             Customer user = userRepository
-                    .findById(idUser)
+                    .findById(idCustomer)
                     .orElseThrow(() -> new NotFoundException("user"));
             address.setCustomer(user);
         }
@@ -114,7 +114,7 @@ public class AddressServiceImpl implements AddressService {
     private AddressDTO toDTO(Address address) {
         return AddressDTO.builder()
                 .id(address.getId())
-                .idUser(address.getCustomer().getId())
+                .idCustomer(address.getCustomer().getId())
                 .cep(address.getCep())
                 .completeAddress(address.getCompleteAddress())
                 .number(address.getNumber())

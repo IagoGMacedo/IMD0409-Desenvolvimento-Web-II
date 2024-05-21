@@ -17,6 +17,6 @@ import jakarta.validation.constraints.NotNull;
 public class AddItemShoppingCartDTO {
     @NotNull(message = "{campo.idShoppingCart.obrigatorio}")
     private Integer idShoppingCart;
-    private Integer idUser;
+    private Integer idCustomer;
     private ProductItemDTO productItem;
 }

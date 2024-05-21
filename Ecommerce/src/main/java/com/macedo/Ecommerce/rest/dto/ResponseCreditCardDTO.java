@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ResponseCreditCardDTO {
     private Integer id;
-    private Integer idUser;
+    private Integer idCustomer;
     private String cardHolderName;
     private String lastNumbers;
 
