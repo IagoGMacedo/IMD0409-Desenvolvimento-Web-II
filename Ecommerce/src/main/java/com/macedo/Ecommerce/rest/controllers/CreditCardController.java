@@ -3,6 +3,8 @@ package com.macedo.Ecommerce.rest.controllers;
 import java.util.List;
 
 import com.macedo.Ecommerce.rest.dto.ResponseCreditCardDTO;
+import com.macedo.Ecommerce.rest.dto.ResponsePurchaseDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +53,13 @@ public class CreditCardController {
         @GetMapping("{id}")
         public ResponseEntity<ResponseCreditCardDTO> getCreditCardById(@PathVariable Integer id) {
                 return new ResponseEntity<ResponseCreditCardDTO>((creditCardService.getCreditCardById(id)),
+                                HttpStatus.OK);
+        }
+
+        @GetMapping("/customer/{id}")
+        public ResponseEntity<List<ResponseCreditCardDTO>> getCreditCardsByCustomerId(@PathVariable Integer id) {
+                return new ResponseEntity<List<ResponseCreditCardDTO>>(
+                                (creditCardService.getCreditCardsByCustomerId(id)),
                                 HttpStatus.OK);
         }
 

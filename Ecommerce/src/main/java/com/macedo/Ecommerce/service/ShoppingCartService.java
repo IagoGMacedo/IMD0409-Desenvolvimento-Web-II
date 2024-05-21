@@ -12,7 +12,7 @@ public interface ShoppingCartService {
 
     public ShoppingCartDTO getShoppingCartById(Integer id);
 
-    public ShoppingCartDTO getShoppingCartByUserId(Integer userId);
+    public ShoppingCartDTO getShoppingCartByCustomerId(Integer customerId);
 
     public ShoppingCartDTO addItemToCart(AddItemShoppingCartDTO addProductItem);
 

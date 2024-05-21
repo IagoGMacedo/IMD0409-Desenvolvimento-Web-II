@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.macedo.Ecommerce.Utils.Patcher;
 import com.macedo.Ecommerce.exception.NotFoundException;
 import com.macedo.Ecommerce.model.*;
+import com.macedo.Ecommerce.repository.CustomerRepository;
 import com.macedo.Ecommerce.repository.ProductItemRepository;
 import com.macedo.Ecommerce.repository.ProductRepository;
 import com.macedo.Ecommerce.repository.ShoppingCartRepository;
@@ -29,6 +30,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ProductRepository productRepository;
 
     private final ProductItemRepository productItemRepository;
+    private final CustomerRepository customerRepository;
     private final Patcher patcher;
 
     @Override
@@ -51,8 +53,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDTO getShoppingCartByUserId(Integer userId) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findShoppingCartByCustomerId(userId)
+    public ShoppingCartDTO getShoppingCartByCustomerId(Integer customerId) {
+        Customer customer = customerRepository
+                .findById(customerId)
+                .orElseThrow(() -> new NotFoundException("customer"));
+
+        ShoppingCart shoppingCart = shoppingCartRepository.findByCustomerId(customerId)
                 .orElseThrow(() -> new NotFoundException("Shopping Cart"));
         return toDTO(shoppingCart);
     }

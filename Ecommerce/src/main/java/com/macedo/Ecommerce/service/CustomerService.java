@@ -5,15 +5,15 @@ import com.macedo.Ecommerce.model.Customer;
 import com.macedo.Ecommerce.rest.dto.CustomerDTO;
 
 public interface CustomerService {
-    public List<CustomerDTO> getUsers(Customer filtro);
+    public List<CustomerDTO> getCustomers(Customer filtro);
 
-    public CustomerDTO getUserById(Integer id);
+    public CustomerDTO getCustomerById(Integer id);
 
-    public CustomerDTO createUser(CustomerDTO User);
+    public CustomerDTO createCustomer(CustomerDTO User);
 
-    public CustomerDTO updateUser(Integer id, CustomerDTO User);
+    public CustomerDTO updateCustomer(Integer id, CustomerDTO User);
 
-    public CustomerDTO patchUser(Integer id, CustomerDTO UserIncompletaDto);
+    public CustomerDTO patchCustomer(Integer id, CustomerDTO UserIncompletaDto);
 
-    public void deleteUser(Integer id);
+    public void deleteCustomer(Integer id);
 }

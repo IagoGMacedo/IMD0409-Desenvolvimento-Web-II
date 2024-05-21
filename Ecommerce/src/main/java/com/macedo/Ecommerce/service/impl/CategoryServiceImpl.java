@@ -83,14 +83,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     private Category extractCategory(CategoryDTO dto) {
         Category category = new Category();
-        category.setName(dto.getName());
+        category.setName(dto.getName().toUpperCase());
         return category;
     }
 
     private CategoryDTO toDTO(Category category) {
         return CategoryDTO.builder()
                 .id(category.getId())
-                .name(category.getName())
+                .name(category.getName().toUpperCase())
                 .build();
     }
 

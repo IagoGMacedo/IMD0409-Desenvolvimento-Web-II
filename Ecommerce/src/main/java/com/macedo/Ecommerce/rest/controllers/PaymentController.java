@@ -51,7 +51,7 @@ public class PaymentController {
             @ApiResponse(responseCode = "404", description = "Não existe um usuário com o ID especificado")
     })
     @GetMapping("/customer/{id}")
-    public ResponseEntity<List<ResponsePaymentDTO>> getPaymentsByUserId(@PathVariable Integer id) {
-        return new ResponseEntity<List<ResponsePaymentDTO>>((paymentService.getPaymentsByUserId(id)), HttpStatus.OK);
+    public ResponseEntity<List<ResponsePaymentDTO>> getPaymentsByCustomerId(@PathVariable Integer id) {
+        return new ResponseEntity<List<ResponsePaymentDTO>>((paymentService.getPaymentsByCustomerId(id)), HttpStatus.OK);
     }
 }

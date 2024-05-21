@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import com.macedo.Ecommerce.exception.NotFoundException;
 import com.macedo.Ecommerce.model.CreditCard;
+import com.macedo.Ecommerce.model.Customer;
 import com.macedo.Ecommerce.model.PaymentMethod;
 import com.macedo.Ecommerce.model.Purchase;
 import com.macedo.Ecommerce.repository.CreditCardRepository;
+import com.macedo.Ecommerce.repository.CustomerRepository;
 import com.macedo.Ecommerce.repository.PaymentRepository;
 import com.macedo.Ecommerce.repository.PurchaseRepository;
 import com.macedo.Ecommerce.rest.dto.PaymentResponses.ResponsePaymentCreditCardDTO;
@@ -31,10 +33,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
 
-    private final CreditCardRepository creditCardRepository;
-
     private final PurchaseRepository purchaseRepository;
 
+    private final CustomerRepository customerRepository;
 
     @Override
     public List<ResponsePaymentDTO> getPayments(Payment filtro) {
@@ -56,35 +57,15 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<ResponsePaymentDTO> getPaymentsByUserId(Integer userId) {
-        /* 
-        List<Payment> list = paymentRepository.findPaymentsByCustomerId(userId)
-                .orElseThrow(() -> new NotFoundException("user"));
+    public List<ResponsePaymentDTO> getPaymentsByCustomerId(Integer customerId) {
+        Customer customer = customerRepository
+                .findById(customerId)
+                .orElseThrow(() -> new NotFoundException("customer"));
+
+        List<Payment> list = paymentRepository.findByCustomerId(customerId)
+                .orElseThrow(() -> new NotFoundException("customer"));
 
         return toDTOList(list);
-        */
-        return getPayments(new Payment());
-    }
-
-    private Payment extractPayment(RegisterPaymentDTO dto) {
-        Payment payment = new Payment();
-        if (dto.getIdCreditCard() != null) {
-            Integer idCreditCard = dto.getIdCreditCard();
-            CreditCard creditCard = creditCardRepository
-                    .findById(idCreditCard)
-                    .orElseThrow(() -> new NotFoundException("credit card"));
-            payment.setCreditCard(creditCard);
-        }
-
-        if (dto.getIdPurchase() != null) {
-            Integer idPurchase = dto.getIdPurchase();
-            Purchase purchase = purchaseRepository
-                    .findById(idPurchase)
-                    .orElseThrow(() -> new NotFoundException("purchase"));
-            payment.setPurchase(purchase);
-        }
-
-        return payment;
     }
 
     private ResponsePaymentDTO toDTO(Payment payment) {
@@ -127,7 +108,5 @@ public class PaymentServiceImpl implements PaymentService {
                 .idCreditCard(payment.getCreditCard().getId())
                 .build();
     }
-
-   
 
 }

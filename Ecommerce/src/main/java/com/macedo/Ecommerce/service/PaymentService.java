@@ -10,5 +10,5 @@ public interface PaymentService {
 
     public ResponsePaymentDTO getPaymentById(Integer id);
 
-    public List<ResponsePaymentDTO> getPaymentsByUserId(Integer id);
+    public List<ResponsePaymentDTO> getPaymentsByCustomerId(Integer id);
 }

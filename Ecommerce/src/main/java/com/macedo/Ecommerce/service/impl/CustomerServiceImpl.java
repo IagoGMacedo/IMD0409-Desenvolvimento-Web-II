@@ -24,13 +24,13 @@ import org.springframework.util.CollectionUtils;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     private final ShoppingCartRepository shoppingCartRepository;
     private final Patcher patcher;
 
     @Override
-    public List<CustomerDTO> getUsers(Customer filtro) {
+    public List<CustomerDTO> getCustomers(Customer filtro) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
@@ -38,85 +38,85 @@ public class CustomerServiceImpl implements CustomerService {
                         ExampleMatcher.StringMatcher.CONTAINING);
 
         Example example = Example.of(filtro, matcher);
-        return toDTOList(userRepository.findAll(example));
+        return toDTOList(customerRepository.findAll(example));
     }
 
     @Override
-    public CustomerDTO getUserById(Integer id) {
-        Customer user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("user"));
-        return toDTO(user);
+    public CustomerDTO getCustomerById(Integer id) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("customer"));
+        return toDTO(customer);
     }
 
     @Override
-    public CustomerDTO createUser(CustomerDTO User) {
-        Customer newUser = new Customer();
-        newUser = extractUser(User);
+    public CustomerDTO createCustomer(CustomerDTO customerDTO) {
+        Customer newCustomer = new Customer();
+        newCustomer = extractCustomer(customerDTO);
 
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setCustomer(newUser);
+        shoppingCart.setCustomer(newCustomer);
 
-        newUser.setShoppingCart(shoppingCart);
-        userRepository.save(newUser);
+        newCustomer.setShoppingCart(shoppingCart);
+        customerRepository.save(newCustomer);
         shoppingCartRepository.save(shoppingCart);
-        return toDTO(newUser);
+        return toDTO(newCustomer);
     }
 
     @Override
-    public CustomerDTO updateUser(Integer id, CustomerDTO User) {
-        Customer existingUser = userRepository
+    public CustomerDTO updateCustomer(Integer id, CustomerDTO customerDTO) {
+        Customer existingCustomer = customerRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("user"));
+                .orElseThrow(() -> new NotFoundException("customer"));
 
-        Customer newUser = extractUser(User);
-        newUser.setId(existingUser.getId());
-        return toDTO(userRepository.save(newUser));
+        Customer newCustomer = extractCustomer(customerDTO);
+        newCustomer.setId(existingCustomer.getId());
+        return toDTO(customerRepository.save(newCustomer));
     }
 
     @Override
-    public CustomerDTO patchUser(Integer id, CustomerDTO UserIncompletaDto) {
-        Customer existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("user"));
+    public CustomerDTO patchCustomer(Integer id, CustomerDTO incompleteCustomerDTO) {
+        Customer existingCustomer = customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("customer"));
 
-        Customer incompleteUser = extractUser(UserIncompletaDto);
+        Customer incompleteCustomer = extractCustomer(incompleteCustomerDTO);
 
-        patcher.patchPropertiesNotNull(incompleteUser, existingUser);
-        return toDTO(userRepository.save(existingUser));
+        patcher.patchPropertiesNotNull(incompleteCustomer, existingCustomer);
+        return toDTO(customerRepository.save(existingCustomer));
     }
 
     @Override
-    public void deleteUser(Integer id) {
-        Customer user = userRepository
+    public void deleteCustomer(Integer id) {
+        Customer customer = customerRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("user"));
-        userRepository.delete(user);
+                .orElseThrow(() -> new NotFoundException("customer"));
+        customerRepository.delete(customer);
     }
 
-    private Customer extractUser(CustomerDTO dto) {
-        Customer user = new Customer();
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        return user;
+    private Customer extractCustomer(CustomerDTO dto) {
+        Customer customer = new Customer();
+        customer.setName(dto.getName());
+        customer.setEmail(dto.getEmail());
+        return customer;
     }
 
-    private CustomerDTO toDTO(Customer user) {
+    private CustomerDTO toDTO(Customer customer) {
         return CustomerDTO.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
+                .id(customer.getId())
+                .name(customer.getName())
+                .email(customer.getEmail())
                 .build();
     }
 
-    private List<CustomerDTO> toDTOList(List<Customer> users) {
-        if (CollectionUtils.isEmpty(users)) {
+    private List<CustomerDTO> toDTOList(List<Customer> customers) {
+        if (CollectionUtils.isEmpty(customers)) {
             return Collections.emptyList();
         }
-        return users.stream().map(
-                user -> CustomerDTO
+        return customers.stream().map(
+                customer -> CustomerDTO
                         .builder()
-                        .id(user.getId())
-                        .name(user.getName())
-                        .email(user.getEmail())
+                        .id(customer.getId())
+                        .name(customer.getName())
+                        .email(customer.getEmail())
                         .build())
                 .collect(Collectors.toList());
     }

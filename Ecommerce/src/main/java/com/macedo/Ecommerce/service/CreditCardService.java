@@ -10,6 +10,8 @@ public interface CreditCardService {
 
     public ResponseCreditCardDTO getCreditCardById(Integer id);
 
+    public List<ResponseCreditCardDTO> getCreditCardsByCustomerId(Integer id);
+
     public ResponseCreditCardDTO createCreditCard(RegisterCreditCardDTO CreditCard);
 
     public ResponseCreditCardDTO updateCreditCard(Integer id, RegisterCreditCardDTO CreditCard);
@@ -17,4 +19,5 @@ public interface CreditCardService {
     public ResponseCreditCardDTO patchCreditCard(Integer id, RegisterCreditCardDTO CreditCardIncompletaDto);
 
     public void deleteCreditCard(Integer id);
+
 }

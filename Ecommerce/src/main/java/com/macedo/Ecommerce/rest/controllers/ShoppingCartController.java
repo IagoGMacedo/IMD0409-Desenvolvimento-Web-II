@@ -49,8 +49,8 @@ public class ShoppingCartController {
             @ApiResponse(responseCode = "404", description = "Não existe um usuário com o ID especificado")
     })
     @GetMapping("/customer/{id}")
-    public ResponseEntity<ShoppingCartDTO> getShoppingCartByUserId(@PathVariable Integer id) {
-        return new ResponseEntity<ShoppingCartDTO>((shoppingCartService.getShoppingCartByUserId(id)), HttpStatus.OK);
+    public ResponseEntity<ShoppingCartDTO> getShoppingCartByCustomerId(@PathVariable Integer id) {
+        return new ResponseEntity<ShoppingCartDTO>((shoppingCartService.getShoppingCartByCustomerId(id)), HttpStatus.OK);
     }
 
     @Operation(summary = "Adiciona um item ao carrinho de compras")

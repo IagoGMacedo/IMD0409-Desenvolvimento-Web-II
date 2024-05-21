@@ -2,7 +2,10 @@ package com.macedo.Ecommerce.rest.controllers;
 
 import java.util.stream.Collectors;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -62,6 +65,28 @@ public class ApplicationControllerAdvice {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiErrors> handleMethodNotValidException(IllegalArgumentException ex) {
         return new ResponseEntity<ApiErrors>(new ApiErrors("{campo.role.invalido}"), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiErrors> handleMethodNotValidException(DataIntegrityViolationException ex) {
+        String message = ex.getMostSpecificCause().getMessage();
+        String formattedMessage = formatMessage(message);
+
+        return new ResponseEntity<>(new ApiErrors(formattedMessage), HttpStatus.BAD_REQUEST);
+    }
+
+    private String formatMessage(String message) {
+        // Regex para capturar o nome do campo que causou a violação de unicidade
+        Pattern pattern = Pattern.compile("\\(([^)]+)\\)=\\(([^)]+)\\)");
+        Matcher matcher = pattern.matcher(message);
+
+        if (matcher.find()) {
+            String fieldName = matcher.group(1).trim();
+            String fieldValue = matcher.group(2).trim();
+            return "O campo '" + fieldName + "' com valor '" + fieldValue + "' já existe.";
+        }
+
+        return "Violação de integridade de dados.";
     }
 
 }

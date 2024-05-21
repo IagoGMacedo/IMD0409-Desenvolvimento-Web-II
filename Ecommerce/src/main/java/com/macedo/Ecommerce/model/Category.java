@@ -27,7 +27,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE})

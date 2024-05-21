@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.macedo.Ecommerce.Utils.Patcher;
 import com.macedo.Ecommerce.model.Customer;
+import com.macedo.Ecommerce.model.Payment;
 import com.macedo.Ecommerce.repository.CustomerRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -26,7 +27,7 @@ import org.springframework.util.CollectionUtils;
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
-    private final CustomerRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     private final Patcher patcher;
 
@@ -50,15 +51,26 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    public List<AddressDTO> getAddressesByCustomerId(Integer customerId) {
+        Customer customer = customerRepository
+                .findById(customerId)
+                .orElseThrow(() -> new NotFoundException("customer"));
+
+        List<Address> list = addressRepository.findByCustomerId(customerId);
+
+        return toDTOList(list);
+    }
+
+    @Override
     public AddressDTO createAddress(AddressDTO address) {
         Integer idCustomer = address.getIdCustomer();
-        Customer user = userRepository
+        Customer customer = customerRepository
                 .findById(idCustomer)
-                .orElseThrow(() -> new NotFoundException("user"));
+                .orElseThrow(() -> new NotFoundException("customer"));
 
         Address newAddress = new Address();
         newAddress = extractAddress(address);
-        newAddress.setCustomer(user);
+        newAddress.setCustomer(customer);
         return toDTO(addressRepository.save(newAddress));
     }
 
@@ -96,10 +108,10 @@ public class AddressServiceImpl implements AddressService {
         Address address = new Address();
         if (dto.getIdCustomer() != null) {
             Integer idCustomer = dto.getIdCustomer();
-            Customer user = userRepository
+            Customer customer = customerRepository
                     .findById(idCustomer)
-                    .orElseThrow(() -> new NotFoundException("user"));
-            address.setCustomer(user);
+                    .orElseThrow(() -> new NotFoundException("customer"));
+            address.setCustomer(customer);
         }
         address.setCompleteAddress(dto.getCompleteAddress());
         address.setCep(dto.getCep());

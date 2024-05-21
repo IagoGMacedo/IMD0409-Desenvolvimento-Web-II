@@ -37,7 +37,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private final PurchaseRepository purchaseRepository;
 
-    private final CustomerRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     private final AddressRepository addressRepository;
 
@@ -75,9 +75,12 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public List<ResponsePurchaseDTO> getPurchasesByUserId(Integer userId) {
-        List<Purchase> list = purchaseRepository.findPurchasesByCustomerId(userId)
-                .orElseThrow(() -> new NotFoundException("user"));
+    public List<ResponsePurchaseDTO> getPurchasesByCustomerId(Integer customerId) {
+        Customer customer = customerRepository
+                .findById(customerId)
+                .orElseThrow(() -> new NotFoundException("customer"));
+
+        List<Purchase> list = purchaseRepository.findByCustomerId(customerId);
 
         return toDTOList(list);
     }
@@ -86,9 +89,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Transactional
     public ResponsePurchaseDTO createPurchase(RegisterPurchaseDTO purchase) {
         Integer idCustomer = purchase.getIdCustomer();
-        Customer customer = userRepository
+        Customer customer = customerRepository
                 .findById(idCustomer)
-                .orElseThrow(() -> new NotFoundException("user"));
+                .orElseThrow(() -> new NotFoundException("customer"));
 
         Integer idAddress = purchase.getIdAddress();
         Address address = addressRepository
@@ -136,37 +139,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public ResponsePurchaseDTO updatePurchase(Integer id, RegisterPurchaseDTO Purchase) {
-        Purchase existingPurchase = purchaseRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("purchase"));
-
-        Purchase newPurchase = extractPurchase(Purchase);
-        newPurchase.setId(existingPurchase.getId());
-        return toDTO(purchaseRepository.save(newPurchase));
-    }
-
-    @Override
-    public ResponsePurchaseDTO patchPurchase(Integer id, RegisterPurchaseDTO PurchaseIncompletaDto) {
-        Purchase existingPurchase = purchaseRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("purchase"));
-
-        Purchase incompletePurchase = extractPurchase(PurchaseIncompletaDto);
-
-        patcher.patchPropertiesNotNull(incompletePurchase, existingPurchase);
-        return toDTO(purchaseRepository.save(existingPurchase));
-    }
-
-    @Override
     public void deletePurchase(Integer id) {
         Purchase purchase = purchaseRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("purchase"));
         purchaseRepository.delete(purchase);
-    }
-
-    private Purchase extractPurchase(RegisterPurchaseDTO dto) {
-        return null;
     }
 
     private List<ProductItem> extractProductItems(Purchase newPurchase, List<ProductItemDTO> productItems) {

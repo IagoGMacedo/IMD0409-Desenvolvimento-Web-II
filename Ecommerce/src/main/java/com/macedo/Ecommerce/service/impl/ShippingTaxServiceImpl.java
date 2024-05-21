@@ -24,7 +24,7 @@ import org.springframework.util.CollectionUtils;
 public class ShippingTaxServiceImpl implements ShippingTaxService {
 
     private final ShippingTaxRepository shippingTaxRepository;
-    private final CustomerRepository userRepository;
+    private final CustomerRepository customerRepository;
     private final Patcher patcher;
 
     @Override

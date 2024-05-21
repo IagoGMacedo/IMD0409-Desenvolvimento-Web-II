@@ -11,6 +11,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.macedo.Ecommerce.exception.NotFoundException;
+import com.macedo.Ecommerce.model.Address;
 import com.macedo.Ecommerce.model.CreditCard;
 import com.macedo.Ecommerce.model.Customer;
 import com.macedo.Ecommerce.repository.CreditCardRepository;
@@ -49,11 +50,22 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
+    public List<ResponseCreditCardDTO> getCreditCardsByCustomerId(Integer customerId) {
+        Customer customer = customerRepository
+                .findById(customerId)
+                .orElseThrow(() -> new NotFoundException("customer"));
+
+        List<CreditCard> list = creditCardRepository.findByCustomerId(customerId);
+
+        return toDTOList(list);
+    }
+
+    @Override
     public ResponseCreditCardDTO createCreditCard(RegisterCreditCardDTO creditCard) {
         Integer idCustomer = creditCard.getIdCustomer();
         Customer customer = customerRepository
                 .findById(idCustomer)
-                .orElseThrow(() -> new NotFoundException("user"));
+                .orElseThrow(() -> new NotFoundException("customer"));
 
         CreditCard newCreditCard = new CreditCard();
         newCreditCard = extractCreditCard(creditCard);
@@ -97,7 +109,7 @@ public class CreditCardServiceImpl implements CreditCardService {
             Integer idCustomer = dto.getIdCustomer();
             Customer customer = customerRepository
                     .findById(idCustomer)
-                    .orElseThrow(() -> new NotFoundException("user"));
+                    .orElseThrow(() -> new NotFoundException("customer"));
             creditCard.setCustomer(customer);
         }
         creditCard.setCardHolderName(dto.getCardHolderName());

@@ -24,7 +24,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column
+    @Column(unique = true)
     @NotEmpty(message = "{campo.login.obrigatorio}")
     private String login;
     @Column

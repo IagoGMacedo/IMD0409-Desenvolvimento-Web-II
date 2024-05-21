@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDTO> getProductsByCategoryId(Integer categoryId) {
-        List<Product> list = productRepository.findProductsByCategoriesId(categoryId)
+        List<Product> list = productRepository.findByCategoriesId(categoryId)
                 .orElseThrow(() -> new NotFoundException("category"));
 
         return toDTOList(list);

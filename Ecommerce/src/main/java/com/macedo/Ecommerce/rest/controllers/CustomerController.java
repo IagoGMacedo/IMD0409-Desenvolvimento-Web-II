@@ -30,65 +30,65 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomerController {
     @Autowired
-    private CustomerService userService;
+    private CustomerService customerService;
 
-    @Operation(description = "Lista as Users existentes a partir de filtro, se passado")
+    @Operation(description = "Lista as Customers existentes a partir de filtro, se passado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a lista de Users conforme filtro"),
+            @ApiResponse(responseCode = "200", description = "Retorna a lista de Customers conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> getUsers(Customer filtro) {
-        return new ResponseEntity<List<CustomerDTO>>((userService.getUsers(filtro)), HttpStatus.OK);
+    public ResponseEntity<List<CustomerDTO>> getCustomers(Customer filtro) {
+        return new ResponseEntity<List<CustomerDTO>>((customerService.getCustomers(filtro)), HttpStatus.OK);
     }
 
-    @Operation(description = "Busca User pelo ID")
+    @Operation(description = "Busca Customer pelo ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a User com o ID específicado"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma User com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Customer com o ID específicado"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Customer com o ID específicado")
     })
     @GetMapping("{id}")
-    public ResponseEntity<CustomerDTO> getUserById(@PathVariable Integer id) {
-        return new ResponseEntity<CustomerDTO>((userService.getUserById(id)), HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Integer id) {
+        return new ResponseEntity<CustomerDTO>((customerService.getCustomerById(id)), HttpStatus.OK);
     }
 
-    @Operation(description = "Adiciona uma nova User por DTO")
+    @Operation(description = "Adiciona uma nova Customer por DTO")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Retorna a User criada"),
-            @ApiResponse(responseCode = "404", description = "O usuário atrelado à User não foi encontrado")
+            @ApiResponse(responseCode = "201", description = "Retorna a Customer criada"),
+            @ApiResponse(responseCode = "404", description = "O usuário atrelado à Customer não foi encontrado")
     })
     @PostMapping
-    public ResponseEntity<CustomerDTO> createUser(@RequestBody @Valid CustomerDTO User) {
-        return new ResponseEntity<CustomerDTO>((userService.createUser(User)), HttpStatus.CREATED);
+    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO Customer) {
+        return new ResponseEntity<CustomerDTO>((customerService.createCustomer(Customer)), HttpStatus.CREATED);
     }
 
-    @Operation(description = "Atualiza uma User com o método PUT")
+    @Operation(description = "Atualiza uma Customer com o método PUT")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a User atualizada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma User com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Customer atualizada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Customer com o ID específicado")
     })
     @PutMapping("{id}")
-    public ResponseEntity<CustomerDTO> updateUser(@PathVariable Integer id, @RequestBody @Valid CustomerDTO User) {
-        return new ResponseEntity<CustomerDTO>((userService.updateUser(id, User)), HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer id, @RequestBody @Valid CustomerDTO Customer) {
+        return new ResponseEntity<CustomerDTO>((customerService.updateCustomer(id, Customer)), HttpStatus.OK);
     }
 
-    @Operation(description = "Atualiza uma User com o método PATCH")
+    @Operation(description = "Atualiza uma Customer com o método PATCH")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a User atualizada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma User com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "Retorna a Customer atualizada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Customer com o ID específicado")
     })
     @PatchMapping("{id}")
-    public ResponseEntity<CustomerDTO> patchUser(@PathVariable Integer id, @RequestBody CustomerDTO UserIncompletaDTO) {
-        return new ResponseEntity<CustomerDTO>((userService.patchUser(id, UserIncompletaDTO)), HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable Integer id, @RequestBody CustomerDTO CustomerIncompletaDTO) {
+        return new ResponseEntity<CustomerDTO>((customerService.patchCustomer(id, CustomerIncompletaDTO)), HttpStatus.OK);
     }
 
-    @Operation(description = "Exclui uma User pelo ID")
+    @Operation(description = "Exclui uma Customer pelo ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "A User foi deletada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma User com o ID específicado")
+            @ApiResponse(responseCode = "200", description = "A Customer foi deletada"),
+            @ApiResponse(responseCode = "404", description = "Não existe uma Customer com o ID específicado")
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Integer id) {
+        customerService.deleteCustomer(id);
         return ResponseEntity.ok().build();
     }
 

@@ -53,8 +53,8 @@ public class PurchaseController {
     }
 
     @GetMapping("/customer/{id}")
-    public ResponseEntity<List<ResponsePurchaseDTO>> getPurchasesByUserId(@PathVariable Integer id) {
-        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.getPurchasesByUserId(id)), HttpStatus.OK);
+    public ResponseEntity<List<ResponsePurchaseDTO>> getPurchasesByCustomerId(@PathVariable Integer id) {
+        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.getPurchasesByCustomerId(id)), HttpStatus.OK);
     }
 
     @Operation(description = "Adiciona uma nova Purchase por DTO")
@@ -65,29 +65,6 @@ public class PurchaseController {
     @PostMapping
     public ResponseEntity<ResponsePurchaseDTO> createPurchase(@RequestBody @Valid RegisterPurchaseDTO Purchase) {
         return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.createPurchase(Purchase)), HttpStatus.CREATED);
-    }
-
-    @Operation(description = "Atualiza uma Purchase com o método PUT")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a Purchase atualizada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
-    })
-    @PutMapping("{id}")
-    public ResponseEntity<ResponsePurchaseDTO> updatePurchase(@PathVariable Integer id,
-            @RequestBody @Valid RegisterPurchaseDTO Purchase) {
-        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.updatePurchase(id, Purchase)), HttpStatus.OK);
-    }
-
-    @Operation(description = "Atualiza uma Purchase com o método PATCH")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a Purchase atualizada"),
-            @ApiResponse(responseCode = "404", description = "Não existe uma Purchase com o ID específicado")
-    })
-    @PatchMapping("{id}")
-    public ResponseEntity<ResponsePurchaseDTO> patchPurchase(@PathVariable Integer id,
-            @RequestBody RegisterPurchaseDTO PurchaseIncompletaDTO) {
-        return new ResponseEntity<ResponsePurchaseDTO>((purchaseService.patchPurchase(id, PurchaseIncompletaDTO)),
-                HttpStatus.OK);
     }
 
     @Operation(description = "Exclui uma Purchase pelo ID")

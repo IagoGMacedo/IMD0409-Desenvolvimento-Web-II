@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.macedo.Ecommerce.model.Address;
 import com.macedo.Ecommerce.rest.dto.AddressDTO;
+import com.macedo.Ecommerce.rest.dto.ResponseCreditCardDTO;
 import com.macedo.Ecommerce.service.AddressService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,13 @@ public class AddressController {
     @GetMapping("{id}")
     public ResponseEntity<AddressDTO> getAddressById(@PathVariable Integer id) {
         return new ResponseEntity<AddressDTO>((addressService.getAddressById(id)), HttpStatus.OK);
+    }
+
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<List<AddressDTO>> getAddressesByCustomerId(@PathVariable Integer id) {
+        return new ResponseEntity<List<AddressDTO>>(
+                (addressService.getAddressesByCustomerId(id)),
+                HttpStatus.OK);
     }
 
     @Operation(description = "Adiciona uma novo endereço")
