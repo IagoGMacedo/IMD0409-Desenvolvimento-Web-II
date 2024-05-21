@@ -37,7 +37,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "200", description = "Retorna a lista de Customers conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> getCustomers(Customer filtro) {
+    public ResponseEntity<List<CustomerDTO>> getCustomers(CustomerDTO filtro) {
         return new ResponseEntity<List<CustomerDTO>>((customerService.getCustomers(filtro)), HttpStatus.OK);
     }
 

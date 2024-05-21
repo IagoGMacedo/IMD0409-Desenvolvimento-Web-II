@@ -28,14 +28,15 @@ public class ShippingTaxServiceImpl implements ShippingTaxService {
     private final Patcher patcher;
 
     @Override
-    public List<ShippingTaxDTO> getShippingTaxes(ShippingTax filtro) {
+    public List<ShippingTaxDTO> getShippingTaxes(ShippingTaxDTO filtro) {
+        ShippingTax obj = extractShippingTax(filtro);
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
                 .withStringMatcher(
                         ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example example = Example.of(filtro, matcher);
+        Example example = Example.of(obj, matcher);
         return toDTOList(shippingTaxRepository.findAll(example));
     }
 

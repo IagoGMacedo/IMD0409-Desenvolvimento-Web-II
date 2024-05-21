@@ -6,7 +6,7 @@ import com.macedo.Ecommerce.model.Category;
 import com.macedo.Ecommerce.rest.dto.CategoryDTO;
 
 public interface CategoryService {
-    public List<CategoryDTO> getCategories(Category filtro);
+    public List<CategoryDTO> getCategories(CategoryDTO filtro);
 
     public CategoryDTO getCategoryById(Integer id);
 

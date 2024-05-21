@@ -37,7 +37,7 @@ public class DiscountController {
                         @ApiResponse(responseCode = "200", description = "Retorna a lista de Discounts conforme filtro"),
         })
         @GetMapping
-        public ResponseEntity<List<DiscountDTO>> getDiscounts(Discount filtro) {
+        public ResponseEntity<List<DiscountDTO>> getDiscounts(DiscountDTO filtro) {
                 return new ResponseEntity<List<DiscountDTO>>((discountService.getDiscounts(filtro)),
                                 HttpStatus.OK);
         }

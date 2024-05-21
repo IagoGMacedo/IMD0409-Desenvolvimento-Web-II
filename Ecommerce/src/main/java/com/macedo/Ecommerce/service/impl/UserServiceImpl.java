@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserDetailsService {
     private UserRepository repository;
     
     @Autowired
-    private JwtService jwtService;
+    private JwtService jwtService; 
 
     @Transactional
     public UserDTO salvar(UserDTO usuario) {

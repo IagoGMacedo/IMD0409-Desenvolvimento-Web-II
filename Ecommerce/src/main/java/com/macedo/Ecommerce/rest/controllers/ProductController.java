@@ -37,7 +37,7 @@ public class ProductController {
             @ApiResponse(responseCode = "200", description = "Retorna a lista de Products conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getProducts(Product filtro) {
+    public ResponseEntity<List<ProductDTO>> getProducts(ProductDTO filtro) {
         return new ResponseEntity<List<ProductDTO>>((productService.getProducts(filtro)), HttpStatus.OK);
     }
 

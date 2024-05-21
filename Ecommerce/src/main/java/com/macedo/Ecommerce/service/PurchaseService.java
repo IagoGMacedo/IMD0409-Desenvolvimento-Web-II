@@ -7,7 +7,7 @@ import com.macedo.Ecommerce.rest.dto.RegisterPurchaseDTO;
 import com.macedo.Ecommerce.rest.dto.ResponsePurchaseDTO;
 
 public interface PurchaseService {
-    public List<ResponsePurchaseDTO> getPurchases(Purchase filtro);
+    public List<ResponsePurchaseDTO> getPurchases();
 
     public ResponsePurchaseDTO getPurchaseById(Integer id);
 

@@ -43,7 +43,7 @@ public class Purchase {
     @Column(precision = 10, scale = 2)
     private BigDecimal totalPrice;
 
-    @OneToOne(mappedBy = "purchase")
+    @OneToOne(mappedBy = "purchase", cascade = CascadeType.REMOVE)
     private Payment payment;
 
     @ManyToOne

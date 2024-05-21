@@ -8,7 +8,7 @@ import com.macedo.Ecommerce.rest.dto.RegisterItemShoppingCartDTO;
 import com.macedo.Ecommerce.rest.dto.ShoppingCartDTO;
 
 public interface ShoppingCartService {
-    public List<ShoppingCartDTO> getShoppingCarts(ShoppingCart filtro);
+    public List<ShoppingCartDTO> getShoppingCarts();
 
     public ShoppingCartDTO getShoppingCartById(Integer id);
 

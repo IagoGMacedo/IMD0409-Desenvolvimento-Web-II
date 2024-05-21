@@ -26,14 +26,15 @@ public class CategoryServiceImpl implements CategoryService {
     private final Patcher patcher;
 
     @Override
-    public List<CategoryDTO> getCategories(Category filtro) {
+    public List<CategoryDTO> getCategories(CategoryDTO filtro) {
+        Category obj = extractCategory(filtro);
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
                 .withStringMatcher(
                         ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example example = Example.of(filtro, matcher);
+        Example example = Example.of(obj, matcher);
         return toDTOList(categoryRepository.findAll(example));
     }
 
@@ -83,7 +84,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     private Category extractCategory(CategoryDTO dto) {
         Category category = new Category();
-        category.setName(dto.getName().toUpperCase());
+        String name = dto.getName();
+        if(name!=null)
+            name = name.toUpperCase();
+        category.setName(name);
         return category;
     }
 

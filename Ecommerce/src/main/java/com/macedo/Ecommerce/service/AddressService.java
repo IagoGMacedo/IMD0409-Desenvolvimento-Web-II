@@ -5,7 +5,7 @@ import com.macedo.Ecommerce.model.Address;
 import com.macedo.Ecommerce.rest.dto.AddressDTO;
 
 public interface AddressService {
-    public List<AddressDTO> getAddresses(Address filtro);
+    public List<AddressDTO> getAddresses(AddressDTO filtro);
 
     public AddressDTO getAddressById(Integer id);
 

@@ -29,14 +29,15 @@ public class DiscountServiceImpl implements DiscountService {
     private final Patcher patcher;
 
     @Override
-    public List<DiscountDTO> getDiscounts(Discount filtro) {
+    public List<DiscountDTO> getDiscounts(DiscountDTO filtro) {
+        Discount obj = extractDiscount(filtro);
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
                 .withStringMatcher(
                         ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example example = Example.of(filtro, matcher);
+        Example example = Example.of(obj, matcher);
         return toDTOList(discountRepository.findAll(example));
     }
 

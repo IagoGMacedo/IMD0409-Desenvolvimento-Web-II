@@ -5,7 +5,7 @@ import com.macedo.Ecommerce.model.ShippingTax;
 import com.macedo.Ecommerce.rest.dto.ShippingTaxDTO;
 
 public interface ShippingTaxService {
-    public List<ShippingTaxDTO> getShippingTaxes(ShippingTax filtro);
+    public List<ShippingTaxDTO> getShippingTaxes(ShippingTaxDTO filtro);
 
     public ShippingTaxDTO getShippingTaxById(Integer id);
 

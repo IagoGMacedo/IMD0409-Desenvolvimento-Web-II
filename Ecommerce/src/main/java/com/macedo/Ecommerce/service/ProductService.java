@@ -6,7 +6,7 @@ import com.macedo.Ecommerce.model.Product;
 import com.macedo.Ecommerce.rest.dto.ProductDTO;
 
 public interface ProductService {
-    public List<ProductDTO> getProducts(Product filtro);
+    public List<ProductDTO> getProducts(ProductDTO filtro);
 
     public ProductDTO getProductById(Integer id);
 

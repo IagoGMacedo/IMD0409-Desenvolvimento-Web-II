@@ -33,14 +33,15 @@ public class ProductServiceImpl implements ProductService {
     private final Patcher patcher;
 
     @Override
-    public List<ProductDTO> getProducts(Product filtro) {
+    public List<ProductDTO> getProducts(ProductDTO filtro) {
+        Product obj = extractProduct(filtro);
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
                 .withStringMatcher(
                         ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example example = Example.of(filtro, matcher);
+        Example example = Example.of(obj, matcher);
         return toDTOList(productRepository.findAll(example));
     }
 

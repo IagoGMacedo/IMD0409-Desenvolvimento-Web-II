@@ -37,7 +37,7 @@ public class ShippingTaxController {
                         @ApiResponse(responseCode = "200", description = "Retorna a lista de ShippingTaxs conforme filtro"),
         })
         @GetMapping
-        public ResponseEntity<List<ShippingTaxDTO>> getShippingTaxs(ShippingTax filtro) {
+        public ResponseEntity<List<ShippingTaxDTO>> getShippingTaxs(ShippingTaxDTO filtro) {
                 return new ResponseEntity<List<ShippingTaxDTO>>((shippingTaxService.getShippingTaxes(filtro)),
                                 HttpStatus.OK);
         }

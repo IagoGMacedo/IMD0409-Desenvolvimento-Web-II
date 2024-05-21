@@ -34,15 +34,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final Patcher patcher;
 
     @Override
-    public List<ShoppingCartDTO> getShoppingCarts(ShoppingCart filtro) {
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher(
-                        ExampleMatcher.StringMatcher.CONTAINING);
-
-        Example example = Example.of(filtro, matcher);
-        return toDTOList(shoppingCartRepository.findAll(example));
+    public List<ShoppingCartDTO> getShoppingCarts() {
+        return toDTOList(shoppingCartRepository.findAll());
     }
 
     @Override

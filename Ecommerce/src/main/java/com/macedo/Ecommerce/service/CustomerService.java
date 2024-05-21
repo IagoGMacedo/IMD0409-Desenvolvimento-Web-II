@@ -5,7 +5,7 @@ import com.macedo.Ecommerce.model.Customer;
 import com.macedo.Ecommerce.rest.dto.CustomerDTO;
 
 public interface CustomerService {
-    public List<CustomerDTO> getCustomers(Customer filtro);
+    public List<CustomerDTO> getCustomers(CustomerDTO filtro);
 
     public CustomerDTO getCustomerById(Integer id);
 

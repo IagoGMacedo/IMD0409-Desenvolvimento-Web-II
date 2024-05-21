@@ -32,14 +32,15 @@ public class AddressServiceImpl implements AddressService {
     private final Patcher patcher;
 
     @Override
-    public List<AddressDTO> getAddresses(Address filtro) {
+    public List<AddressDTO> getAddresses(AddressDTO filtro) {
+        Address obj = extractAddress(filtro);
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
                 .withStringMatcher(
                         ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example example = Example.of(filtro, matcher);
+        Example example = Example.of(obj, matcher);
         return toDTOList(addressRepository.findAll(example));
     }
 

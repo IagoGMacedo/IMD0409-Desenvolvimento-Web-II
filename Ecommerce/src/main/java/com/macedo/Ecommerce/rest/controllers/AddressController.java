@@ -38,7 +38,7 @@ public class AddressController {
             @ApiResponse(responseCode = "200", description = "Retorna a lista de endereços conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<AddressDTO>> getAddresses(Address filtro) {
+    public ResponseEntity<List<AddressDTO>> getAddresses(AddressDTO filtro) {
         return new ResponseEntity<List<AddressDTO>>((addressService.getAddresses(filtro)), HttpStatus.OK);
     }
 
@@ -52,6 +52,11 @@ public class AddressController {
         return new ResponseEntity<AddressDTO>((addressService.getAddressById(id)), HttpStatus.OK);
     }
 
+    @Operation(description = "Retorna os endereços usuário solicitado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna os endereços do usuário solicitado"),
+            @ApiResponse(responseCode = "404", description = "Não existe um usuário com o ID especificado")
+    })
     @GetMapping("/customer/{id}")
     public ResponseEntity<List<AddressDTO>> getAddressesByCustomerId(@PathVariable Integer id) {
         return new ResponseEntity<List<AddressDTO>>(

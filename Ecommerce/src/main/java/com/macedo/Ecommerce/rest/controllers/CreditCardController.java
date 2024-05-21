@@ -40,7 +40,7 @@ public class CreditCardController {
                         @ApiResponse(responseCode = "200", description = "Retorna a lista de CreditCards conforme filtro"),
         })
         @GetMapping
-        public ResponseEntity<List<ResponseCreditCardDTO>> getCreditCards(CreditCard filtro) {
+        public ResponseEntity<List<ResponseCreditCardDTO>> getCreditCards(RegisterCreditCardDTO filtro) {
                 return new ResponseEntity<List<ResponseCreditCardDTO>>((creditCardService.getCreditCards(filtro)),
                                 HttpStatus.OK);
         }

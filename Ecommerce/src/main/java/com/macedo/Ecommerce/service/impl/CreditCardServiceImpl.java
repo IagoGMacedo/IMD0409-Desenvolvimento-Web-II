@@ -31,14 +31,15 @@ public class CreditCardServiceImpl implements CreditCardService {
     private final Patcher patcher;
 
     @Override
-    public List<ResponseCreditCardDTO> getCreditCards(CreditCard filtro) {
+    public List<ResponseCreditCardDTO> getCreditCards(RegisterCreditCardDTO filtro) {
+        CreditCard obj = extractCreditCard(filtro);
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
                 .withStringMatcher(
                         ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example example = Example.of(filtro, matcher);
+        Example example = Example.of(obj, matcher);
         return toDTOList(creditCardRepository.findAll(example));
     }
 

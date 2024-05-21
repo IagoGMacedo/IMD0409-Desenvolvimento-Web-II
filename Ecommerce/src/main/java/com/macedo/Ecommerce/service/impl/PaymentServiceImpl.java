@@ -1,5 +1,6 @@
 package com.macedo.Ecommerce.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,15 +38,18 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final CustomerRepository customerRepository;
 
+    private final CreditCardRepository creditCardRepository;
+
     @Override
-    public List<ResponsePaymentDTO> getPayments(Payment filtro) {
+    public List<ResponsePaymentDTO> getPayments(RegisterPaymentDTO filtro) {
+        Payment obj = extractPayment(filtro);
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
                 .withStringMatcher(
                         ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example example = Example.of(filtro, matcher);
+        Example example = Example.of(obj, matcher);
         return toDTOList(paymentRepository.findAll(example));
     }
 
@@ -66,6 +70,23 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(() -> new NotFoundException("customer"));
 
         return toDTOList(list);
+    }
+
+    private Payment extractPayment(RegisterPaymentDTO dto) {
+        Payment payment = new Payment();
+        payment.setPaymentMethod(dto.getPaymentMethod());
+        if (payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO
+                || payment.getPaymentMethod() == PaymentMethod.CARTAO_DEBITO) {
+            Integer idCreditCard = dto.getIdCreditCard();
+            CreditCard creditCard = creditCardRepository
+                    .findById(idCreditCard)
+                    .orElseThrow(() -> new NotFoundException("credit card"));
+            payment.setCreditCard(creditCard);
+
+            if (payment.getPaymentMethod() == PaymentMethod.CARTAO_CREDITO)
+                payment.setInstallments(dto.getInstallments());
+        }
+        return payment;
     }
 
     private ResponsePaymentDTO toDTO(Payment payment) {

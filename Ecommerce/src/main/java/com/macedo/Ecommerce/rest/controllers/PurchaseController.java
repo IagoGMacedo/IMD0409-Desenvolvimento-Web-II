@@ -38,8 +38,8 @@ public class PurchaseController {
             @ApiResponse(responseCode = "200", description = "Retorna a lista de Purchases conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<ResponsePurchaseDTO>> getPurchases(Purchase filtro) {
-        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.getPurchases(filtro)), HttpStatus.OK);
+    public ResponseEntity<List<ResponsePurchaseDTO>> getPurchases() {
+        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.getPurchases()), HttpStatus.OK);
     }
 
     @Operation(description = "Busca Purchase pelo ID")
@@ -54,7 +54,8 @@ public class PurchaseController {
 
     @GetMapping("/customer/{id}")
     public ResponseEntity<List<ResponsePurchaseDTO>> getPurchasesByCustomerId(@PathVariable Integer id) {
-        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.getPurchasesByCustomerId(id)), HttpStatus.OK);
+        return new ResponseEntity<List<ResponsePurchaseDTO>>((purchaseService.getPurchasesByCustomerId(id)),
+                HttpStatus.OK);
     }
 
     @Operation(description = "Adiciona uma nova Purchase por DTO")

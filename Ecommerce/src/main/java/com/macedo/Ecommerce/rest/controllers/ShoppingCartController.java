@@ -29,8 +29,8 @@ public class ShoppingCartController {
             @ApiResponse(responseCode = "200", description = "Retorna a lista de carrinhos de compra conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<ShoppingCartDTO>> getShoppingCarts(ShoppingCart filtro) {
-        return new ResponseEntity<List<ShoppingCartDTO>>((shoppingCartService.getShoppingCarts(filtro)), HttpStatus.OK);
+    public ResponseEntity<List<ShoppingCartDTO>> getShoppingCarts() {
+        return new ResponseEntity<List<ShoppingCartDTO>>((shoppingCartService.getShoppingCarts()), HttpStatus.OK);
     }
 
     @Operation(description = "Busca carrinho de compras pelo ID")

@@ -6,7 +6,7 @@ import com.macedo.Ecommerce.model.Discount;
 import com.macedo.Ecommerce.rest.dto.DiscountDTO;
 
 public interface DiscountService {
-    public List<DiscountDTO> getDiscounts(Discount filtro);
+    public List<DiscountDTO> getDiscounts(DiscountDTO filtro);
 
     public DiscountDTO getDiscountById(Integer id);
 

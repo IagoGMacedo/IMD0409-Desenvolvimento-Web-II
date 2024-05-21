@@ -30,14 +30,15 @@ public class CustomerServiceImpl implements CustomerService {
     private final Patcher patcher;
 
     @Override
-    public List<CustomerDTO> getCustomers(Customer filtro) {
+    public List<CustomerDTO> getCustomers(CustomerDTO filtro) {
+        Customer obj = extractCustomer(filtro);
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
                 .withStringMatcher(
                         ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example example = Example.of(filtro, matcher);
+        Example example = Example.of(obj, matcher);
         return toDTOList(customerRepository.findAll(example));
     }
 

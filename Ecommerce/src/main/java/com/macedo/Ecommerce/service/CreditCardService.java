@@ -6,7 +6,7 @@ import com.macedo.Ecommerce.rest.dto.RegisterCreditCardDTO;
 import com.macedo.Ecommerce.rest.dto.ResponseCreditCardDTO;
 
 public interface CreditCardService {
-    public List<ResponseCreditCardDTO> getCreditCards(CreditCard filtro);
+    public List<ResponseCreditCardDTO> getCreditCards(RegisterCreditCardDTO filtro);
 
     public ResponseCreditCardDTO getCreditCardById(Integer id);
 

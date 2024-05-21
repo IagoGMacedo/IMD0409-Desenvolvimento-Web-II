@@ -6,7 +6,7 @@ import com.macedo.Ecommerce.rest.dto.PaymentResponses.ResponsePaymentDTO;
 import com.macedo.Ecommerce.rest.dto.RegisterPaymentDTO;
 
 public interface PaymentService {
-    public List<ResponsePaymentDTO> getPayments(Payment filtro);
+    public List<ResponsePaymentDTO> getPayments(RegisterPaymentDTO filtro);
 
     public ResponsePaymentDTO getPaymentById(Integer id);
 

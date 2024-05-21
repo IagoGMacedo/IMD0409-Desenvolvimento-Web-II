@@ -2,6 +2,7 @@ package com.macedo.Ecommerce.rest.controllers;
 
 import java.util.List;
 
+import com.macedo.Ecommerce.rest.dto.RegisterPaymentDTO;
 import com.macedo.Ecommerce.rest.dto.PaymentResponses.ResponsePaymentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class PaymentController {
             @ApiResponse(responseCode = "200", description = "Retorna a lista de Payments conforme filtro"),
     })
     @GetMapping
-    public ResponseEntity<List<ResponsePaymentDTO>> getPayments(Payment filtro) {
+    public ResponseEntity<List<ResponsePaymentDTO>> getPayments(RegisterPaymentDTO filtro) {
         return new ResponseEntity<List<ResponsePaymentDTO>>((paymentService.getPayments(filtro)), HttpStatus.OK);
     }
 

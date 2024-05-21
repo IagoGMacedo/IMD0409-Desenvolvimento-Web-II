@@ -56,15 +56,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final Patcher patcher;
 
     @Override
-    public List<ResponsePurchaseDTO> getPurchases(Purchase filtro) {
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher(
-                        ExampleMatcher.StringMatcher.CONTAINING);
-
-        Example example = Example.of(filtro, matcher);
-        return toDTOList(purchaseRepository.findAll(example));
+    public List<ResponsePurchaseDTO> getPurchases() {
+        return toDTOList(purchaseRepository.findAll());
     }
 
     @Override
